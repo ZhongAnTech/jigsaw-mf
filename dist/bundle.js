@@ -201,6 +201,7 @@ class ctrlApps {
   constructor() {
     this.sonApplication = [];
     this.__baseUrl = '';
+    this.agentPopState();
   }
 
   get baseUrl() {
@@ -226,10 +227,6 @@ class ctrlApps {
     const _self = this;
 
     applist.forEach(async app => {
-      // const result = this.findApp(app.name)
-      // if (result) {
-      //     console.error(`register app name:${app.name} should unique`)
-      // } else {
       if (!app.canActive) {
         app.canActive = () => true;
       }
@@ -247,7 +244,7 @@ class ctrlApps {
       const styles = await getExternalStyleSheets();
       app.template = template;
       app.styles = styles;
-      app.module = sandbox[app.name];
+      app.module = sandbox[app.application_name];
       app.free = sandbox.__tailor_free;
       app.baseUrl = _self.baseUrl + (app.baseUrl || '');
       const sonApplication = new _utils_fragment__WEBPACK_IMPORTED_MODULE_2__["default"](app); // delete window[app.name]
@@ -265,7 +262,10 @@ class ctrlApps {
   agentPopState() {
     let _self = this;
 
-    window.addEventListener('popstate', e => {
+    debugger;
+    window.addEventListener('popstate', function (e) {
+      debugger;
+
       _self.sonApplication.forEach(item => {
         if (item.app.canActive()) {
           item.mount();

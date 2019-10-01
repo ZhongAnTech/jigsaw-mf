@@ -2,13 +2,11 @@ import { importEntry } from 'html-entry'
 import clearTemplate from './utils/clearTemplate'
 import fragment from './utils/fragment'
 import { getSandbox } from './utils/sandbox'
-
-
-
 class ctrlApps {
     constructor () {
         this.sonApplication = []
         this.__baseUrl = '';
+        this.agentPopState();
     }
     get baseUrl() {
         return this.__baseUrl
@@ -29,10 +27,6 @@ class ctrlApps {
         const _self = this
         applist.forEach(
             async app => {
-                // const result = this.findApp(app.name)
-                // if (result) {
-                //     console.error(`register app name:${app.name} should unique`)
-                // } else {
                     if(!app.canActive){
                         app.canActive = () => true
                     }
@@ -60,7 +54,9 @@ class ctrlApps {
     }
     agentPopState () {
         let _self = this
-        window.addEventListener('popstate', e=>{
+        debugger
+        window.addEventListener('popstate', function (e) {
+            debugger
             _self.sonApplication.forEach(item=>{
                 if(item.app.canActive()) {
                     item.mount()
