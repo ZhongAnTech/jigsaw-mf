@@ -26,7 +26,6 @@
     "cross-env": "^5.2.1",
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
-    "html-entry": "^1.0.2",
     "koa": "^2.8.1",
     "koa-static": "^5.0.0",
     "less": "^3.10.3",
@@ -44,6 +43,7 @@
   },
   "dependencies": {
     "core-js": "^3.2.1",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "html-entry": "^1.0.3"
   }
 }
