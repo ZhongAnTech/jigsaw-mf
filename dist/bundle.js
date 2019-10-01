@@ -204,7 +204,7 @@ class ctrlApps {
   }
 
   get baseUrl() {
-    return this.__baseUrl();
+    return this.__baseUrl;
   }
 
   set baseUrl(val) {

@@ -11,7 +11,7 @@ class ctrlApps {
         this.__baseUrl = '';
     }
     get baseUrl() {
-        return this.__baseUrl()
+        return this.__baseUrl
     }
     set baseUrl(val) {
         this.__baseUrl = val
