@@ -18,32 +18,19 @@
     "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
-    "autoprefixer": "^9.6.1",
     "babel-loader": "^8.0.6",
     "babel-plugin-import": "^1.12.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.2.1",
-    "css-loader": "^3.2.0",
-    "file-loader": "^4.2.0",
     "koa": "^2.8.1",
     "koa-static": "^5.0.0",
-    "less": "^3.10.3",
-    "less-loader": "^5.0.0",
-    "mini-css-extract-plugin": "^0.8.0",
     "path": "^0.12.7",
-    "postcss-import": "^12.0.1",
-    "postcss-loader": "^3.0.0",
-    "sass": "^1.22.12",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
-    "stylelint": "^10.1.0",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
     "core-js": "^3.2.1",
-    "lodash": "^4.17.15",
     "html-entry": "^1.0.3"
   }
 }

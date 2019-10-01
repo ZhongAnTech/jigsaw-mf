@@ -262,10 +262,7 @@ class ctrlApps {
   agentPopState() {
     let _self = this;
 
-    debugger;
     window.addEventListener('popstate', function (e) {
-      debugger;
-
       _self.sonApplication.forEach(item => {
         if (item.app.canActive()) {
           item.mount();
