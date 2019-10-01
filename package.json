@@ -1,6 +1,6 @@
 {
   "name": "chaoxi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
@@ -43,6 +43,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
+    "core-js": "^3.2.1",
     "lodash": "^4.17.15"
   }
 }
