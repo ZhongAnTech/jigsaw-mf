@@ -44,7 +44,7 @@ class ctrlApps {
                     const styles = await getExternalStyleSheets()
                     app.template = template
                     app.styles = styles
-                    app.module = sandbox[app.name]
+                    app.module = sandbox[app.application_name]
                     app.free = sandbox.__tailor_free;
                     app.baseUrl = _self.baseUrl + (app.baseUrl||'')
                     const sonApplication = new fragment(app)
