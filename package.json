@@ -1,6 +1,6 @@
 {
   "name": "chaoxi",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
@@ -33,5 +33,8 @@
     "core-js": "^3.2.1",
     "html-entry": "^1.0.3",
     "eventemitter2": "^5.0.1"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
