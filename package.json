@@ -43,7 +43,8 @@
   },
   "dependencies": {
     "core-js": "^3.2.1",
-    "lodash": "^4.17.15",
-    "html-entry": "^1.0.3"
+    "eventemitter2": "^5.0.1",
+    "html-entry": "^1.0.3",
+    "lodash": "^4.17.15"
   }
 }

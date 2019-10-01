@@ -2,7 +2,22 @@ import { importEntry } from 'html-entry'
 import clearTemplate from './utils/clearTemplate'
 import fragment from './utils/fragment'
 import { getSandbox } from './utils/sandbox'
-class ctrlApps {
+import EventEmitter from 'eventemitter2'
+
+const globalEvent = new EventEmitter({
+    // set this to `true` to use wildcards. It defaults to `false`.
+    wildcard: true,
+    // the delimiter used to segment namespaces, defaults to `.`.
+    delimiter: '.',
+    // set this to `true` if you want to emit the newListener event. The default value is `true`.
+    newListener: false,
+    // the maximum amount of listeners that can be assigned to an event, default 10.
+    maxListeners: Number.MAX_VALUE,
+    // show event name in memory leak message when more than maximum amount of listeners is assigned, default false
+    verboseMemoryLeak: false
+})
+
+class ctrlApps extends EventEmitter{
     constructor () {
         this.sonApplication = []
         this.__baseUrl = '';
@@ -76,6 +91,9 @@ const init = function () {
 init ()
 const App = new ctrlApps()
 export default App
+export {
+    globalEvent
+}
 // exports.app = ctrlApps
 // export const app = ctrlApps
 
