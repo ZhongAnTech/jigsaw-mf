@@ -40,7 +40,7 @@ class fragment {
     unmount () {
         // this.__module.unmount(this.contain)
         if(this.mounted){
-            this.__module.unmount(this.contain)
+            this.__module.default.unmount(this.contain)
             this.__free()
             this.mounted = false
         }
@@ -50,7 +50,7 @@ class fragment {
             if (!this.contain) {
                 console.error(`Application name ${this.name} contain is null`)
             }
-            this.__module.mount(this.contain, this.baseUrl)
+            this.__module.default.mount(this.contain, this.baseUrl)
             this.mounted = true;
         }
     }
