@@ -237,7 +237,8 @@ class ctrlApps {
         getExternalScripts,
         getExternalStyleSheets
       } = await Object(html_entry__WEBPACK_IMPORTED_MODULE_0__["importEntry"])(app.entry);
-      const sandbox = Object(_utils_sandbox__WEBPACK_IMPORTED_MODULE_3__["getSandbox"])();
+      const sandbox = Object(_utils_sandbox__WEBPACK_IMPORTED_MODULE_3__["getSandbox"])(); // const sandbox = window
+
       console.log(sandbox);
       const script = await execScripts(sandbox);
       const extScript = await getExternalScripts(sandbox);

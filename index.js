@@ -32,6 +32,7 @@ class ctrlApps {
                     }
                     const { template, execScripts, getExternalScripts, getExternalStyleSheets } = await importEntry(app.entry)
                     const sandbox = getSandbox()
+                    // const sandbox = window
                     console.log(sandbox)
                     const script  = await execScripts(sandbox)
                     const extScript = await getExternalScripts(sandbox)
