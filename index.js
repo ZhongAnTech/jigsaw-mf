@@ -41,6 +41,7 @@ class ctrlApps {
                     app.styles = styles
                     app.module = sandbox[app.application_name]
                     app.free = sandbox.__tailor_free;
+                    app.sandbox = sandbox
                     app.baseUrl = _self.baseUrl + (app.baseUrl||'')
                     const sonApplication = new fragment(app)
                     // delete window[app.name]

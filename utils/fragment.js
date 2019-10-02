@@ -6,12 +6,12 @@
  */
 class fragment {
     constructor (app) {
-        const { name, entry, contain, template, styles, module , baseUrl, free} = app;
+        const { name, entry, contain, template, styles, module , baseUrl, free, sandbox} = app;
         const _self = this
         
         this.app = app
         this.mounted = false
-
+        this.sandbox = sandbox
         this.name = name
         this.entry = entry
         this.style = []
