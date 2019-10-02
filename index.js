@@ -2,8 +2,45 @@ import { importEntry } from 'html-entry'
 import clearTemplate from './utils/clearTemplate'
 import fragment from './utils/fragment'
 import { getSandbox } from './utils/sandbox'
-class ctrlApps {
-    constructor () {
+import EventEmitter from 'eventemitter2'
+
+const globalEvent = new EventEmitter({
+    // set this to `true` to use wildcards. It defaults to `false`.
+    wildcard: true,
+    // the delimiter used to segment namespaces, defaults to `.`.
+    delimiter: '.',
+    // set this to `true` if you want to emit the newListener event. The default value is `true`.
+    newListener: false,
+    // the maximum amount of listeners that can be assigned to an event, default 10.
+    maxListeners: Number.MAX_VALUE,
+    // show event name in memory leak message when more than maximum amount of listeners is assigned, default false
+    verboseMemoryLeak: false
+})
+
+const globalEmit = globalEvent.emit;
+window.addEventListener('message', function (e) {
+    if (
+        Object.prototype.toString.call(e.data) !== '[object Object]' ||
+        e.data.source !== 'chaoxi'
+    ) {
+        return
+    }
+    const { args } = e.data;
+    if (args && typeof args[0] === 'string') {
+        globalEmit.apply(globalEvent, args);
+    }
+}, false);
+
+globalEvent.emit = function () {
+    window.postMessage({
+        source: 'chaoxi',
+        args: Array.prototype.slice.call(arguments)
+    }, location.origin)
+}
+
+class ctrlApps extends EventEmitter {
+    constructor() {
+        super();
         this.sonApplication = []
         this.__baseUrl = '';
         this.agentPopState();
@@ -14,53 +51,52 @@ class ctrlApps {
     set baseUrl(val) {
         this.__baseUrl = val
     }
-    findApp (name) {
+    findApp(name) {
         return this.sonApplication.find(function (app) {
             return name === app.name
         })
     }
-    unregisterApps (name) {
+    unregisterApps(name) {
         const result = this.findApp(name)
         result.unmount()
     }
-    registerApps (applist) {
+    registerApps(applist) {
         const _self = this
         applist.forEach(
             async app => {
-                    if(!app.canActive){
-                        app.canActive = () => true
-                    }
-                    const { template, execScripts, getExternalScripts, getExternalStyleSheets } = await importEntry(app.entry)
-                    const sandbox = getSandbox()
-                    // const sandbox = window
-                    console.log(sandbox)
-                    const script  = await execScripts(sandbox)
-                    const extScript = await getExternalScripts(sandbox)
-                    const styles = await getExternalStyleSheets()
-                    app.template = template
-                    app.styles = styles
-                    app.module = sandbox[app.application_name]
-                    app.free = sandbox.__tailor_free;
-                    app.sandbox = sandbox
-                    app.baseUrl = _self.baseUrl + (app.baseUrl||'')
-                    const sonApplication = new fragment(app)
-                    // delete window[app.name]
-                    // window[app.name] = null
-                    if (app.canActive()) {
-                        sonApplication.mount()
-                    }
-                    this.sonApplication.push(sonApplication)
+                if (!app.canActive) {
+                    app.canActive = () => true
                 }
+                const { template, execScripts, getExternalScripts, getExternalStyleSheets } = await importEntry(app.entry)
+                const sandbox = getSandbox()
+                console.log(sandbox)
+                const script = await execScripts(sandbox)
+                const extScript = await getExternalScripts(sandbox)
+                const styles = await getExternalStyleSheets()
+                app.template = template
+                app.styles = styles
+                app.module = sandbox[app.application_name]
+                app.sandbox = sandbox
+                app.free = sandbox.__tailor_free;
+                app.baseUrl = _self.baseUrl + (app.baseUrl || '')
+                const sonApplication = new fragment(app)
+                // delete window[app.name]
+                // window[app.name] = null
+                if (app.canActive()) {
+                    sonApplication.mount()
+                }
+                this.sonApplication.push(sonApplication)
+            }
             // }
         )
     }
-    agentPopState () {
+    agentPopState() {
         let _self = this
         window.addEventListener('popstate', function (e) {
-            _self.sonApplication.forEach(item=>{
-                if(item.app.canActive()) {
+            _self.sonApplication.forEach(item => {
+                if (item.app.canActive()) {
                     item.mount()
-                } else{
+                } else {
                     item.unmount()
                 }
             })
@@ -71,13 +107,16 @@ class ctrlApps {
 // const instanceApp = new ctrlApps()
 
 const init = function () {
-    window.addEventListener('load', function(e) {
+    window.addEventListener('load', function (e) {
         clearTemplate()
     })
 }
-init ()
+init()
 const App = new ctrlApps()
 export default App
+export {
+    globalEvent
+}
 // exports.app = ctrlApps
 // export const app = ctrlApps
 

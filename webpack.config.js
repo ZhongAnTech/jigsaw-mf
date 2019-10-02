@@ -35,11 +35,12 @@ const path = require('path')
 
 module.exports = {
   entry: './index.js',
-  mode: 'development',
+  mode: process.env.NODE_ENV,
   devtool: 'none',
   output: {
     path: __dirname + '/dist',
     publicPath: 'http://localhost:8081/',
+    library: 'Chaoxi',
     filename: 'bundle.js',
     libraryTarget: 'umd'
   },
