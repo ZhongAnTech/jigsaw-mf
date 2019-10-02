@@ -40,6 +40,7 @@ module.exports = {
   output: {
     path: __dirname + '/dist',
     publicPath: 'http://localhost:8081/',
+    library: 'Chaoxi',
     filename: 'bundle.js',
     libraryTarget: 'umd'
   },
