@@ -40,7 +40,10 @@ export function getSandbox(appName) {
             return target[name]
         },
         set: function (target, name, property) {
-            target[name] = property
+            target[name] = property;
+            if(/^webpackJsonp/.test(name)){
+                window[name] = target[name]
+            }
             return true
         }
     })
