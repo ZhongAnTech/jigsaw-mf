@@ -75,8 +75,8 @@ class ctrlApps extends EventEmitter {
                 const styles = await getExternalStyleSheets()
                 app.template = template
                 app.styles = styles
-                const module = sandbox[app.application_name]
-                if (app.module.__esModule) {
+                const _module = sandbox[app.application_name]
+                if (_module.__esModule) {
                     app.module = sandbox[app.application_name]
                 } else {
                     console.error("这是一个错误。");
