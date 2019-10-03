@@ -100,7 +100,6 @@ class ctrlApps extends EventEmitter {
                     app.template = template
                     app.styles = styles
                     const _module = sandbox[app.application_name]
-                    debugger
                     console.log('===============================')
                     console.log(_module)
                     if (_module && _module.__esModule) {
