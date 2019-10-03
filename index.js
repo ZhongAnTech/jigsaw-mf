@@ -57,8 +57,13 @@ class ctrlApps extends EventEmitter {
         })
     }
     unregisterApps(name) {
-        const result = this.findApp(name)
-        result.unmount()
+        let index =  this.sonApplication.findIndex(function (app) {
+            return name === app.name
+        })
+        if(index !== -1){
+            this.sonApplication[index].destroy()
+            this.sonApplication.splice(index, 1)
+        }
     }
     registerApps(applist) {
         const _self = this
@@ -150,7 +155,7 @@ class ctrlApps extends EventEmitter {
     }
     removeAllChild () {
         this.sonApplication.forEach(item => {
-            item.unmount()
+            item.destroy()
         })
         this.sonApplication = []
     }

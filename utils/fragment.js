@@ -41,7 +41,6 @@ class fragment {
         // this.__module.unmount(this.contain)
         if(this.mounted){
             this.__module.default.unmount(this.contain)
-            this.__free()
             this.mounted = false
         }
     }
@@ -53,6 +52,12 @@ class fragment {
             this.__module.default.mount(this.contain, this.baseUrl)
             this.mounted = true;
         }
+    }
+    destroy(){
+        // unmount的时候不能释放资源，因为还有可能mount
+        // 所以增加 destroy 方法，彻底释放不会再次mount的应用
+        this.unmount();
+        this.__free()
     }
     addStyle (txt) {
         let link = document.createElement('style')
