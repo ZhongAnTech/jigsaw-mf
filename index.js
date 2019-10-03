@@ -64,39 +64,105 @@ class ctrlApps extends EventEmitter {
         const _self = this
         applist.forEach(
             async app => {
+                if (_self.findApp(app.name)) {
+                    return
+                }
+
                 if (!app.canActive) {
                     app.canActive = () => true
                 }
-                const { template, execScripts, getExternalScripts, getExternalStyleSheets } = await importEntry(app.entry)
-                const sandbox = getSandbox()
-                console.log(sandbox)
-                const script = await execScripts(sandbox)
-                const extScript = await getExternalScripts(sandbox)
-                const styles = await getExternalStyleSheets()
-                app.template = template
-                app.styles = styles
-                const _module = sandbox[app.application_name]
-                debugger
-                console.log('===============================')
-                console.log(_module)
-                if (_module && _module.__esModule) {
-                    app.module = sandbox[app.application_name]
+                
+                let dll = window.__app_dll = window.__app_dll ? window.__app_dll : {}
+                let template, execScripts, getExternalScripts, getExternalStyleSheets
+                if (dll[app.entry]) {
+                    const result = dll[app.entry]
+                    template = result.template
+                    execScripts = result.execScripts 
+                    getExternalScripts = result.getExternalScripts 
+                    getExternalStyleSheets = result.getExternalScripts
+
                 } else {
-                    console.error("这是一个错误。");
+                    const result = await importEntry(app.entry)
+                    template = result.template
+                    execScripts = result.execScripts 
+                    getExternalScripts = result.getExternalScripts 
+                    getExternalStyleSheets = result.getExternalScripts
+                    dll[app.entry] = result
                 }
-                app.sandbox = sandbox
-                app.free = sandbox.__tailor_free;
-                app.baseUrl = _self.baseUrl + (app.baseUrl || '')
-                const sonApplication = new fragment(app)
-                // delete window[app.name]
-                // window[app.name] = null
-                if (app.canActive()) {
-                    sonApplication.mount()
-                }
-                this.sonApplication.push(sonApplication)
+                
+                const sandbox = getSandbox()
+
+                Promise.all([execScripts(sandbox), getExternalScripts(sandbox), getExternalStyleSheets()]).then(function(values){
+                    const script = values[0]
+                    const extScript = values[1]
+                    const styles = values[2]
+                    
+                    app.template = template
+                    app.styles = styles
+                    const _module = sandbox[app.application_name]
+                    debugger
+                    console.log('===============================')
+                    console.log(_module)
+                    if (_module && _module.__esModule) {
+                        app.module = sandbox[app.application_name]
+                    } else {
+                        console.error("这是一个错误。");
+                    }
+                    app.sandbox = sandbox
+                    app.free = sandbox.__tailor_free;
+                    app.baseUrl = _self.baseUrl + (app.baseUrl || '')
+                    const sonApplication = new fragment(app)
+                    // delete window[app.name]
+                    // window[app.name] = null
+                    if (app.canActive()) {
+                        sonApplication.mount()
+                    }
+                    _self.sonApplication.push(sonApplication)
+                })
+
+                // const script = await execScripts(sandbox)
+                // const extScript = await getExternalScripts(sandbox)
+                // const styles = await getExternalStyleSheets()
+                
+                // app.template = template
+                // app.styles = styles
+                // const _module = sandbox[app.application_name]
+                // debugger
+                // console.log('===============================')
+                // console.log(_module)
+                // if (_module && _module.__esModule) {
+                //     app.module = sandbox[app.application_name]
+                // } else {
+                //     console.error("这是一个错误。");
+                // }
+                // app.sandbox = sandbox
+                // app.free = sandbox.__tailor_free;
+                // app.baseUrl = _self.baseUrl + (app.baseUrl || '')
+                // const sonApplication = new fragment(app)
+                // // delete window[app.name]
+                // // window[app.name] = null
+                // if (app.canActive()) {
+                //     sonApplication.mount()
+                // }
+                // this.sonApplication.push(sonApplication)
             }
             // }
         )
+    }
+    removeAllChild () {
+        this.sonApplication.forEach(item => {
+            item.unmount()
+        })
+        this.sonApplication = []
+    }
+    addChild (item) {
+        this.sonApplication.push(item)
+    }
+    removeChild (name) {
+       let index =  this.sonApplication.findIndex(function (ele) {
+            return name === app.name
+        })
+        this.sonApplication.splice(index, 1)
     }
     agentPopState() {
         let _self = this
