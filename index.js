@@ -69,7 +69,10 @@ class ctrlApps extends EventEmitter {
         const _self = this
         applist.forEach(
             async app => {
-                if (_self.findApp(app.name)) {
+                const oldApp = _self.findApp(app.name)
+                if (oldApp) {
+                    oldApp.contain = app.contain
+                    oldApp.baseUrl = app.baseUrl
                     return
                 }
 
