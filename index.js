@@ -112,8 +112,8 @@ const init = function () {
     })
 }
 init()
-const App = new ctrlApps()
-export default App
+// const App = new ctrlApps()
+export default ctrlApps
 export {
     globalEvent
 }
