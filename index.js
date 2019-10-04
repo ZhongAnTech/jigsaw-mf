@@ -39,11 +39,13 @@ globalEvent.emit = function () {
 }
 
 class ctrlApps extends EventEmitter {
-    constructor(name, baseUrl) {
+    constructor(appinfo) {
         super();
         this.sonApplication = []
-        this.__baseUrl = baseUrl || '';
-        this.name = name || ''
+        this.info = appinfo
+        this.__baseUrl = appinfo.baseUrl || ''
+        this.name = appinfo.name || ''
+        this.classNamespace = appinfo.classNamespace || ''
         this.agentPopState();
     }
     get baseUrl() {
