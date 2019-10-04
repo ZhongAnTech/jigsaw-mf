@@ -49,7 +49,7 @@ class fragment {
             if (!this.contain) {
                 console.error(`Application name ${this.name} contain is null`)
             }
-            this.__module.default.mount(this.contain, this.baseUrl)
+            this.__module.default.mount(this.contain, this.baseUrl, this.app)
             this.mounted = true;
         }
     }
