@@ -68,6 +68,9 @@ class ctrlApps extends EventEmitter {
             this.sonApplication.splice(index, 1)
         }
     }
+    _getAppBaseUrl(app){
+        return this.baseUrl +  (app.baseUrl || '')
+    }
     registerApps(applist) {
         const _self = this
         applist.forEach(
@@ -75,7 +78,7 @@ class ctrlApps extends EventEmitter {
                 const oldApp = _self.findApp(app.name)
                 if (oldApp) {
                     oldApp.contain = app.contain
-                    oldApp.baseUrl = app.baseUrl
+                    oldApp.baseUrl = _self._getAppBaseUrl(app)
                     return
                 }
 
@@ -120,7 +123,7 @@ class ctrlApps extends EventEmitter {
                     }
                     app.sandbox = sandbox
                     app.free = sandbox.__tailor_free;
-                    app.baseUrl = _self.baseUrl + (app.baseUrl || '')
+                    app.baseUrl = _self._getAppBaseUrl(app)
                     const sonApplication = new fragment(app)
                     // delete window[app.name]
                     // window[app.name] = null
