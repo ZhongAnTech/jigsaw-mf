@@ -77,8 +77,12 @@ class ctrlApps extends EventEmitter {
             async app => {
                 const oldApp = _self.findApp(app.name)
                 if (oldApp) {
+                    oldApp.mounted = false
                     oldApp.contain = app.contain
                     oldApp.baseUrl = _self._getAppBaseUrl(app)
+                    if (sonApplication.app.canActive()) {
+                        sonApplication.mount();
+                    }
                     return
                 }
 
