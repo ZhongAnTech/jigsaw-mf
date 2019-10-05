@@ -124,7 +124,7 @@ class ctrlApps extends EventEmitter {
                     const sonApplication = new fragment(app)
                     // delete window[app.name]
                     // window[app.name] = null
-                    if (app.canActive()) {
+                    if (sonApplication.app.canActive()) {
                         sonApplication.mount()
                     }
                     _self.sonApplication.push(sonApplication)
