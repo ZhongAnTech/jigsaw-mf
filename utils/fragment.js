@@ -6,7 +6,7 @@
  */
 class fragment {
     constructor (app) {
-        const cloneApp = Object.create(app)
+        const cloneApp = Object.assign({}, app)
         const { name, entry, contain, template, styles, module , baseUrl, free, sandbox} = cloneApp;
         const _self = this
         

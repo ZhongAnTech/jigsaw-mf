@@ -80,8 +80,8 @@ class ctrlApps extends EventEmitter {
                     oldApp.mounted = false
                     oldApp.contain = app.contain
                     oldApp.baseUrl = _self._getAppBaseUrl(app)
-                    if (sonApplication.app.canActive()) {
-                        sonApplication.mount();
+                    if (oldApp.app.canActive()) {
+                        oldApp.mount();
                     }
                     return
                 }
