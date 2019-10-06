@@ -50,6 +50,7 @@ class ctrlApps extends EventEmitter {
         this.parent = ''
     }
     get fullUrl() {
+        console.log('------------this fullUrl----------------------')
         return (this.parent.fullUrl || '') + this.__baseUrl
     }
     get baseUrl() {
