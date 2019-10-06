@@ -35,7 +35,7 @@ const path = require('path')
 
 module.exports = {
   entry: './index.js',
-  mode: process.env.NODE_ENV,
+  mode: 'development',
   devtool: 'none',
   output: {
     path: __dirname + '/dist',
