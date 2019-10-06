@@ -43,11 +43,14 @@ class ctrlApps extends EventEmitter {
         super();
         this.sonApplication = []
         this.info = appinfo
-        this.baseUrl = appinfo.baseUrl || ''
+        this.__baseUrl = appinfo.baseUrl || ''
         this.name = appinfo.name || ''
         this.classNamespace = appinfo.classNamespace || ''
         this.agentPopState()
         this.parent = ''
+    }
+    get fullUrl() {
+        return this.parent.fullUrl + this.__baseUrl
     }
     get baseUrl() {
         return this.__baseUrl
@@ -71,7 +74,7 @@ class ctrlApps extends EventEmitter {
     }
     _getAppBaseUrl(app){
         
-        return this.baseUrl +  (app.baseUrl || '')
+        return this.fullUrl +  (app.baseUrl || '')
     }
     registerApps(applist) {
         const _self = this
