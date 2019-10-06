@@ -28,6 +28,11 @@ class fragment {
             })
         }
     }
+    
+    bootstrap () {
+        console.log('yuyiuyiuyiu')
+        this.__module.default.bootstrap(this)
+    }
     // export async function bootstrap() {
     //     console.log('react app bootstraped')
     //   }
