@@ -74,8 +74,7 @@ class ctrlApps extends EventEmitter {
         }
     }
     _getAppBaseUrl(app){
-        
-        return this.fullUrl +  (app.baseUrl || '')
+        return this.baseUrl +  (app.baseUrl || '')
     }
     registerApps(applist) {
         const _self = this
