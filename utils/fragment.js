@@ -5,11 +5,11 @@
  * template: '<html>...</html>'
  */
 class fragment {
-    constructor (app) {
+    constructor (app, parent) {
         const cloneApp = Object.assign({}, app)
         const { name, entry, contain, template, styles, module , baseUrl, free, sandbox} = cloneApp;
         const _self = this
-        
+        this.parent = parent
         this.app = cloneApp
         this.mounted = false
         this.sandbox = sandbox
@@ -20,6 +20,7 @@ class fragment {
         this.template = template
         this.baseUrl = baseUrl
         this.__module = module
+        this.parent = parent || ''
         this.__free = free
         if (styles) {
             styles.map((ele) => {
@@ -50,7 +51,7 @@ class fragment {
             if (!this.contain) {
                 console.error(`Application name ${this.name} contain is null`)
             }
-            this.__module.default.mount(this.contain, this.baseUrl, this.app)
+            this.__module.default.mount(this.contain, this.baseUrl, this.app, this)
             this.mounted = true;
         }
     }

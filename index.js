@@ -43,7 +43,7 @@ class ctrlApps extends EventEmitter {
         super();
         this.sonApplication = []
         this.info = appinfo
-        this.__baseUrl = appinfo.baseUrl || ''
+        this.baseUrl = appinfo.baseUrl || ''
         this.name = appinfo.name || ''
         this.classNamespace = appinfo.classNamespace || ''
         this.agentPopState();
@@ -69,6 +69,7 @@ class ctrlApps extends EventEmitter {
         }
     }
     _getAppBaseUrl(app){
+        
         return this.baseUrl +  (app.baseUrl || '')
     }
     registerApps(applist) {
@@ -128,7 +129,7 @@ class ctrlApps extends EventEmitter {
                     app.sandbox = sandbox
                     app.free = sandbox.__tailor_free;
                     app.baseUrl = _self._getAppBaseUrl(app)
-                    const sonApplication = new fragment(app)
+                    const sonApplication = new fragment(app, _self)
                     // delete window[app.name]
                     // window[app.name] = null
                     if (sonApplication.app.canActive()) {
