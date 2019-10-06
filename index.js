@@ -43,7 +43,7 @@ class ctrlApps extends EventEmitter {
         super();
         this.sonApplication = []
         this.info = appinfo
-        this.__baseUrl = appinfo.baseUrl || ''
+        this.__baseUrl = appinfo.baseUrl || '' // 主引用的基本url
         this.name = appinfo.name || ''
         this.classNamespace = appinfo.classNamespace || ''
         this.agentPopState()
@@ -85,7 +85,7 @@ class ctrlApps extends EventEmitter {
                     oldApp.mounted = false
                     oldApp.contain = app.contain
                     oldApp.baseUrl = _self._getAppBaseUrl(app)
-                    if (oldApp.app.canActive()) {
+                    if (oldApp.app.canActive(oldApp.baseUrl)) {
                         oldApp.mount();
                     }
                     return
@@ -137,7 +137,7 @@ class ctrlApps extends EventEmitter {
                     sonApplication.bootstrap()
                     // delete window[app.name]
                     // window[app.name] = null
-                    if (sonApplication.app.canActive()) {
+                    if (sonApplication.app.canActive(sonApplication.app.baseUrl)) {
                         sonApplication.mount()
                     }
                     _self.sonApplication.push(sonApplication)
@@ -191,7 +191,7 @@ class ctrlApps extends EventEmitter {
         let _self = this
         window.addEventListener('popstate', function (e) {
             _self.sonApplication.forEach(item => {
-                if (item.app.canActive()) {
+                if (item.app.canActive(item.app.baseUrl)) {
                     item.mount()
                 } else {
                     item.unmount()
