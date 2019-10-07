@@ -281,7 +281,7 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
   }
 
   _getAppBaseUrl(app) {
-    return this.fullUrl + (app.baseUrl || '');
+    return this.baseUrl + (app.baseUrl || '');
   }
 
   registerApps(applist) {
@@ -19149,25 +19149,37 @@ class fragment {
   }
 
   destroy() {
-    // unmount的时候不能释放资源，因为还有可能mount
+    let _self = this; // unmount的时候不能释放资源，因为还有可能mount
     // 所以增加 destroy 方法，彻底释放不会再次mount的应用
+
+
     this.unmount();
 
     this.__free();
+
+    this.style.map(e => {
+      e.parentNode.removeChild(e);
+    });
   }
 
   addStyle(txt) {
     let link = document.createElement('style');
     link.innerHTML = txt;
-    let heads = document.getElementsByTagName('head');
+    let result = this.style.find(e => {
+      return e.innerHTML === txt;
+    });
 
-    if (heads.length) {
-      heads[0].appendChild(link);
-    } else {
-      document.documentElement.appendChild(link);
+    if (!result) {
+      let heads = document.getElementsByTagName('head');
+
+      if (heads.length) {
+        heads[0].appendChild(link);
+      } else {
+        document.documentElement.appendChild(link);
+      }
+
+      this.style.push(link);
     }
-
-    this.style.push(link);
   }
 
 }
