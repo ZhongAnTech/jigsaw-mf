@@ -337,22 +337,21 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
 
         if (_module && _module.__esModule) {
           app.module = sandbox[app.application_name];
+          app.sandbox = sandbox;
+          app.free = sandbox.__tailor_free;
+          app.baseUrl = _self._getAppBaseUrl(app);
+          const sonApplication = new _utils_fragment__WEBPACK_IMPORTED_MODULE_2__["default"](app, _self);
+          sonApplication.bootstrap(); // delete window[app.name]
+          // window[app.name] = null
+
+          if (sonApplication.app.canActive(sonApplication.app.baseUrl)) {
+            sonApplication.mount();
+          }
+
+          _self.sonApplication.push(sonApplication);
         } else {
           console.error("这是一个错误。");
         }
-
-        app.sandbox = sandbox;
-        app.free = sandbox.__tailor_free;
-        app.baseUrl = _self._getAppBaseUrl(app);
-        const sonApplication = new _utils_fragment__WEBPACK_IMPORTED_MODULE_2__["default"](app, _self);
-        sonApplication.bootstrap(); // delete window[app.name]
-        // window[app.name] = null
-
-        if (sonApplication.app.canActive(sonApplication.app.baseUrl)) {
-          sonApplication.mount();
-        }
-
-        _self.sonApplication.push(sonApplication);
       }); // const script = await execScripts(sandbox)
       // const extScript = await getExternalScripts(sandbox)
       // const styles = await getExternalStyleSheets()
@@ -19160,7 +19159,7 @@ class fragment {
     this.__free();
 
     this.style.map(e => {
-      e.parentNode.removeChild(e);
+      e.parentNode && e.parentNode.removeChild(e);
     });
   }
 

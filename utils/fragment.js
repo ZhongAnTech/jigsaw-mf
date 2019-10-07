@@ -67,7 +67,7 @@ class fragment {
         this.unmount();
         this.__free()
         this.style.map((e) => {
-          e.parentNode.removeChild(e)
+            e.parentNode && e.parentNode.removeChild(e)
         })
     }
     addStyle (txt) {

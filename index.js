@@ -127,20 +127,20 @@ class ctrlApps extends EventEmitter {
                     console.log(_module)
                     if (_module && _module.__esModule) {
                         app.module = sandbox[app.application_name]
+                        app.sandbox = sandbox
+                        app.free = sandbox.__tailor_free;
+                        app.baseUrl = _self._getAppBaseUrl(app)
+                        const sonApplication = new fragment(app, _self)
+                        sonApplication.bootstrap()
+                        // delete window[app.name]
+                        // window[app.name] = null
+                        if (sonApplication.app.canActive(sonApplication.app.baseUrl)) {
+                            sonApplication.mount()
+                        }
+                        _self.sonApplication.push(sonApplication)
                     } else {
                         console.error("这是一个错误。");
                     }
-                    app.sandbox = sandbox
-                    app.free = sandbox.__tailor_free;
-                    app.baseUrl = _self._getAppBaseUrl(app)
-                    const sonApplication = new fragment(app, _self)
-                    sonApplication.bootstrap()
-                    // delete window[app.name]
-                    // window[app.name] = null
-                    if (sonApplication.app.canActive(sonApplication.app.baseUrl)) {
-                        sonApplication.mount()
-                    }
-                    _self.sonApplication.push(sonApplication)
                 })
 
                 // const script = await execScripts(sandbox)
