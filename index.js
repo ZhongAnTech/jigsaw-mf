@@ -115,10 +115,10 @@ class ctrlApps extends EventEmitter {
                 
                 const sandbox = getSandbox()
 
-                Promise.all([execScripts(sandbox), getExternalScripts(sandbox), getExternalStyleSheets()]).then(function(values){
-                    const script = values[0]
-                    const extScript = values[1]
-                    const styles = values[2]
+                function dosth (va) {
+                    const script = va[0]
+                    const extScript = va[1]
+                    const styles = va[2]
                     
                     app.template = template
                     app.styles = styles
@@ -140,7 +140,11 @@ class ctrlApps extends EventEmitter {
                         _self.sonApplication.push(sonApplication)
                     } else {
                         console.error("这是一个错误。");
+                        dosth(va)
                     }
+                }
+                Promise.all([execScripts(sandbox), getExternalScripts(sandbox), getExternalStyleSheets()]).then(function(values){
+                    dosth(values)
                 })
 
                 // const script = await execScripts(sandbox)

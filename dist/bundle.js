@@ -325,10 +325,11 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
       }
 
       const sandbox = Object(_utils_sandbox__WEBPACK_IMPORTED_MODULE_3__["getSandbox"])();
-      Promise.all([execScripts(sandbox), getExternalScripts(sandbox), getExternalStyleSheets()]).then(function (values) {
-        const script = values[0];
-        const extScript = values[1];
-        const styles = values[2];
+
+      function dosth(va) {
+        const script = va[0];
+        const extScript = va[1];
+        const styles = va[2];
         app.template = template;
         app.styles = styles;
         const _module = sandbox[app.application_name];
@@ -351,7 +352,12 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
           _self.sonApplication.push(sonApplication);
         } else {
           console.error("这是一个错误。");
+          dosth(va);
         }
+      }
+
+      Promise.all([execScripts(sandbox), getExternalScripts(sandbox), getExternalStyleSheets()]).then(function (values) {
+        dosth(values);
       }); // const script = await execScripts(sandbox)
       // const extScript = await getExternalScripts(sandbox)
       // const styles = await getExternalStyleSheets()
