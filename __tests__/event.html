@@ -20,11 +20,13 @@
         setTimeout(() => {
             Chaoxi.globalEvent.emit('test', 'global event works fine')
         }, 2000);
-        Chaoxi.default.on('test', function (arg) {
+
+        const instance = new Chaoxi.default({ baseUrl: '/' });
+        instance.on('test', function (arg) {
             document.getElementById('msg2').innerHTML = arg
         })
         setTimeout(() => {
-            Chaoxi.default.emit('test', 'instance event works fine')
+            instance.emit('test', 'instance event works fine')
         }, 3000);
     </script>
 </body>

@@ -203,7 +203,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const globalEvent = new eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a({
+let globalEvent = window.____global_events || (window.____global_events = new eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a({
   // set this to `true` to use wildcards. It defaults to `false`.
   wildcard: true,
   // the delimiter used to segment namespaces, defaults to `.`.
@@ -214,28 +214,25 @@ const globalEvent = new eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a({
   maxListeners: Number.MAX_VALUE,
   // show event name in memory leak message when more than maximum amount of listeners is assigned, default false
   verboseMemoryLeak: false
-});
-const globalEmit = globalEvent.emit;
-window.addEventListener('message', function (e) {
-  if (Object.prototype.toString.call(e.data) !== '[object Object]' || e.data.source !== 'chaoxi') {
-    return;
-  }
-
-  const {
-    args
-  } = e.data;
-
-  if (args && typeof args[0] === 'string') {
-    globalEmit.apply(globalEvent, args);
-  }
-}, false);
-
-globalEvent.emit = function () {
-  window.postMessage({
-    source: 'chaoxi',
-    args: Array.prototype.slice.call(arguments)
-  }, location.origin);
-};
+})); // const globalEmit = globalEvent.emit;
+// window.addEventListener('message', function (e) {
+//     if (
+//         Object.prototype.toString.call(e.data) !== '[object Object]' ||
+//         e.data.source !== 'chaoxi'
+//     ) {
+//         return
+//     }
+//     const { args } = e.data;
+//     if (args && typeof args[0] === 'string') {
+//         globalEmit.apply(globalEvent, args);
+//     }
+// }, false);
+// globalEvent.emit = function () {
+//     window.postMessage({
+//         source: 'chaoxi',
+//         args: Array.prototype.slice.call(arguments)
+//     }, location.origin)
+// }
 
 class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
   constructor(appinfo) {
@@ -1483,7 +1480,6 @@ function processTpl(tpl, domain) {
   var scripts = [];
   var styles = [];
   var entry = null;
-  console.log('0000000000000000000000000000000000000000000000000000000000000000000');
   var template = tpl
   /*
   remove html comment first
@@ -1583,14 +1579,13 @@ function processTpl(tpl, domain) {
     // filter empty script
     return !!script;
   });
-  var result = {
+  return {
     template: template,
     scripts: scripts,
     styles: styles,
     // set the last script as entry if have not set
     entry: entry || scripts[scripts.length - 1]
   };
-  return result;
 }
 
 /***/ }),

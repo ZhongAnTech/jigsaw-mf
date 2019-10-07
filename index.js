@@ -4,7 +4,7 @@ import fragment from './utils/fragment'
 import { getSandbox } from './utils/sandbox'
 import EventEmitter from 'eventemitter2'
 
-const globalEvent = new EventEmitter({
+let globalEvent = window.____global_events || (window.____global_events = new EventEmitter({
     // set this to `true` to use wildcards. It defaults to `false`.
     wildcard: true,
     // the delimiter used to segment namespaces, defaults to `.`.
@@ -15,28 +15,28 @@ const globalEvent = new EventEmitter({
     maxListeners: Number.MAX_VALUE,
     // show event name in memory leak message when more than maximum amount of listeners is assigned, default false
     verboseMemoryLeak: false
-})
+}))
 
-const globalEmit = globalEvent.emit;
-window.addEventListener('message', function (e) {
-    if (
-        Object.prototype.toString.call(e.data) !== '[object Object]' ||
-        e.data.source !== 'chaoxi'
-    ) {
-        return
-    }
-    const { args } = e.data;
-    if (args && typeof args[0] === 'string') {
-        globalEmit.apply(globalEvent, args);
-    }
-}, false);
+// const globalEmit = globalEvent.emit;
+// window.addEventListener('message', function (e) {
+//     if (
+//         Object.prototype.toString.call(e.data) !== '[object Object]' ||
+//         e.data.source !== 'chaoxi'
+//     ) {
+//         return
+//     }
+//     const { args } = e.data;
+//     if (args && typeof args[0] === 'string') {
+//         globalEmit.apply(globalEvent, args);
+//     }
+// }, false);
 
-globalEvent.emit = function () {
-    window.postMessage({
-        source: 'chaoxi',
-        args: Array.prototype.slice.call(arguments)
-    }, location.origin)
-}
+// globalEvent.emit = function () {
+//     window.postMessage({
+//         source: 'chaoxi',
+//         args: Array.prototype.slice.call(arguments)
+//     }, location.origin)
+// }
 
 class ctrlApps extends EventEmitter {
     constructor(appinfo) {
