@@ -19108,7 +19108,8 @@ class fragment {
     this.__free = free;
 
     if (styles) {
-      styles.map(ele => {// _self.addStyle(ele)
+      styles.map(ele => {
+        _self.addStyle(ele);
       });
     }
   }
