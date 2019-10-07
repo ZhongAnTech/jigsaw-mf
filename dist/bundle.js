@@ -1484,6 +1484,7 @@ function processTpl(tpl, domain) {
   var scripts = [];
   var styles = [];
   var entry = null;
+  console.log('0000000000000000000000000000000000000000000000000000000000000000000');
   var template = tpl
   /*
   remove html comment first
@@ -1583,13 +1584,14 @@ function processTpl(tpl, domain) {
     // filter empty script
     return !!script;
   });
-  return {
+  var result = {
     template: template,
     scripts: scripts,
     styles: styles,
     // set the last script as entry if have not set
     entry: entry || scripts[scripts.length - 1]
   };
+  return result;
 }
 
 /***/ }),
