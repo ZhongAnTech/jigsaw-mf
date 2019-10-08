@@ -348,6 +348,8 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
           _self.sonApplication.push(sonApplication);
         } else {
           console.error("这是一个错误。");
+
+          _self.registerApps([app]);
         }
       }); // const script = await execScripts(sandbox)
       // const extScript = await getExternalScripts(sandbox)
@@ -1480,6 +1482,7 @@ function processTpl(tpl, domain) {
   var scripts = [];
   var styles = [];
   var entry = null;
+  console.log('0000000000000000000000000000000000000000000000000000000000000000000');
   var template = tpl
   /*
   remove html comment first
@@ -1579,13 +1582,14 @@ function processTpl(tpl, domain) {
     // filter empty script
     return !!script;
   });
-  return {
+  var result = {
     template: template,
     scripts: scripts,
     styles: styles,
     // set the last script as entry if have not set
     entry: entry || scripts[scripts.length - 1]
   };
+  return result;
 }
 
 /***/ }),
