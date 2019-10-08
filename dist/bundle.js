@@ -347,9 +347,7 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
 
           _self.sonApplication.push(sonApplication);
         } else {
-          console.error("这是一个错误。");
-
-          _self.registerApps([app]);
+          console.error("这是一个错误。"); // _self.registerApps([app])
         }
       }); // const script = await execScripts(sandbox)
       // const extScript = await getExternalScripts(sandbox)

@@ -140,7 +140,7 @@ class ctrlApps extends EventEmitter {
                         _self.sonApplication.push(sonApplication)
                     } else {
                         console.error("这是一个错误。");
-                        _self.registerApps([app])
+                        // _self.registerApps([app])
                     }
                 })
 
