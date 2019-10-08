@@ -2244,10 +2244,10 @@ homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-html-entry@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/html-entry/-/html-entry-1.0.5.tgz#99cec912880f0dcb6cce3af30e1d31e7c8e348fe"
-  integrity sha512-/SZlq7Eq1GV31hiLQTY4nfxUrunSmfT6SKW6SDoDL9P9Xs04Ogs6VL+4jUkvYmfkrEBD3ahnn2BYP88FRxmyPQ==
+html-entry@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/html-entry/-/html-entry-1.0.7.tgz#69940eab7d55df5d827d28780a27cef6769730e9"
+  integrity sha512-puoqLKfplZ6R2ecCavpPUFh+xLQwStjlKAnD4ZYVubCEHH0UnhWmxOUtY5/NpN74OiuAgqkh6sPNO/twy1hpOw==
   dependencies:
     core-js "^3.2.1"
 

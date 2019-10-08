@@ -1295,9 +1295,6 @@ function _getExternalScripts(scripts) {
 function _execScripts(entry, scripts) {
   var proxy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window;
   return _getExternalScripts(scripts).then(function (scriptsText) {
-    window.proxy = proxy;
-    var geval = eval;
-
     function exec(scriptSrc, inlineScript, resolve) {
       var markName = "Evaluating script ".concat(scriptSrc);
       var measureName = "Evaluating Time Consuming: ".concat(scriptSrc);
@@ -1306,12 +1303,14 @@ function _execScripts(entry, scripts) {
         performance.mark(markName);
       }
 
+      var fn = new Function('window', inlineScript).bind(proxy);
+
       if (scriptSrc === entry) {
         Object(_utils__WEBPACK_IMPORTED_MODULE_1__["noteGlobalProps"])();
 
         try {
           // bind window.proxy to change `this` reference in script
-          geval(";(function(window){;".concat(inlineScript, "\n}).bind(window.proxy)(window.proxy);"));
+          fn(proxy);
         } catch (e) {
           console.error("error occurs while executing the entry ".concat(scriptSrc));
           throw e;
@@ -1322,7 +1321,7 @@ function _execScripts(entry, scripts) {
       } else {
         try {
           // bind window.proxy to change `this` reference in script
-          geval(";(function(window){;".concat(inlineScript, "\n}).bind(window.proxy)(window.proxy);"));
+          fn(proxy);
         } catch (e) {
           console.error("error occurs while executing ".concat(scriptSrc));
           throw e;
