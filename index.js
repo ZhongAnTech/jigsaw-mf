@@ -102,14 +102,14 @@ class ctrlApps extends EventEmitter {
                     template = result.template
                     execScripts = result.execScripts 
                     getExternalScripts = result.getExternalScripts 
-                    getExternalStyleSheets = result.getExternalScripts
+                    getExternalStyleSheets = result.getExternalStyleSheets
 
                 } else {
                     const result = await importEntry(app.entry)
                     template = result.template
                     execScripts = result.execScripts 
                     getExternalScripts = result.getExternalScripts 
-                    getExternalStyleSheets = result.getExternalScripts
+                    getExternalStyleSheets = result.getExternalStyleSheets
                     dll[app.entry] = result
                 }
                 

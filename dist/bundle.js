@@ -311,13 +311,13 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
         template = result.template;
         execScripts = result.execScripts;
         getExternalScripts = result.getExternalScripts;
-        getExternalStyleSheets = result.getExternalScripts;
+        getExternalStyleSheets = result.getExternalStyleSheets;
       } else {
         const result = await Object(html_entry__WEBPACK_IMPORTED_MODULE_0__["importEntry"])(app.entry);
         template = result.template;
         execScripts = result.execScripts;
         getExternalScripts = result.getExternalScripts;
-        getExternalStyleSheets = result.getExternalScripts;
+        getExternalStyleSheets = result.getExternalStyleSheets;
         dll[app.entry] = result;
       }
 
