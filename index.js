@@ -129,7 +129,8 @@ class ctrlApps extends EventEmitter {
                         app.module = sandbox[app.application_name]
                         app.sandbox = sandbox
                         app.free = sandbox.__tailor_free;
-                        app.baseUrl = _self._getAppBaseUrl(app)
+                        let baseurl = _self._getAppBaseUrl(app)
+                        app.baseUrl = baseurl.replace(/^\/\//, '/')
                         const sonApplication = new fragment(app, _self)
                         sonApplication.bootstrap()
                         // delete window[app.name]
