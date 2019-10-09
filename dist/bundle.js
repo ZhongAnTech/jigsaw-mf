@@ -339,7 +339,7 @@ class ctrlApps extends eventemitter2__WEBPACK_IMPORTED_MODULE_4___default.a {
 
           let baseurl = _self._getAppBaseUrl(app);
 
-          app.baseUrl = baseurl.replace(/^\/\//, '/');
+          app.baseUrl = baseurl.replace(/\/+/, '/');
           const sonApplication = new _utils_fragment__WEBPACK_IMPORTED_MODULE_2__["default"](app, _self);
           sonApplication.bootstrap(); // delete window[app.name]
           // window[app.name] = null
