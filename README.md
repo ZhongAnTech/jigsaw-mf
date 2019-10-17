@@ -73,7 +73,7 @@ mounted () {
 >   } 
 >}
 
-## 应用直接通讯
+## 应用之间通讯
 > 基于eventemitter2 实现的应用间通讯
 > 通过使用globalEvent
 > chaoxi 继承于 eventemitter2                                                                                                                                                                                                                                                                                                                
