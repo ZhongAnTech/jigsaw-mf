@@ -1,6 +1,6 @@
 {
   "name": "chaoxi",
-  "version": "1.0.88",
+  "version": "1.0.90",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
