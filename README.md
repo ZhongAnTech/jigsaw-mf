@@ -3,7 +3,7 @@
 [![coverage](https://img.shields.io/codecov/c/github/umijs/qiankun.svg?style=flat-square)](https://codecov.io/gh/freezestanley/chaoxi)
 [![npm downloads](https://img.shields.io/npm/dt/chaoxi.svg?style=flat-square)](https://www.npmjs.com/package/chaoxi)
 
-# 基于乾坤和single-spa 实现的mft
+# mft
 
 ## 📦 安装
 
