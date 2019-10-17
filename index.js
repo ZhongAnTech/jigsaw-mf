@@ -5,38 +5,12 @@ import { getSandbox } from './utils/sandbox'
 import EventEmitter from 'eventemitter2'
 
 let globalEvent = window.____global_events || (window.____global_events = new EventEmitter({
-    // set this to `true` to use wildcards. It defaults to `false`.
     wildcard: true,
-    // the delimiter used to segment namespaces, defaults to `.`.
     delimiter: '.',
-    // set this to `true` if you want to emit the newListener event. The default value is `true`.
     newListener: false,
-    // the maximum amount of listeners that can be assigned to an event, default 10.
     maxListeners: Number.MAX_VALUE,
-    // show event name in memory leak message when more than maximum amount of listeners is assigned, default false
     verboseMemoryLeak: false
 }))
-
-// const globalEmit = globalEvent.emit;
-// window.addEventListener('message', function (e) {
-//     if (
-//         Object.prototype.toString.call(e.data) !== '[object Object]' ||
-//         e.data.source !== 'chaoxi'
-//     ) {
-//         return
-//     }
-//     const { args } = e.data;
-//     if (args && typeof args[0] === 'string') {
-//         globalEmit.apply(globalEvent, args);
-//     }
-// }, false);
-
-// globalEvent.emit = function () {
-//     window.postMessage({
-//         source: 'chaoxi',
-//         args: Array.prototype.slice.call(arguments)
-//     }, location.origin)
-// }
 
 class ctrlApps extends EventEmitter {
     constructor(appinfo) {
@@ -50,7 +24,6 @@ class ctrlApps extends EventEmitter {
         this.parent = ''
     }
     get fullUrl() {
-        console.log('------------this fullUrl----------------------')
         return (this.parent.fullUrl || '') + this.__baseUrl
     }
     get baseUrl() {
@@ -141,37 +114,9 @@ class ctrlApps extends EventEmitter {
                         _self.sonApplication.push(sonApplication)
                     } else {
                         console.error("这是一个错误。");
-                        // _self.registerApps([app])
                     }
                 })
-
-                // const script = await execScripts(sandbox)
-                // const extScript = await getExternalScripts(sandbox)
-                // const styles = await getExternalStyleSheets()
-                
-                // app.template = template
-                // app.styles = styles
-                // const _module = sandbox[app.application_name]
-                // debugger
-                // console.log('===============================')
-                // console.log(_module)
-                // if (_module && _module.__esModule) {
-                //     app.module = sandbox[app.application_name]
-                // } else {
-                //     console.error("这是一个错误。");
-                // }
-                // app.sandbox = sandbox
-                // app.free = sandbox.__tailor_free;
-                // app.baseUrl = _self.baseUrl + (app.baseUrl || '')
-                // const sonApplication = new fragment(app)
-                // // delete window[app.name]
-                // // window[app.name] = null
-                // if (app.canActive()) {
-                //     sonApplication.mount()
-                // }
-                // this.sonApplication.push(sonApplication)
             }
-            // }
         )
     }
     removeAllChild () {
@@ -203,19 +148,15 @@ class ctrlApps extends EventEmitter {
     }
 }
 
-// const instanceApp = new ctrlApps()
-
-const init = function () {
-    window.addEventListener('load', function (e) {
-        clearTemplate()
-    })
-}
-init()
-// const App = new ctrlApps()
+// // const instanceApp = new ctrlApps()
+// const init = function () {
+//     window.addEventListener('load', function (e) {
+//         clearTemplate()
+//     })
+// }
+// init()
 export default ctrlApps
 export {
     globalEvent
 }
-// exports.app = ctrlApps
-// export const app = ctrlApps
 
