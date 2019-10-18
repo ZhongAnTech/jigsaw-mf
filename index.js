@@ -96,8 +96,6 @@ class ctrlApps extends EventEmitter {
                     app.template = template
                     app.styles = styles
                     const _module = sandbox[app.application_name]
-                    console.log('===============================')
-                    console.log(_module)
                     if (_module && _module.__esModule) {
                         app.module = sandbox[app.application_name]
                         app.sandbox = sandbox
@@ -113,7 +111,7 @@ class ctrlApps extends EventEmitter {
                         }
                         _self.sonApplication.push(sonApplication)
                     } else {
-                        console.error("这是一个错误。");
+                        console.error(`child application ${app.application_name} not found`);
                     }
                 })
             }
