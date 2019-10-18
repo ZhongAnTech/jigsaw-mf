@@ -1,0 +1,8 @@
+{
+    "name": "finder",
+    "baseUrl": "/finder",
+    "classNamespace": "finder",
+    "library": "finder",
+    "publicPath": "http://localhost:9091/",
+    "port": 9091
+}

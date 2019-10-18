@@ -1,0 +1,18 @@
+{
+  "packages": [
+    "example/*/*"
+  ],
+  "version": "0.0.0",
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "ignored-file",
+        "*.md"
+      ]
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--no-package-lock"]      
+    }
+  }
+}

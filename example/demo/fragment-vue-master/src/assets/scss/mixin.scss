@@ -1,0 +1,77 @@
+@import "./colors.scss";
+
+@mixin primary-submit {
+  height: 50px;
+  line-height: 30px;
+  font-size: 18px;
+  padding: 10px 0;
+  color: #fff;
+  text-align: center;
+  border-radius: 0;
+  background: $primary-color;
+}
+
+@mixin ellipsis{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+@mixin clearfix{
+	&:before,
+	&:after{
+		display: table;
+		content: " ";
+	}
+	&:after{
+		clear: both;
+	}
+	*zoom: 1;
+}
+
+@mixin right-arrow{
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  height: 6px;
+  width: 6px;
+  margin-top: -4px;
+  display: inline-block;
+  border-width: 2px 2px 0 0;
+  border-color: #C8D1DA;
+  border-style: solid;
+  transform: matrix(.71,.71,-.71,.71,0,0);
+}
+@mixin right-arrow-color($color: #C8D1DA){
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  display: inline-block;
+  border-width: 1px 1px 0 0;
+  border-color: $color;
+  border-style: solid;
+  transform: matrix(.71,.71,-.71,.71,0,0);
+}
+
+@mixin vux-1px-b{
+	position: relative;
+  &:after{
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid #C7C7C7;
+    color: #C7C7C7;
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+}

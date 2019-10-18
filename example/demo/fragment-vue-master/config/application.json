@@ -1,0 +1,8 @@
+{
+    "name": "vuemaster",
+    "baseUrl": "/buy",
+    "classNamespace": "vuemaster",
+    "library": "vuemaster",
+    "publicPath": "http://localhost:9099/",
+    "port": 9099
+}

@@ -1,0 +1,8 @@
+{
+    "name": "reactnews",
+    "baseUrl": "/reactnews",
+    "classNamespace": "reactnews",
+    "library": "reactnews",
+    "publicPath": "http://localhost:9300",
+    "port": 9300
+}

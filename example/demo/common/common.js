@@ -1,0 +1,6 @@
+exports.react = require('react')
+exports['ReactDOM'] = require('react-dom')
+exports.chaoxi = require('chaoxi')
+exports.reactRouterDom = require('react-router-dom')
+exports.vue = require('vue')
+exports.vueRouter = require('vue-router')
