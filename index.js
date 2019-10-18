@@ -131,6 +131,7 @@ class ctrlApps extends EventEmitter {
             return name === app.name
         })
         this.sonApplication.splice(index, 1)
+        this.sonApplication[index].destroy()
     }
     agentPopState() {
         let _self = this

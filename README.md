@@ -13,6 +13,16 @@ npm i chaoxi -S
 
 ## getting started
 
+> 运行example
+ ```
+ npm install
+ npm run init
+ npm run run:fragment
+ // open http://localhost:9100
+ ```
+
+
+
 ```
 // global.js
 
@@ -66,7 +76,7 @@ mounted () {
 > name: "a50",    应用名需唯一
 > application_name: "reactnews",  应用名需唯一
 > entry: "http://912-mft-app1.dev.za-tech.net/app", //应用接入地址
-> contain: this.refs.container2,           // 应用挂载容器
+> contain: this.refs.container2,           // 应用挂载容器,须在页面存在的dom元素
 > baseUrl: "/",                            // 子应用的主路径
 > canActive(path) {                        // 应用激活规则
 >       return window.location.pathname.startsWith(this.baseUrl);
@@ -167,6 +177,7 @@ app.listen(PORT, () => {
 })
 
 ```
-> koa设置静态资源访问路径
-> koa设置请求跨域
-> 设置路径访问
+> 通过koa设置应用的静态资源访问路径
+> 当主应用子应用发生跨域请求时候,用@koa/cors设置请求跨域
+> 如果想子应用访问界面和被微服务调用页面分开访问，可在koa内设置路由
+> 
