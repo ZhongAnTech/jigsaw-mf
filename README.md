@@ -40,12 +40,12 @@ import Chaoxi, {globalEvent} from './global'
 componentDidMount () {
     const appinfo = [
         {
-            name: "a50",
-            application_name: "reactnews",
-            entry: "http://912-mft-app1.dev.za-tech.net/app",
-            contain: this.refs.container2,
-            baseUrl: "/",
-            canActive(path) {
+            name: "a50",                            // 应用名需唯一
+            application_name: "reactnews",          // 应用模块名需唯一
+            entry: "http://912-mft-app1.dev.za-tech.net/app", //应用接入地址
+            contain: this.refs.container2,          // 应用挂载容器,须在页面存在的dom元素
+            baseUrl: "/",                           // 子应用的主路径
+            canActive(path) {                       // 应用激活规则
                 return window.location.pathname.startsWith(this.baseUrl);
             }
         }
@@ -72,16 +72,33 @@ mounted () {
 .
 .
 ```
->{
-> name: "a50",    应用名需唯一
-> application_name: "reactnews",  应用名需唯一
-> entry: "http://912-mft-app1.dev.za-tech.net/app", //应用接入地址
-> contain: this.refs.container2,           // 应用挂载容器,须在页面存在的dom元素
-> baseUrl: "/",                            // 子应用的主路径
-> canActive(path) {                        // 应用激活规则
->       return window.location.pathname.startsWith(this.baseUrl);
->   } 
->}
+
+## 子应用
+```
+export default {
+  bootstrap: async function bootstrap(parent) {
+    console.log('react app bootstraped');
+    Chaoxi.parent = parent
+  },
+  mount: async function mount(contain, baseUrl, appinfo, parent) {
+    Chaoxi.parent = parent
+
+    console.log('parent::', parent)
+    Chaoxi.baseUrl = baseUrl;
+    console.log('this is news mount')
+    console.log(contain)
+    ReactDOM.render(<App baseUrl={baseUrl}  appinfo={appinfo}/>, contain)
+  },
+  unmount: async function unmount(contain) {
+    ReactDOM.unmountComponentAtNode(contain)
+  }
+}
+```
+> 子应用输出3个方法
+> bootstrap     - 创建时运行
+> mount         - 被挂载时运行
+> unmount       - 卸载时运行
+
 
 ## 应用之间通讯
 > 基于eventemitter2 实现的应用间通讯
@@ -180,4 +197,11 @@ app.listen(PORT, () => {
 > 通过koa设置应用的静态资源访问路径
 > 当主应用子应用发生跨域请求时候,用@koa/cors设置请求跨域
 > 如果想子应用访问界面和被微服务调用页面分开访问，可在koa内设置路由
-> 
+
+
+## Tips
+> 1. 当前路径下有子应用时,router path 不要使用exact绝对匹配，否则导致子应用不现实
+> 2. 子应用的webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
+> 3. 子应用打包需采用umd模式, 设置唯一的library 
+> 4. 主应用在开发模式下,嵌入的子应用不为开发模式，因被嵌入后热更新丢失导致失败
+> 5. 注意主应用调用子应用的跨域问题
