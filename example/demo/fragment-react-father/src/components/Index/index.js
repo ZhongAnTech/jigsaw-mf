@@ -1,6 +1,6 @@
 import React from 'react';
-import Chaoxi from '../../global'
-import { globalEvent } from 'chaoxi'
+import CtrlApps from '../../global'
+import { globalEvent } from 'easy-mft'
 import './index.scss';
 
 export default class Home extends React.Component {
@@ -45,15 +45,14 @@ export default class Home extends React.Component {
             //       contain: this.refs.container4,
             //       baseUrl: "/reactfather",
             //       canActive(path) {
-            //         console.log(Chaoxi)
-            //         console.log(Chaoxi.fullUrl)
+            //
             //         // baseUrl 会被chapxi重写成包含父路径
             //         // 所以这里可以直接使用
             //         return window.location.pathname.startsWith(this.baseUrl);
             //       }
             //   }
         ]
-        Chaoxi.registerApps(appinfo)
+        CtrlApps.registerApps(appinfo)
 
         var evtSource = new EventSource("http://localhost:5020/event");
         evtSource.onmessage = function(e) {
@@ -73,7 +72,7 @@ export default class Home extends React.Component {
                     return window.location.pathname.startsWith(this.baseUrl);
                 }
             }]
-            Chaoxi.registerApps(app)
+            CtrlApps.registerApps(app)
         }
     }
 

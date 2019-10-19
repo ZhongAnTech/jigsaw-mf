@@ -4,7 +4,7 @@ import './App.scss';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Index from './components/Index'
 import Home from './components/Home'
-import Chaoxi, {globalEvent} from './global'
+import CtrlApps, {globalEvent} from './global'
 
 function App({baseUrl}) {
         // var evtSource = new EventSource("http://localhost:5020/event");
@@ -17,7 +17,7 @@ function App({baseUrl}) {
         // }
   return (
     <Router basename={baseUrl}>
-      <div className={`App ${Chaoxi.classNamespace}`}>
+      <div className={`App ${CtrlApps.classNamespace}`}>
         {/* <h2>Tasdfasdf {baseUrl}</h2>
         <nav>
           <ul>

@@ -17,18 +17,17 @@
 </template>
 
 <script>
-import Chaoxi from '../../global'
+import CtrlApps from '../../global'
 
 export default {
   name: 'Index',
   data () {
     return {
-      name: Chaoxi.classNamespace
+      name: CtrlApps.classNamespace
     }
   },
   methods: {
     push() {
-      // console.log(Chaoxi)
       this.$router.push({
         name:'hello',
         params: { userId: '123' }
@@ -62,8 +61,6 @@ export default {
         baseUrl: "/reactfather",
         canActive() {
           // path
-          // console.log(Chaoxi)
-          // console.log(Chaoxi.fullUrl)
           // baseUrl 会被chapxi重写成包含父路径
           // 所以这里可以直接使用
           return location.pathname.startsWith(this.baseUrl);
@@ -80,7 +77,7 @@ export default {
       //   }
       // }
     ]
-    Chaoxi.registerApps(appinfo)
+    CtrlApps.registerApps(appinfo)
   },
 }
 </script>

@@ -54,10 +54,7 @@ const application = {
       new CompressionPlugin()
     ],
     externals: {
-      'react': 'react',
-      'react-dom': 'ReactDOM',
-      'chaoxi': 'chaoxi',
-      'react-router-dom': 'reactRouterDom',
+      'easy-mft': 'easyMft',
       'vue': 'vue',
       'vue-router': 'vueRouter',
     }

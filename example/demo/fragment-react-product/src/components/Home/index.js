@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import Chaoxi, {globalEvent} from '../../global'
+import CtrlApps, {globalEvent} from '../../global'
 
 class Foo extends React.Component {
   constructor(props) {
@@ -16,15 +16,11 @@ class Foo extends React.Component {
           contain: this.refs.container,
           baseUrl: "/reactchild",
           canActive(path) {
-            console.log("98098908090987098709")
-            console.log(Chaoxi)
-            console.log('react-father', this.baseUrl)
-            // return window.location.pathname.startsWith("/reactchild");
             return window.location.pathname.startsWith(this.baseUrl);
           }
       }
     ]
-    Chaoxi.registerApps(appinfo)
+    CtrlApps.registerApps(appinfo)
   }
   render() {
     return <div>

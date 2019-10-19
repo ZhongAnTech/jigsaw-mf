@@ -44,7 +44,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "chaoxi": "^1.0.85",
+    "easy-mft": "^1.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.1.2",

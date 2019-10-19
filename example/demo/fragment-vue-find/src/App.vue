@@ -6,13 +6,13 @@
 
 <script>
 // {globalEvent} 
-import Chaoxi from './global'
+import CtrlApps from './global'
 
 export default {
   name: 'app',
   data () {
     return {
-      name: Chaoxi.classNamespace
+      name: CtrlApps.classNamespace
     }
   },
   methods: {

@@ -1,8 +1,7 @@
-import chaoxi, { globalEvent } from 'chaoxi'
+import ctrlApps, { globalEvent } from 'easy-mft'
 import appConfig from '../config/application.json'
-console.log('asdfasdasdfasdf==========================asdfasdfasfsdfsf')
-console.log(chaoxi)
-export default new chaoxi(appConfig)
+
+export default new ctrlApps(appConfig)
 export {
     globalEvent
 }

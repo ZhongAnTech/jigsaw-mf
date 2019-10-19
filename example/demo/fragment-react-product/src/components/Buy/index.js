@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import Chaoxi, {globalEvent} from '../../global'
+import CtrlApps, {globalEvent} from '../../global'
 
 class Buy extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Buy extends React.Component {
           }
       }
     ]
-    Chaoxi.registerApps(appinfo)
+    CtrlApps.registerApps(appinfo)
   }
   render() {
      return (<div ref="container" id="asdf"></div>)

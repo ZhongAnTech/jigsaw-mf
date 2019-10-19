@@ -40,7 +40,7 @@ module.exports = {
   output: {
     path: __dirname + '/dist',
     publicPath: '/',
-    library: 'Chaoxi',
+    library: 'easy-mft',
     filename: 'bundle.js',
     libraryTarget: 'umd'
   },

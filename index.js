@@ -117,21 +117,11 @@ class ctrlApps extends EventEmitter {
             }
         )
     }
-    removeAllChild () {
+    unregisterAllApps () {
         this.sonApplication.forEach(item => {
             item.destroy()
         })
         this.sonApplication = []
-    }
-    addChild (item) {
-        this.sonApplication.push(item)
-    }
-    removeChild (name) {
-       let index =  this.sonApplication.findIndex(function (ele) {
-            return name === app.name
-        })
-        this.sonApplication.splice(index, 1)
-        this.sonApplication[index].destroy()
     }
     agentPopState() {
         let _self = this

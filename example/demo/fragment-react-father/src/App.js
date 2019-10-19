@@ -5,13 +5,13 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Index from './components/Index'
 import Home from './components/Home'
 
-import Chaoxi, {globalEvent} from './global'
+import CtrlApps, {globalEvent} from './global'
 
 function App({baseUrl}) {
         
   return (
     <Router basename={baseUrl}>
-      <div className={`App ${Chaoxi.classNamespace}`}>
+      <div className={`App ${CtrlApps.classNamespace}`}>
         <div className={'index'}>
             <div className={'header'}>----</div>
             <div className={'body'}>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Router from './router'
 import Config from '../config/application.json'
-import Chaoxi, {globalEvent} from './global'
+import CtrlApps, {globalEvent} from './global'
 
 globalEvent.on('global-test-event', function(e){
   alert( 'global-test-event:' + e)
@@ -14,11 +14,11 @@ globalEvent.on('global-test-event', function(e){
   export default {
     bootstrap: async function bootstrap(parent) {
       console.log('react app bootstraped');
-      Chaoxi.parent = parent
+      CtrlApps.parent = parent
     },
     mount: async function mount(contain, baseUrl, appinfo) {
       console.log('props from main framework', contain, baseUrl);
-      Chaoxi.baseUrl = baseUrl;
+      CtrlApps.baseUrl = baseUrl;
       const div = document.createElement('div');
       contain.appendChild(div);
       instance = new Vue({
@@ -27,9 +27,10 @@ globalEvent.on('global-test-event', function(e){
       }).$mount(div);
     },
     unmount: async function unmount() {
-      Chaoxi.sonApplication.map((ele) => {
-        ele.unmount()
-      })
+      // CtrlApps.sonApplication.map((ele) => {
+      //   ele.unmount()
+      // })
+      CtrlApps.unregisterAllApps()
       instance.$destroy();
       instance.$el.parentNode.removeChild(instance.$el);
       instance = null;

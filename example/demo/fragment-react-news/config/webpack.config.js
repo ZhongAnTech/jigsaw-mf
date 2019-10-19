@@ -739,5 +739,13 @@ module.exports = function(webpackEnv) {
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
     performance: false,
+    externals: {
+      ...(isEnvProductionProfile && {
+        'react': 'react',
+        'react-dom': 'ReactDOM',
+        'easy-mft': 'easyMft',
+        'react-router-dom': 'reactRouterDom',
+      })
+    }
   };
 };

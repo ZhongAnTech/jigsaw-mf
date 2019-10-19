@@ -3,20 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Chaoxi, {globalEvent} from './global'
+import CtrlApps, {globalEvent} from './global'
 
 export default {
   bootstrap: async function bootstrap(parent) {
-    console.log('react app bootstraped');
-    Chaoxi.parent = parent
+    console.log('react app bootstraped')
+    CtrlApps.parent = parent
   },
   mount: async function mount(contain, baseUrl, appinfo, parent) {
-    Chaoxi.parent = parent
-    Chaoxi.baseUrl = baseUrl;
+    CtrlApps.parent = parent
+    CtrlApps.baseUrl = baseUrl
     ReactDOM.render(<App baseUrl={baseUrl}  appinfo={appinfo}/>, contain)
   },
   unmount: async function unmount(contain) {
+    CtrlApps.unregisterApps()
     ReactDOM.unmountComponentAtNode(contain)
   }
 }
-serviceWorker.unregister();
+serviceWorker.unregister()
