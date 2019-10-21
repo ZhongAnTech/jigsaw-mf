@@ -1,14 +1,14 @@
 # 
-[![npm version](https://img.shields.io/npm/v/chaoxi.svg?style=flat-square)](https://www.npmjs.com/package/chaoxi)
-[![coverage](https://img.shields.io/codecov/c/github/umijs/qiankun.svg?style=flat-square)](https://codecov.io/gh/freezestanley/chaoxi)
-[![npm downloads](https://img.shields.io/npm/dt/chaoxi.svg?style=flat-square)](https://www.npmjs.com/package/chaoxi)
+[![npm version](https://img.shields.io/npm/v/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
+[![coverage](https://img.shields.io/codecov/c/github/umijs/qiankun.svg?style=flat-square)](https://codecov.io/gh/freezestanley/easy-mft)
+[![npm downloads](https://img.shields.io/npm/dt/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
 
 # mft
 
 ## 📦 安装
 
 ```shell
-npm i chaoxi -S
+npm i easy-mft -S
 ```
 
 ## getting started
@@ -26,15 +26,15 @@ npm i chaoxi -S
 ```
 // global.js
 
-import chaoxi, { globalEvent } from 'chaoxi'
-export default new chaoxi(appConfig)
+import ctrlapp, { globalEvent } from 'easy-mft'
+export default new ctrlapp(appConfig)
 ```
 
 ```
 .
 .
 .
-import Chaoxi, {globalEvent} from './global'
+import Ctrlapp, {globalEvent} from './global'
 
 // if is react 
 componentDidMount () {
@@ -49,7 +49,7 @@ componentDidMount () {
                 return window.location.pathname.startsWith(this.baseUrl);
             }
         }
-        Chaoxi.registerApps(appinfo)
+        Ctrlapp.registerApps(appinfo)
 }
 
 // if is vue
@@ -65,7 +65,7 @@ mounted () {
                 return window.location.pathname.startsWith(this.baseUrl);
             }
         }
-        Chaoxi.registerApps(appinfo)
+        Ctrlapp.registerApps(appinfo)
 }      
 
 .
@@ -78,13 +78,13 @@ mounted () {
 export default {
   bootstrap: async function bootstrap(parent) {
     console.log('react app bootstraped');
-    Chaoxi.parent = parent
+    Ctrlapp.parent = parent
   },
   mount: async function mount(contain, baseUrl, appinfo, parent) {
-    Chaoxi.parent = parent
+    Ctrlapp.parent = parent
 
     console.log('parent::', parent)
-    Chaoxi.baseUrl = baseUrl;
+    Ctrlapp.baseUrl = baseUrl;
     console.log('this is news mount')
     console.log(contain)
     ReactDOM.render(<App baseUrl={baseUrl}  appinfo={appinfo}/>, contain)
@@ -103,11 +103,11 @@ export default {
 ## 应用之间通讯
 > 基于eventemitter2 实现的应用间通讯
 > 通过使用globalEvent
-> chaoxi 继承于 eventemitter2                                                                                                                                                                                                                                                                                                                
+> easy-mft 继承于 eventemitter2                                                                                                                                                                                                                                                                                                                
 ```
- const Chaoxi = new chaoxi()
- Chaoxi.on('event', 'this is event)
- Chaoxi.emit('event', 'this is event)
+ const Ctrlapp = new ctrlapp()
+ Ctrlapp.on('event', 'this is event)
+ Ctrlapp.emit('event', 'this is event)
 ```
 ```
 // master application
@@ -130,7 +130,7 @@ function BodyTop(){
 // child application 
 
 import React from 'react';
-import { globalEvent } from 'chaoxi'
+import { globalEvent } from 'easy-mft'
 import './index.scss';
 export default class Home extends React.Component {
     constructor(props) {
