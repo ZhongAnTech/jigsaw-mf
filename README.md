@@ -199,6 +199,17 @@ app.listen(PORT, () => {
 > 如果想子应用访问界面和被微服务调用页面分开访问，可在koa内设置路由
 
 
+## html entry
+默认将页面内最后一个js为整个引用的入口文件，如最后一个非启动js 可使用 entry 标签
+```
+<script src='http://localhost:3000/a.js' entry>
+```
+如html 内js 不想被执行，可使用ignore
+```
+<script src='http://localhost:3000/a.js' ignore>
+```
+
+
 ## Tips
 > 1. 当前路径下有子应用时,router path 不要使用exact绝对匹配，否则导致子应用不现实
 > 2. 子应用的webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
