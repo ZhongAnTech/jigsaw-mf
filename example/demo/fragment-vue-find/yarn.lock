@@ -2012,15 +2012,6 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.1, chalk@^2.4
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chaoxi@^1.0.87:
-  version "1.0.87"
-  resolved "https://registry.yarnpkg.com/chaoxi/-/chaoxi-1.0.87.tgz#457390b4b1fcd99db5ae72f796495056766abb1d"
-  integrity sha512-+qUb7j4aS2/S8afuuNpsPt0DGlNvSHWkaiuBjdlZUGuPf5EBG7GhSkt3121qFi3FHPPscL8mLgYe2etS1zH9tg==
-  dependencies:
-    core-js "^3.2.1"
-    eventemitter2 "^5.0.1"
-    html-entry "^1.0.7"
-
 chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.npm.taobao.org/chardet/download/chardet-0.4.2.tgz?cache=0&sync_timestamp=1562888139305&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fchardet%2Fdownload%2Fchardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"

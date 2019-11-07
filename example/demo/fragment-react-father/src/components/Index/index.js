@@ -1,89 +1,91 @@
-import React from 'react';
-import CtrlApps from '../../global'
-import { globalEvent } from 'easy-mft'
-import './index.scss';
+import React from "react";
+import CtrlApps from "../../global";
+import { globalEvent } from "easy-mft";
+import "./index.scss";
 
 export default class Home extends React.Component {
-    goto1() {
-    }
-    componentDidMount() {
-        const _self = this
-        const appinfo = [{
-            name: "a49",
-            application_name: "reactproduct",
-            entry: "http://localhost:9200/app",
-            contain: this.refs.container1,
-            baseUrl: "/",
-            canActive(path) {
-                return window.location.pathname.startsWith(this.baseUrl);
-            }
-        },
+  goto1() {}
+  componentDidMount() {
+    const _self = this;
+    const appinfo = [
+      {
+        name: "a49",
+        applicationName: "reactproduct",
+        entry: "http://localhost:9200/app",
+        contain: this.refs.container1,
+        baseUrl: "/",
+        canActive(path) {
+          return window.location.pathname.startsWith(this.baseUrl);
+        }
+      },
+      {
+        name: "a50",
+        applicationName: "reactnews",
+        entry: "http://localhost:9300/app",
+        contain: this.refs.container2,
+        baseUrl: "/",
+        canActive(path) {
+          return window.location.pathname.startsWith(this.baseUrl);
+        }
+      }
+      // {
+      //     name: "a44",
+      //     applicationName: "finder",
+      //     entry: "http://localhost:9091/app",
+      //     contain: this.refs.container3,
+      //     baseUrl: "/",
+      //     canActive(path) {
+      //         return window.location.pathname.startsWith(this.baseUrl);
+      //     }
+      // },
+      //   {
+      //       name: "a45",
+      //       applicationName: "reactfather",
+      //       entry: "http://localhost:5020/app",
+      //       contain: this.refs.container4,
+      //       baseUrl: "/reactfather",
+      //       canActive(path) {
+      //
+      //         // baseUrl 会被chapxi重写成包含父路径
+      //         // 所以这里可以直接使用
+      //         return window.location.pathname.startsWith(this.baseUrl);
+      //       }
+      //   }
+    ];
+    CtrlApps.registerApps(appinfo);
+
+    var evtSource = new EventSource("http://localhost:5020/event");
+    evtSource.onmessage = function(e) {
+      console.log("onmsg: " + e.data);
+    };
+    evtSource.onerror = function(e) {
+      console.log("error", e);
+      evtSource.close();
+
+      const app = [
         {
-            name: "a50",
-            application_name: "reactnews",
-            entry: "http://localhost:9300/app",
-            contain: this.refs.container2,
-            baseUrl: "/",
-            canActive(path) {
-                return window.location.pathname.startsWith(this.baseUrl);
-            }
-        },
-        // {
-        //     name: "a44",
-        //     application_name: "finder",
-        //     entry: "http://localhost:9091/app",
-        //     contain: this.refs.container3,
-        //     baseUrl: "/",
-        //     canActive(path) {
-        //         return window.location.pathname.startsWith(this.baseUrl);
-        //     }
-        // },
-            //   {
-            //       name: "a45",
-            //       application_name: "reactfather",
-            //       entry: "http://localhost:5020/app",
-            //       contain: this.refs.container4,
-            //       baseUrl: "/reactfather",
-            //       canActive(path) {
-            //
-            //         // baseUrl 会被chapxi重写成包含父路径
-            //         // 所以这里可以直接使用
-            //         return window.location.pathname.startsWith(this.baseUrl);
-            //       }
-            //   }
-        ]
-        CtrlApps.registerApps(appinfo)
-
-        var evtSource = new EventSource("http://localhost:5020/event");
-        evtSource.onmessage = function(e) {
-            console.log('onmsg: ' + e.data);
+          name: "a44",
+          applicationName: "finder",
+          entry: "http://localhost:9091/app",
+          contain: _self.refs.container3,
+          baseUrl: "/",
+          canActive(path) {
+            return window.location.pathname.startsWith(this.baseUrl);
+          }
         }
-        evtSource.onerror = function(e) {
-            console.log('error', e);
-            evtSource.close();
+      ];
+      CtrlApps.registerApps(app);
+    };
+  }
 
-            const app = [{
-                name: "a44",
-                application_name: "finder",
-                entry: "http://localhost:9091/app",
-                contain: _self.refs.container3,
-                baseUrl: "/",
-                canActive(path) {
-                    return window.location.pathname.startsWith(this.baseUrl);
-                }
-            }]
-            CtrlApps.registerApps(app)
-        }
-    }
-
-    render() {
-        return (
-          <React.Fragment>
-            <div id="33" ref="container3"></div>
-            <div id="11" ref="container1"></div>
-            <div id="22" ref="container2"></div>
-            <div id="44" ref="container4"></div>
-        </React.Fragment>
-        )
-    }
+  render() {
+    return (
+      <React.Fragment>
+        <div id="33" ref="container3"></div>
+        <div id="11" ref="container1"></div>
+        <div id="22" ref="container2"></div>
+        <div id="44" ref="container4"></div>
+      </React.Fragment>
+    );
+  }
 }
