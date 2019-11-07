@@ -3,6 +3,7 @@ import EventEmitter from "eventemitter2";
 import Fragment from "./utils/fragment";
 import getSandbox from "./utils/sandbox";
 
+// 全局事件，供各应用之间通信使用
 export let globalEvent =
   window.__EASY_MFT_GLOBAL_EVENT ||
   (window.__EASY_MFT_GLOBAL_EVENT = new EventEmitter({
@@ -13,6 +14,7 @@ export let globalEvent =
     verboseMemoryLeak: false
   }));
 
+// 注册并管理各应用
 export default class CtrlApps extends EventEmitter {
   constructor(appinfo) {
     super();
