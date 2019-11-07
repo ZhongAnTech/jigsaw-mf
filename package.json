@@ -1,21 +1,16 @@
 {
   "name": "easy-mft",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "a micro-frontend solution",
   "main": "./dist/easymft.js",
   "module": "./dist/easymft.esm.js",
-  "files": [
-    "dist",
-    "example",
-    "src"
-  ],
   "scripts": {
     "build": "rollup -c",
     "init": "lerna bootstrap",
     "run:fragment": "lerna run --parallel run:app"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
