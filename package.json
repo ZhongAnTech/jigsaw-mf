@@ -1,12 +1,15 @@
 {
   "name": "easy-mft",
-  "version": "1.0.2",
-  "description": "",
-  "main": "./dist/index.js",
+  "version": "1.0.3",
+  "description": "a micro-frontend solution",
+  "main": "./dist/easymft.js",
+  "module": "./dist/easymft.esm.js",
+  "files": [
+    "dist",
+    "example"
+  ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --progress --colors --config webpack.config.js",
-    "watch": "webpack -w",
-    "start": "node .",
+    "build": "rollup -c",
     "init": "lerna bootstrap",
     "run:fragment": "lerna run --parallel run:app"
   },
@@ -14,32 +17,30 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.6.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@babel/plugin-transform-async-to-generator": "^7.5.0",
-    "@babel/plugin-transform-react-jsx-self": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-import": "^1.12.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-react": "^6.24.1",
     "cross-env": "^5.2.1",
     "husky": "^3.0.9",
-    "koa": "^2.8.1",
-    "koa-static": "^5.0.0",
     "lerna": "^3.18.1",
-    "path": "^0.12.7",
-    "prettier": "^1.18.2",
-    "pretty-quick": "^2.0.0",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.8"
+    "rollup": "^1.26.3",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
     "core-js": "^3.2.1",
     "eventemitter2": "^5.0.1",
     "html-entry": "^1.0.7"
   },
+  "sideEffects": false,
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"

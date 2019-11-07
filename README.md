@@ -1,4 +1,5 @@
-# 
+#
+
 [![npm version](https://img.shields.io/npm/v/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
 [![coverage](https://img.shields.io/codecov/c/github/umijs/qiankun.svg?style=flat-square)](https://codecov.io/gh/freezestanley/easy-mft)
 [![npm downloads](https://img.shields.io/npm/dt/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
@@ -13,15 +14,14 @@ npm i easy-mft -S
 
 ## getting started
 
-> 运行example
- ```
- npm install
- npm run init
- npm run run:fragment
- // open http://localhost:9100
- ```
+> 运行 example
 
-
+```
+npm install
+npm run init
+npm run run:fragment
+// open http://localhost:9100
+```
 
 ```
 // global.js
@@ -36,12 +36,12 @@ export default new ctrlapp(appConfig)
 .
 import Ctrlapp, {globalEvent} from './global'
 
-// if is react 
+// if is react
 componentDidMount () {
     const appinfo = [
         {
             name: "a50",                            // 应用名需唯一
-            application_name: "reactnews",          // 应用模块名需唯一
+            applicationName: "reactnews",          // 应用模块名需唯一
             entry: "http://912-mft-app1.dev.za-tech.net/app", //应用接入地址
             contain: this.refs.container2,          // 应用挂载容器,须在页面存在的dom元素
             baseUrl: "/",                           // 子应用的主路径
@@ -57,7 +57,7 @@ mounted () {
     const appinfo = [
         {
             name: "a50",
-            application_name: "reactnews",
+            applicationName: "reactnews",
             entry: "http://912-mft-app1.dev.za-tech.net/app",
             contain: this.refs.container2,
             baseUrl: "/",
@@ -66,7 +66,7 @@ mounted () {
             }
         }
         Ctrlapp.registerApps(appinfo)
-}      
+}
 
 .
 .
@@ -74,6 +74,7 @@ mounted () {
 ```
 
 ## 子应用
+
 ```
 export default {
   bootstrap: async function bootstrap(parent) {
@@ -94,21 +95,24 @@ export default {
   }
 }
 ```
-> 子应用输出3个方法
-> bootstrap     - 创建时运行
-> mount         - 被挂载时运行
-> unmount       - 卸载时运行
 
+> 子应用输出 3 个方法
+> bootstrap - 创建时运行
+> mount - 被挂载时运行
+> unmount - 卸载时运行
 
 ## 应用之间通讯
-> 基于eventemitter2 实现的应用间通讯
-> 通过使用globalEvent
-> easy-mft 继承于 eventemitter2                                                                                                                                                                                                                                                                                                                
+
+> 基于 eventemitter2 实现的应用间通讯
+> 通过使用 globalEvent
+> easy-mft 继承于 eventemitter2
+
 ```
  const Ctrlapp = new ctrlapp()
  Ctrlapp.on('event', 'this is event)
  Ctrlapp.emit('event', 'this is event)
 ```
+
 ```
 // master application
 
@@ -127,7 +131,7 @@ function BodyTop(){
 }
 
 
-// child application 
+// child application
 
 import React from 'react';
 import { globalEvent } from 'easy-mft'
@@ -152,8 +156,9 @@ export default class Home extends React.Component {
 ```
 
 ## 打包
-> 子应用需被打包为umd形式
-> 通过postcss-selector-namespace实现css 样式隔离
+
+> 子应用需被打包为 umd 形式
+> 通过 postcss-selector-namespace 实现 css 样式隔离
 > 为方便调试将项目改成多页，通过访问路径不同来实现隔离
 
 ## koa
@@ -194,25 +199,29 @@ app.listen(PORT, () => {
 })
 
 ```
-> 通过koa设置应用的静态资源访问路径
-> 当主应用子应用发生跨域请求时候,用@koa/cors设置请求跨域
-> 如果想子应用访问界面和被微服务调用页面分开访问，可在koa内设置路由
 
+> 通过 koa 设置应用的静态资源访问路径
+> 当主应用子应用发生跨域请求时候,用@koa/cors 设置请求跨域
+> 如果想子应用访问界面和被微服务调用页面分开访问，可在 koa 内设置路由
 
 ## html entry
-默认将页面内最后一个js为整个引用的入口文件，如最后一个非启动js 可使用 entry 标签
+
+默认将页面内最后一个 js 为整个引用的入口文件，如最后一个非启动 js 可使用 entry 标签
+
 ```
 <script src='http://localhost:3000/a.js' entry>
 ```
-如html 内js 不想被执行，可使用ignore
+
+如 html 内 js 不想被执行，可使用 ignore
+
 ```
 <script src='http://localhost:3000/a.js' ignore>
 ```
 
-
 ## Tips
-> 1. 当前路径下有子应用时,router path 不要使用exact绝对匹配，否则导致子应用不现实
-> 2. 子应用的webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
-> 3. 子应用打包需采用umd模式, 设置唯一的library 
+
+> 1. 当前路径下有子应用时,router path 不要使用 exact 绝对匹配，否则导致子应用不显示
+> 2. 子应用的 webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
+> 3. 子应用打包需采用 umd 模式, 设置唯一的 library
 > 4. 主应用在开发模式下,嵌入的子应用不为开发模式，因被嵌入后热更新丢失导致失败
 > 5. 注意主应用调用子应用的跨域问题
