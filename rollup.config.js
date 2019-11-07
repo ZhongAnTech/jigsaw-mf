@@ -26,7 +26,8 @@ export default [
       }),
       resolve(),
       babel({
-        exclude: "node_modules/**"
+        exclude: "node_modules/**",
+        runtimeHelpers: true
       })
     ]
   },
@@ -39,7 +40,8 @@ export default [
     },
     plugins: [
       babel({
-        exclude: "node_modules/**"
+        exclude: "node_modules/**",
+        runtimeHelpers: true
       })
     ]
   }

@@ -3,199 +3,18 @@
  * (c) 2019-2019 ZA-FE
  * Released under the MIT License.
  */
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _typeof from "@babel/runtime/helpers/typeof";
+import _classCallCheck from "@babel/runtime/helpers/classCallCheck";
+import _createClass from "@babel/runtime/helpers/createClass";
+import _possibleConstructorReturn from "@babel/runtime/helpers/possibleConstructorReturn";
+import _getPrototypeOf from "@babel/runtime/helpers/getPrototypeOf";
+import _inherits from "@babel/runtime/helpers/inherits";
 import { importEntry } from "html-entry";
 import EventEmitter from "eventemitter2";
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
 
-function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function(obj) {
-      return obj &&
-        typeof Symbol === "function" &&
-        obj.constructor === Symbol &&
-        obj !== Symbol.prototype
-        ? "symbol"
-        : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
-}
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function() {
-    var self = this,
-      args = arguments;
-    return new Promise(function(resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly)
-      symbols = symbols.filter(function(sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(source, true).forEach(function(key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(source).forEach(function(key) {
-        Object.defineProperty(
-          target,
-          key,
-          Object.getOwnPropertyDescriptor(source, key)
-        );
-      });
-    }
-  }
-
-  return target;
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
-}
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf
-    ? Object.getPrototypeOf
-    : function _getPrototypeOf(o) {
-        return o.__proto__ || Object.getPrototypeOf(o);
-      };
-  return _getPrototypeOf(o);
-}
-
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf =
-    Object.setPrototypeOf ||
-    function _setPrototypeOf(o, p) {
-      o.__proto__ = p;
-      return o;
-    };
-
-  return _setPrototypeOf(o, p);
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError(
-      "this hasn't been initialised - super() hasn't been called"
-    );
-  }
-
-  return self;
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (typeof call === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-
-/**
- * name: application name
- * entry: 'http://localhost:8009/'
- * contain: document.getElementById('root')
- * template: '<html>...</html>'
- */
 var Fragment =
   /*#__PURE__*/
   (function() {
@@ -407,8 +226,42 @@ function hijackers() {
   };
 }
 
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly)
+      symbols = symbols.filter(function(sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+    keys.push.apply(keys, symbols);
+  }
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    if (i % 2) {
+      ownKeys(source, true).forEach(function(key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(source).forEach(function(key) {
+        Object.defineProperty(
+          target,
+          key,
+          Object.getOwnPropertyDescriptor(source, key)
+        );
+      });
+    }
+  }
+  return target;
+}
 function getSandbox() {
-  var proxyWindow = new Proxy(_objectSpread2({}, hijackers()), {
+  var proxyWindow = new Proxy(_objectSpread({}, hijackers()), {
     get: function get(target, name) {
       if (name === "undefined") return window.undefined;
 
@@ -542,7 +395,9 @@ var CtrlApps =
         value: (function() {
           var _registerApp = _asyncToGenerator(
             /*#__PURE__*/
-            regeneratorRuntime.mark(function _callee(app) {
+            _regeneratorRuntime.mark(function _callee(app) {
+              var _this2 = this;
+
               var oldApp,
                 dll,
                 template,
@@ -553,7 +408,7 @@ var CtrlApps =
                 _result,
                 sandbox;
 
-              return regeneratorRuntime.wrap(
+              return _regeneratorRuntime.wrap(
                 function _callee$(_context) {
                   while (1) {
                     switch ((_context.prev = _context.next)) {
@@ -630,10 +485,10 @@ var CtrlApps =
                             app.sandbox = sandbox;
                             app.free = sandbox.__easy_mft_free;
 
-                            var baseurl = this._getAppBaseUrl(app);
+                            var baseurl = _this2._getAppBaseUrl(app);
 
                             app.baseUrl = baseurl.replace(/\/+/, "/");
-                            var sonApplication = new Fragment(app, this);
+                            var sonApplication = new Fragment(app, _this2);
                             sonApplication.bootstrap(); // delete window[app.name]
                             // window[app.name] = null
 
@@ -645,7 +500,7 @@ var CtrlApps =
                               sonApplication.mount();
                             }
 
-                            this.sonApplication.push(sonApplication);
+                            _this2.sonApplication.push(sonApplication);
                           } else {
                             console.error(
                               "child application ".concat(
@@ -687,10 +542,10 @@ var CtrlApps =
       {
         key: "listenPopstate",
         value: function listenPopstate() {
-          var _this2 = this;
+          var _this3 = this;
 
           window.addEventListener("popstate", function() {
-            _this2.sonApplication.forEach(function(item) {
+            _this3.sonApplication.forEach(function(item) {
               if (item.app.canActive(item.app.baseUrl)) {
                 item.mount();
               } else {

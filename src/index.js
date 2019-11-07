@@ -98,7 +98,7 @@ export default class CtrlApps extends EventEmitter {
       execScripts(sandbox),
       getExternalScripts(sandbox),
       getExternalStyleSheets()
-    ]).then(function(values) {
+    ]).then(values => {
       const script = values[0];
       const extScript = values[1];
       const styles = values[2];

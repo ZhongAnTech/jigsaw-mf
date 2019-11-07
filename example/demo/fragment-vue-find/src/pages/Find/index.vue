@@ -3,7 +3,7 @@
     <div class="za-title-common">
       <div class="za-t">
         <h3 class="f38 b pl15">积分商城</h3>
-        <div class="desc f28">我的积分</div>
+        <!-- <div class="desc f28">我的积分</div> -->
       </div>
       <div class="za-more f20">
         <a>更多</a>
@@ -11,36 +11,34 @@
     </div>
     <div class="za-jifen-product">
       <div class="za-product-item ">
-        <a><img src="../../assets/img/banner/1.png" alt=""></a>
+        <a><img src="../../assets/img/banner/1.png" alt=""/></a>
       </div>
       <div class="za-product-item ">
-        <a><img src="../../assets/img/banner/2.png" alt=""></a>
+        <a><img src="../../assets/img/banner/2.png" alt=""/></a>
       </div>
       <div class="za-product-item ">
-        <a><img src="../../assets/img/banner/3.png" alt=""></a>
+        <a><img src="../../assets/img/banner/3.png" alt=""/></a>
       </div>
       <div class="za-product-item w-percent-24">
-        <a><img src="../../assets/img/banner/4.png" alt=""></a>
+        <a><img src="../../assets/img/banner/4.png" alt=""/></a>
       </div>
       <div class="za-product-item w-percent-24">
-        <a><img src="../../assets/img/banner/5.png" alt=""></a>
+        <a><img src="../../assets/img/banner/5.png" alt=""/></a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="scss" scoped>
-.za-region{
+.za-region {
   background-color: #fff;
   padding-bottom: 18px;
   margin-bottom: 8px;
-  .za-title-common{
+  .za-title-common {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,14 +47,14 @@ export default {
   .za-t {
     display: flex;
     line-height: 24px;
-    h3{
+    h3 {
       height: 24px;
       padding-left: 8px;
       margin-right: 4px;
       color: #404040;
       font-size: 19px;
     }
-    div{
+    div {
       height: 24px;
       font-size: 14px;
       color: #d0d0d0;
@@ -71,7 +69,7 @@ export default {
     border-radius: 22px;
     color: #909090;
     font-size: 10px;
-    &:after{
+    &:after {
       position: absolute;
       content: "";
       right: 11px;
@@ -85,7 +83,7 @@ export default {
       transform: rotate(45deg) translateY(-35%);
     }
   }
-  .za-jifen-product{
+  .za-jifen-product {
     padding: 0 14px;
     .za-product-item {
       display: inline-block;

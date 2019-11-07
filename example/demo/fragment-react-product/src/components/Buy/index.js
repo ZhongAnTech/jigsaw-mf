@@ -1,6 +1,6 @@
-import React from 'react';
-import {withRouter} from 'react-router-dom';
-import CtrlApps, {globalEvent} from '../../global'
+import React from "react";
+import { withRouter } from "react-router-dom";
+import CtrlApps, { globalEvent } from "../../global";
 
 class Buy extends React.Component {
   constructor(props) {
@@ -9,24 +9,22 @@ class Buy extends React.Component {
   componentDidMount() {
     const appinfo = [
       {
-          name: "a90",
-          application_name: "vuemaster",
-          entry: "http://localhost:9099/app",
-          contain: this.refs.container,
-          baseUrl: "/buy",
-          canActive(path) {
-            console.log("98098908090987098709")
-            // return window.location.pathname.startsWith(this.baseUrl);
-            return true
-          }
+        name: "a90",
+        applicationName: "vuemaster",
+        entry: "http://localhost:9099/app",
+        contain: this.refs.container,
+        baseUrl: "/buy",
+        canActive(path) {
+          console.log("98098908090987098709");
+          // return window.location.pathname.startsWith(this.baseUrl);
+          return true;
+        }
       }
-    ]
-    CtrlApps.registerApps(appinfo)
+    ];
+    CtrlApps.registerApps(appinfo);
   }
   render() {
-     return (<div ref="container" id="asdf"></div>)
+    return <div ref="container" id="asdf"></div>;
   }
-  
-
 }
-  export default withRouter(Buy)
+export default withRouter(Buy);

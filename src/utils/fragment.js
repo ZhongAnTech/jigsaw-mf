@@ -1,9 +1,3 @@
-/**
- * name: application name
- * entry: 'http://localhost:8009/'
- * contain: document.getElementById('root')
- * template: '<html>...</html>'
- */
 class Fragment {
   constructor(app, parent) {
     const cloneApp = Object.assign({}, app);
