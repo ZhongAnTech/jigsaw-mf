@@ -1,6 +1,6 @@
 {
   "name": "easy-mft",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "a micro-frontend solution",
   "main": "./src/index.js",
   "module": "./dist/easymft.esm.js",

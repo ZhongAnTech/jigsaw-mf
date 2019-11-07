@@ -12,7 +12,7 @@ function App({ baseUrl }) {
     <Router basename={baseUrl}>
       <div className={`App ${CtrlApps.classNamespace}`}>
         <div className={"index"}>
-          <div className={"header"}>----</div>
+          <div className={"header"}>示例</div>
           <div className={"body"}>
             <Route path="/" exact component={BodyTop} />
             <Route path="/" component={Index} />
@@ -85,19 +85,19 @@ function Footer() {
   return (
     <div className={"footer"}>
       <div>
-        <img src="" />
+        <img src={process.env.PUBLIC_URL + "/images/home_on.png"} />
         <div>首页</div>
       </div>
       <div>
-        <img src="" />
+        <img src={process.env.PUBLIC_URL + "/images/toutiao.png"} />
         <div>头条</div>
       </div>
       <div>
-        <img src="" />
+        <img src={process.env.PUBLIC_URL + "/images/find.png"} />
         <div>发现</div>
       </div>
       <div>
-        <img src="" />
+        <img src={process.env.PUBLIC_URL + "/images/my.png"} />
         <div>我的</div>
       </div>
     </div>
