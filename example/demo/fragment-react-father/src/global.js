@@ -1,7 +1,5 @@
-import ctrlApps, { globalEvent } from 'easy-mft'
-import appConfig from '../config/application.json'
+import EasyMft from "easy-mft";
+import config from "../config/application.json";
 
-export default new ctrlApps(appConfig)
-export {
-    globalEvent
-}
+export const appPool = new EasyMft(config);
+export const other_global_var = "your data";

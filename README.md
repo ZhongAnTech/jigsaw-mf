@@ -1,18 +1,124 @@
-#
+# A micro-frontend solution.
 
-[![npm version](https://img.shields.io/npm/v/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
-[![coverage](https://img.shields.io/codecov/c/github/umijs/qiankun.svg?style=flat-square)](https://codecov.io/gh/freezestanley/easy-mft)
-[![npm downloads](https://img.shields.io/npm/dt/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
+[![npm version](https://img.shields.io/npm/v/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)[![npm downloads](https://img.shields.io/npm/dt/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
 
-# mft
+## Introduction
 
-## 📦 安装
+easy-mft is a micro-frontend solution for assembling mutiple micro-applications into the main application to make the site perform like a Single-Page application!
+
+- support any JavaScript user interface librarys. such as React, vue etc... as long as you can control when to mount/unmout your application!
+- support comunications between micro-applications.
+
+## Terminology
+
+`micro-application` a small application that can be assembled into a large application.
+
+`main-application` the main application that host one or many `micro-application`
+
+## Installation
 
 ```shell
 npm i easy-mft -S
 ```
 
-## getting started
+## Adapt existing application to a micro-application
+
+1. add a config
+
+```javascript
+// src/config/application.json
+{
+     // a unique name for your application.
+    "name": "reactchild",
+    // the url base path your site serves  e.g. /your/path.
+    "baseUrl": "/",
+    // for css isolation. should be unique.
+    "classNamespace": "reactchild",
+    // your applicaion must be built as a library, and this is the library name. [used by webpack]
+    "library": "reactfather",
+    // assets must be linked by absolute path. [used by webpack]
+    "publicPath": "http://localhost:9100"
+}
+```
+
+2. create easy-mft instance. it's a good convention to put your global variables into one single module instead of assigning it to `window`
+
+```javascript
+import EasyMft from "easy-mft";
+import appConfig from "../config/application.json"; // created by step 1
+
+export const appPool = new EasyMft(appConfig);
+export const other_global_var = "your data";
+```
+
+3. add an new entry file
+
+```jsx
+// src/index-app.js
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { appPool } from "./global";
+
+export default {
+  // triggered when your code is executed but before mount
+  bootstrap() {
+    console.log("react app bootstraped");
+  },
+  mount(contain, baseUrl) {
+    appPool.baseUrl = baseUrl;
+    ReactDOM.render(<App baseUrl={baseUrl} />, contain);
+  },
+  unmount(contain) {
+    appPool.unregisterApps();
+    ReactDOM.unmountComponentAtNode(contain);
+  }
+};
+```
+
+4. update webapck config
+
+```javascript
+{
+    /**  omit the othe config    **/
+    entry: {
+      // your other entry
+      app: './src/index-app.js'
+    },
+    output: {
+      // your other config
+      publicPath: config.publicPath,
+      libraryTarget: 'umd',
+      library: config.library
+    }
+}
+```
+
+## Adapt existing application to a main-application
+
+1. add a config
+
+```javascript
+// src/config/application.json
+{
+     // a unique name for your application.
+    "name": "reactfather",
+    // the url base path your site serves  e.g. /your/path.
+    "baseUrl": "/"
+}
+```
+
+2. create easy-mft instance. it's a good convention to put your global variables into one single module instead of assigning it to `window`
+
+```javascript
+import EasyMft from "easy-mft";
+import appConfig from "../config/application.json"; // created by step 1
+
+export const appPool = new EasyMft(appConfig);
+export const other_global_var = "your data";
+```
+
+## Example
 
 > 运行 example
 
@@ -220,8 +326,12 @@ app.listen(PORT, () => {
 
 ## Tips
 
-> 1. 当前路径下有子应用时,router path 不要使用 exact 绝对匹配，否则导致子应用不显示
-> 2. 子应用的 webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
-> 3. 子应用打包需采用 umd 模式, 设置唯一的 library
-> 4. 主应用在开发模式下,嵌入的子应用不为开发模式，因被嵌入后热更新丢失导致失败
-> 5. 注意主应用调用子应用的跨域问题
+1. 当前路径下有子应用时,router path 不要使用 exact 绝对匹配，否则导致子应用不显示
+2. 子应用的 webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
+3. 子应用打包需采用 umd 模式, 设置唯一的 library
+4. 主应用在开发模式下,嵌入的子应用不为开发模式，因被嵌入后热更新丢失导致失败
+5. 注意主应用调用子应用的跨域问题
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
