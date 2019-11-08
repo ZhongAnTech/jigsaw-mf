@@ -4,7 +4,7 @@
 
 ## Introduction
 
-easy-mft is a micro-frontend solution for assembling mutiple micro-applications into the main application to make the site perform like a Single-Page application! Or by leveraging easy-mft, you can split your huge application into small parts to improve maintablity!
+easy-mft is a micro-frontend solution for assembling mutiple micro applications into the master application to make the site perform like a Single-Page application! Or by leveraging easy-mft, you can split your huge application into small parts to improve maintablity!
 
 - support any JavaScript user interface librarys. such as React, vue etc... as long as you can control when to mount/unmout your application!
 - support comunications between micro-applications.
@@ -30,8 +30,6 @@ npm i easy-mft -S
 ```javascript
 // src/config/application.json
 {
-    // the url base path your site serves  e.g. /your/path.
-    "baseUrl": "/",
     // for css isolation. should be unique.
     "classNamespace": "reactchild",
     // your applicaion must be built as a library, and this is the library name. [used by webpack]
@@ -41,14 +39,16 @@ npm i easy-mft -S
 }
 ```
 
-2. add an new entry file
+2. add a new entry file
 
 ```jsx
 // src/index-app.js
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { appPool } from "./global";
+// adding line 1/2/3 if your application serve both as master-application and micro-application!
+// otherwise remove them
+import { appPool } from "./global"; // line 1
 
 export default {
   // triggered when your code is executed but before mount
@@ -56,11 +56,11 @@ export default {
     console.log("react app bootstraped");
   },
   mount(contain, baseUrl) {
-    appPool.baseUrl = baseUrl;
+    appPool.baseUrl = baseUrl; // line 2
     ReactDOM.render(<App baseUrl={baseUrl} />, contain);
   },
   unmount(contain) {
-    appPool.unregisterApps();
+    appPool.unregisterApps(); // line 3
     ReactDOM.unmountComponentAtNode(contain);
   }
 };
@@ -92,7 +92,7 @@ export default {
 }
 ```
 
-** NOTE: The css and js assets will be accessed by master-application via ajax, so those assets need to support CORS request **
+**NOTE: The css and js assets will be accessed by master-application via ajax, so those assets need to support CORS request**
 
 > Adapt existing application to a master-application
 
@@ -126,7 +126,7 @@ import { appPool } from "./global";
 
 const appinfo = [
   {
-    // the unique name amount the micro-applications if multiple provided.
+    // the unique name amount the micro-applications.
     name: "a49",
     // the library name of the micro-application. eg. config.library
     applicationName: "reactfather",
@@ -146,7 +146,7 @@ const appinfo = [
 appPool.registerApps(appinfo);
 ```
 
-> run both your master-application and micro-application to see it works.
+Now, run both your master-application and micro-application, and you will see it works.
 
 ## Comunication
 
@@ -187,11 +187,7 @@ npm run run:fragment
 // open http://localhost:9100
 ```
 
-> 通过 koa 设置应用的静态资源访问路径
-> 当主应用子应用发生跨域请求时候,用@koa/cors 设置请求跨域
-> 如果想子应用访问界面和被微服务调用页面分开访问，可在 koa 内设置路由
-
-## html entry
+## Html Entry
 
 By default, easy-mft will use the last js file as the execution entry. but you can change this behavior by adding attribute `entry`.
 
@@ -206,6 +202,8 @@ And by adding attribute `ignore`, you can tell easy-mft to ignore this file.
 ```
 
 ## Tips
+
+An application can be adapted to serve both as master-application and micro-application!
 
 1. DO NOT adding `exact` prop to `route` when the corresponding component will register some micro-applications, it maight prevent your micro-application from showing!
 2. All the JS and CSS resources linked by your micro-application must use absolute path. e.g. http://localhost:9001/your/resource/path
