@@ -1,23 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import CtrlApps, {globalEvent} from './global'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { appPool } from "./global";
 
 export default {
-  bootstrap: async function bootstrap(parent) {
-    console.log('react app bootstraped')
-    CtrlApps.parent = parent
+  bootstrap() {
+    console.log("react app bootstraped");
   },
-  mount: async function mount(contain, baseUrl, appinfo, parent) {
-    CtrlApps.parent = parent
-    CtrlApps.baseUrl = baseUrl
-    ReactDOM.render(<App baseUrl={baseUrl}  appinfo={appinfo}/>, contain)
+  mount(contain, baseUrl) {
+    appPool.baseUrl = baseUrl;
+    ReactDOM.render(<App baseUrl={baseUrl} />, contain);
   },
-  unmount: async function unmount(contain) {
-    CtrlApps.unregisterApps()
-    ReactDOM.unmountComponentAtNode(contain)
+  unmount(contain) {
+    appPool.unregisterApps();
+    ReactDOM.unmountComponentAtNode(contain);
   }
-}
-serviceWorker.unregister()
+};

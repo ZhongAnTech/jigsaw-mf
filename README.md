@@ -1,218 +1,201 @@
-#
+# A micro-frontend solution.
 
-[![npm version](https://img.shields.io/npm/v/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
-[![coverage](https://img.shields.io/codecov/c/github/umijs/qiankun.svg?style=flat-square)](https://codecov.io/gh/freezestanley/easy-mft)
-[![npm downloads](https://img.shields.io/npm/dt/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
+[![npm version](https://img.shields.io/npm/v/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)[![npm downloads](https://img.shields.io/npm/dt/easy-mft.svg?style=flat-square)](https://www.npmjs.com/package/easy-mft)
 
-# mft
+## Introduction
 
-## 📦 安装
+easy-mft is a micro-frontend solution for assembling mutiple micro applications into the master application to make the site perform like a Single-Page application! Or by leveraging easy-mft, you can split your huge application into small parts to improve maintablity!
+
+- support any JavaScript user interface librarys. such as React, vue etc... as long as you can control when to mount/unmout your application!
+- support comunications between micro-applications.
+
+## Terminology
+
+`micro-application` a small application that can be assembled into a large application.
+
+`master-application` the main application that host one or many `micro-application`
+
+## Installation
 
 ```shell
 npm i easy-mft -S
 ```
 
-## getting started
+## How to use
 
-> 运行 example
+> Adapt existing application to a micro-application
+
+1. add a config
+
+```javascript
+// src/config/application.json
+{
+    // for css isolation. should be unique.
+    "classNamespace": "reactchild",
+    // your applicaion must be built as a library, and this is the library name. [used by webpack]
+    "library": "reactfather",
+    // assets must be linked by absolute path. [used by webpack]
+    "publicPath": "http://localhost:8082"
+}
+```
+
+2. add a new entry file
+
+```jsx
+// src/index-app.js
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+// adding line 1/2/3 if your application serve both as master-application and micro-application!
+// otherwise remove them
+import { appPool } from "./global"; // line 1
+
+export default {
+  // triggered when your code is executed but before mount
+  bootstrap() {
+    console.log("react app bootstraped");
+  },
+  mount(contain, baseUrl) {
+    appPool.baseUrl = baseUrl; // line 2
+    ReactDOM.render(<App baseUrl={baseUrl} />, contain);
+  },
+  unmount(contain) {
+    appPool.unregisterApps(); // line 3
+    ReactDOM.unmountComponentAtNode(contain);
+  }
+};
+```
+
+3. update webapck config
+
+```javascript
+{
+    /**  omit the other config  **/
+    entry: {
+      // your other entry
+      app: './src/index-app.js'
+    },
+    output: {
+      // your other config
+      publicPath: config.publicPath,
+      libraryTarget: 'umd',
+      library: config.library
+    }
+    /**  omited  **/
+    new HtmlWebpackPlugin({
+        inject: true,
+        chunks: ["app"],
+        filename: 'app.html'
+    })
+
+    // postcss-selector-namespace
+}
+```
+
+**NOTE: The css and js assets will be accessed by master-application via ajax, so those assets need to support CORS request**
+
+> Adapt existing application to a master-application
+
+1. add a config
+
+```javascript
+// src/config/application.json
+{
+    // the url base path your site serves  e.g. /your/path.
+    "baseUrl": "/"
+}
+```
+
+2. create easy-mft instance. it's a good convention to put your global variables into one single module instead of assigning it to `window`
+
+```javascript
+// src/global.js
+import EasyMft from "easy-mft";
+import appConfig from "../config/application.json"; // created by step 1
+
+export const appPool = new EasyMft(appConfig);
+export const other_global_var = "your data";
+```
+
+3. resgister micro-application
+
+```javascript
+// add this code to any position as long as ``container1`` exists. usually after ``componentDidMount`` if your are using react.
+
+import { appPool } from "./global";
+
+const appinfo = [
+  {
+    // the unique name amount the micro-applications.
+    name: "a49",
+    // the library name of the micro-application. eg. config.library
+    applicationName: "reactfather",
+    // webpack.entry.app
+    entry: "http://localhost:8082/app.html",
+    contain: document.getElementById("container1"), // or use refs to gain dom reference
+    // the base path allocated to this micro-application
+    baseUrl: "/reactchild",
+    // to determine if to mount this micro-application
+    canActive(path) {
+      // this is the default rule. can be omited.
+      return window.location.pathname.startsWith(path);
+    }
+  }
+];
+
+appPool.registerApps(appinfo);
+```
+
+Now, run both your master-application and micro-application, and you will see it works.
+
+## Comunication
+
+> event based comunication via [eventemitter2](https://github.com/EventEmitter2/EventEmitter2)
+
+```javascript
+// application internal comunication
+import { appPool } from "./global";
+appPool.on("event", function(data) {
+  console.log(data); // output: this is event
+});
+appPool.emit("event", "internal message");
+
+// cross micro-application comunication
+// application 1
+import { globalEvent } from "east-mft";
+globalEvent.on("event", function(data) {
+  console.log(data); // output: this is event
+});
+
+// application 2
+import { globalEvent } from "east-mft";
+globalEvent.emit("event", "global message");
+```
+
+## About css isolation
+
+try [postcss-selector-namespace](https://github.com/topaxi/postcss-selector-namespace)
+
+## Run Example
 
 ```
+git clone this repertory
+cd easy-mft
 npm install
 npm run init
 npm run run:fragment
 // open http://localhost:9100
 ```
 
-```
-// global.js
+## Html Entry
 
-import ctrlapp, { globalEvent } from 'easy-mft'
-export default new ctrlapp(appConfig)
-```
-
-```
-.
-.
-.
-import Ctrlapp, {globalEvent} from './global'
-
-// if is react
-componentDidMount () {
-    const appinfo = [
-        {
-            name: "a50",                            // 应用名需唯一
-            applicationName: "reactnews",          // 应用模块名需唯一
-            entry: "http://912-mft-app1.dev.za-tech.net/app", //应用接入地址
-            contain: this.refs.container2,          // 应用挂载容器,须在页面存在的dom元素
-            baseUrl: "/",                           // 子应用的主路径
-            canActive(path) {                       // 应用激活规则
-                return window.location.pathname.startsWith(this.baseUrl);
-            }
-        }
-        Ctrlapp.registerApps(appinfo)
-}
-
-// if is vue
-mounted () {
-    const appinfo = [
-        {
-            name: "a50",
-            applicationName: "reactnews",
-            entry: "http://912-mft-app1.dev.za-tech.net/app",
-            contain: this.refs.container2,
-            baseUrl: "/",
-            canActive(path) {
-                return window.location.pathname.startsWith(this.baseUrl);
-            }
-        }
-        Ctrlapp.registerApps(appinfo)
-}
-
-.
-.
-.
-```
-
-## 子应用
-
-```
-export default {
-  bootstrap: async function bootstrap(parent) {
-    console.log('react app bootstraped');
-    Ctrlapp.parent = parent
-  },
-  mount: async function mount(contain, baseUrl, appinfo, parent) {
-    Ctrlapp.parent = parent
-
-    console.log('parent::', parent)
-    Ctrlapp.baseUrl = baseUrl;
-    console.log('this is news mount')
-    console.log(contain)
-    ReactDOM.render(<App baseUrl={baseUrl}  appinfo={appinfo}/>, contain)
-  },
-  unmount: async function unmount(contain) {
-    ReactDOM.unmountComponentAtNode(contain)
-  }
-}
-```
-
-> 子应用输出 3 个方法
-> bootstrap - 创建时运行
-> mount - 被挂载时运行
-> unmount - 卸载时运行
-
-## 应用之间通讯
-
-> 基于 eventemitter2 实现的应用间通讯
-> 通过使用 globalEvent
-> easy-mft 继承于 eventemitter2
-
-```
- const Ctrlapp = new ctrlapp()
- Ctrlapp.on('event', 'this is event)
- Ctrlapp.emit('event', 'this is event)
-```
-
-```
-// master application
-
-function BodyTop(){
-
-  function handleTypeClick(e) {
-      globalEvent.emit('father-type-click', e.currentTarget.dataset.type)
-  }
-  return (
-    <React.Fragment>
-      <div onClick={handleTypeClick}>
-        提交事件
-      </div>
-    </React.Fragment>
-  )
-}
-
-
-// child application
-
-import React from 'react';
-import { globalEvent } from 'easy-mft'
-import './index.scss';
-export default class Home extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    componentDidMount() {
-        globalEvent.on('father-type-click', data => {
-            console.log('data from father-type-click', data);
-        })
-    }
-    render() {
-        return (
-            <div className="newsList">
-                this is child
-            </div>
-        )
-    }
-}
-```
-
-## 打包
-
-> 子应用需被打包为 umd 形式
-> 通过 postcss-selector-namespace 实现 css 样式隔离
-> 为方便调试将项目改成多页，通过访问路径不同来实现隔离
-
-## koa
-
-```
-const http = require('http')
-const url = require('url')
-const fs = require('fs')
-const path = require('path')
-const serve = require('koa-static')
-const cors = require('@koa/cors')
-const Koa = require('koa')
-const views = require('koa-views')
-const app = new Koa()
-const config = require('./config/application.json')
-const compress = require('koa-compress')
-const PORT = config.port
-
-app.use(cors())
-app.use(serve('dist'))
-const options = { threshold: 2048 }
-app.use(compress())
-app.use(views(path.resolve(__dirname, './dist')))
-app.use(async function (ctx, next) {
-  console.log(ctx.req.url)
-    if (ctx.req.url === '/app') {
-        return await ctx.render('app')
-    } else if (ctx.req.url === '/health') {
-        return ctx.body = '200'
-    } else {
-        return await ctx.render('index')
-    }
-})
-
-
-app.listen(PORT, () => {
-  console.log(`SPA Fragment Server started at ${PORT}`)
-})
-
-```
-
-> 通过 koa 设置应用的静态资源访问路径
-> 当主应用子应用发生跨域请求时候,用@koa/cors 设置请求跨域
-> 如果想子应用访问界面和被微服务调用页面分开访问，可在 koa 内设置路由
-
-## html entry
-
-默认将页面内最后一个 js 为整个引用的入口文件，如最后一个非启动 js 可使用 entry 标签
+By default, easy-mft will use the last js file as the execution entry. but you can change this behavior by adding attribute `entry`.
 
 ```
 <script src='http://localhost:3000/a.js' entry>
 ```
 
-如 html 内 js 不想被执行，可使用 ignore
+And by adding attribute `ignore`, you can tell easy-mft to ignore this file.
 
 ```
 <script src='http://localhost:3000/a.js' ignore>
@@ -220,8 +203,14 @@ app.listen(PORT, () => {
 
 ## Tips
 
-> 1. 当前路径下有子应用时,router path 不要使用 exact 绝对匹配，否则导致子应用不显示
-> 2. 子应用的 webpack publicPath 请带上主域 ex: http://localhost:9001, 因当子应用嵌入主应用时当前地址为主应用,导致资源调用不出
-> 3. 子应用打包需采用 umd 模式, 设置唯一的 library
-> 4. 主应用在开发模式下,嵌入的子应用不为开发模式，因被嵌入后热更新丢失导致失败
-> 5. 注意主应用调用子应用的跨域问题
+An application can be adapted to serve both as master-application and micro-application!
+
+1. DO NOT adding `exact` prop to `route` when the corresponding component will register some micro-applications, it maight prevent your micro-application from showing!
+2. All the JS and CSS resources linked by your micro-application must use absolute path. e.g. http://localhost:9001/your/resource/path
+3. Micro-application MUST be packed through umd mode with unique library name.
+4. Micro-application must support CORS request for the JS/CSS files.
+5. DO NOT register micro-application that under development mode with hot reload enabled. It will cause white screen.
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)

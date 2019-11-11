@@ -31,7 +31,7 @@ class Foo extends React.Component {
           }}
         />
         <button onClick={this.handle}>聚焦</button>
-        <div ref="container"></div>
+        <div id="container"></div>
       </div>
     );
   }
