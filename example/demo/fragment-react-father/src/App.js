@@ -5,12 +5,12 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Index from "./components/Index";
 import Home from "./components/Home";
 
-import CtrlApps, { globalEvent } from "./global";
+import { appPool } from "./global";
 
 function App({ baseUrl }) {
   return (
     <Router basename={baseUrl}>
-      <div className={`App ${CtrlApps.classNamespace}`}>
+      <div className={`App ${appPool.classNamespace}`}>
         <div className={"index"}>
           <div className={"header"}>示例</div>
           <div className={"body"}>
@@ -27,7 +27,7 @@ function App({ baseUrl }) {
 
 function BodyTop() {
   function handleTypeClick(e) {
-    globalEvent.emit("father-type-click", e.currentTarget.dataset.type);
+    appPool.emit("father-type-click", e.currentTarget.dataset.type);
   }
   return (
     <React.Fragment>

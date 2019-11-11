@@ -1,5 +1,5 @@
 import React from "react";
-import CtrlApps from "../../global";
+import { appPool } from "../../global";
 import { globalEvent } from "easy-mft";
 import "./index.scss";
 
@@ -52,7 +52,7 @@ export default class Home extends React.Component {
       //       }
       //   }
     ];
-    CtrlApps.registerApps(appinfo);
+    appPool.registerApps(appinfo);
 
     var evtSource = new EventSource("http://localhost:5020/event");
     evtSource.onmessage = function(e) {
@@ -74,7 +74,7 @@ export default class Home extends React.Component {
           }
         }
       ];
-      CtrlApps.registerApps(app);
+      appPool.registerApps(app);
     };
   }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import CtrlApps, { globalEvent } from "../../global";
+import { appPool } from "../../global";
 
 class Foo extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class Foo extends React.Component {
         }
       }
     ];
-    CtrlApps.registerApps(appinfo);
+    appPool.registerApps(appinfo);
   }
   render() {
     return (
