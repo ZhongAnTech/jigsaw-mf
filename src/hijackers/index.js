@@ -19,7 +19,7 @@ export default function hijackers() {
     setInterval() {
       intervals.push(setInterval.apply(null, arguments));
     },
-    __easy_mft_free() {
+    __easy_mfs_free() {
       timeouts.forEach(clearTimeout);
       intervals.forEach(clearInterval);
       listeners.forEach(args => window.removeEventListener.apply(window, args));

@@ -1,5 +1,5 @@
 /*!
- * easymft.js v1.0.3
+ * easymfs.js v1.0.7
  * (c) 2019-2019 ZA-FE
  * Released under the MIT License.
  */
@@ -8,7 +8,7 @@
     ? factory(exports)
     : typeof define === "function" && define.amd
     ? define(["exports"], factory)
-    : ((global = global || self), factory((global.easymft = {})));
+    : ((global = global || self), factory((global.easymfs = {})));
 })(this, function(exports) {
   "use strict";
 
@@ -2210,6 +2210,10 @@
     })();
   });
 
+  /**
+   * 一个应用既一个Fragment， 包含了应用所有的生命周期
+   * @class Fragment
+   */
   var Fragment =
     /*#__PURE__*/
     (function() {
@@ -2355,8 +2359,9 @@
 
   var defineProperty = _defineProperty;
 
+  // 当pushstate的时候主动触发popstate， 因为其他应用依赖popstate触发显示
   function hijackHistory() {
-    if (!window.history.__EASY_MFT_DECORATED) {
+    if (!window.history.__EASY_MFS_DECORATED) {
       var dispatchPopStateEvent = function dispatchPopStateEvent(state) {
         var evt = null;
 
@@ -2372,7 +2377,7 @@
         window.dispatchEvent(evt);
       };
 
-      window.history.__EASY_MFT_DECORATED = true;
+      window.history.__EASY_MFS_DECORATED = true;
       var originalPushState = window.history.pushState;
 
       window.history.pushState = function(state) {
@@ -2428,7 +2433,7 @@
       })(function() {
         intervals.push(setInterval.apply(null, arguments));
       }),
-      __easy_mft_free: function __easy_mft_free() {
+      __easy_mfs_free: function __easy_mfs_free() {
         timeouts.forEach(clearTimeout);
         intervals.forEach(clearInterval);
         listeners.forEach(function(args) {
@@ -2527,14 +2532,14 @@
   }
 
   var globalEvent =
-    window.__EASY_MFT_GLOBAL_EVENT ||
-    (window.__EASY_MFT_GLOBAL_EVENT = new eventemitter2({
+    window.__EASY_MFS_GLOBAL_EVENT ||
+    (window.__EASY_MFS_GLOBAL_EVENT = new eventemitter2({
       wildcard: true,
       delimiter: ".",
       newListener: false,
       maxListeners: Number.MAX_VALUE,
       verboseMemoryLeak: false
-    }));
+    })); // 注册并管理各应用
 
   var CtrlApps =
     /*#__PURE__*/
@@ -2653,8 +2658,8 @@
                             };
                           }
 
-                          dll = window.__easy_mft_dlls =
-                            window.__easy_mft_dlls || {};
+                          dll = window.__easy_mfs_dlls =
+                            window.__easy_mfs_dlls || {};
 
                           if (!dll[app.entry]) {
                             _context.next = 17;
@@ -2700,7 +2705,7 @@
                             if (_module && _module.__esModule) {
                               app.module = sandbox[app.applicationName];
                               app.sandbox = sandbox;
-                              app.free = sandbox.__easy_mft_free;
+                              app.free = sandbox.__easy_mfs_free;
 
                               var baseurl = _this2._getAppBaseUrl(app);
 

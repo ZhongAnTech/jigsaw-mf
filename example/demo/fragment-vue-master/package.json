@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --host localhost --port 9099",
     "build": "vue-cli-service build",
-    "rebuild": "vue-cli-service build --mode mft",
+    "rebuild": "vue-cli-service build --mode prd",
     "lint": "vue-cli-service lint",
     "app": "nodemon fragments.js",
     "run:app": "yarn run rebuild && yarn run app"
@@ -13,7 +13,7 @@
   "dependencies": {
     "core-js": "^2.6.9",
     "cross-env": "^6.0.0",
-    "easy-mft": "^1.0.0",
+    "easy-mfs": "^1.0.0",
     "html-entry": "^1.0.3",
     "vue": "^2.6.10",
     "vue-datepicker": "^1.3.0",

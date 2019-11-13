@@ -1,7 +1,4 @@
-import ctrlApps, { globalEvent } from 'easy-mft'
-import appConfig from '../config/application.json'
+import EasyMfs from "easy-mfs";
+import appConfig from "../config/application.json";
 
-export default new ctrlApps(appConfig)
-export {
-    globalEvent
-}
+export default new EasyMfs(appConfig);

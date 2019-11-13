@@ -11,16 +11,16 @@
     <div id="msg"></div>
     <div id="msg2"></div>
 
-    <script src="../dist/easymft.common.js"></script>
+    <script src="../dist/easymfs.common.js"></script>
     <script>
-      easymft.globalEvent.on("test", function(arg) {
+      easymfs.globalEvent.on("test", function(arg) {
         document.getElementById("msg").innerHTML = arg;
       });
       setTimeout(() => {
-        easymft.globalEvent.emit("test", "global event works fine");
+        easymfs.globalEvent.emit("test", "global event works fine");
       }, 2000);
 
-      const instance = new easymft.default({ baseUrl: "/" });
+      const instance = new easymfs.default({ baseUrl: "/" });
       instance.on("test", function(arg) {
         document.getElementById("msg2").innerHTML = arg;
       });

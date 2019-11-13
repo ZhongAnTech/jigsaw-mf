@@ -5,8 +5,8 @@ import getSandbox from "./utils/sandbox";
 
 // 全局事件，供各应用之间通信使用
 export let globalEvent =
-  window.__EASY_MFT_GLOBAL_EVENT ||
-  (window.__EASY_MFT_GLOBAL_EVENT = new EventEmitter({
+  window.__EASY_MFS_GLOBAL_EVENT ||
+  (window.__EASY_MFS_GLOBAL_EVENT = new EventEmitter({
     wildcard: true,
     delimiter: ".",
     newListener: false,
@@ -78,7 +78,7 @@ export default class CtrlApps extends EventEmitter {
       app.canActive = path => window.location.pathname.startsWith(path);
     }
 
-    let dll = (window.__easy_mft_dlls = window.__easy_mft_dlls || {});
+    let dll = (window.__easy_mfs_dlls = window.__easy_mfs_dlls || {});
     let template, execScripts, getExternalScripts, getExternalStyleSheets;
     if (dll[app.entry]) {
       const result = dll[app.entry];
@@ -110,7 +110,7 @@ export default class CtrlApps extends EventEmitter {
       if (_module && _module.__esModule) {
         app.module = sandbox[app.applicationName];
         app.sandbox = sandbox;
-        app.free = sandbox.__easy_mft_free;
+        app.free = sandbox.__easy_mfs_free;
         let baseurl = this._getAppBaseUrl(app);
         app.baseUrl = baseurl.replace(/\/+/, "/");
         const sonApplication = new Fragment(app, this);

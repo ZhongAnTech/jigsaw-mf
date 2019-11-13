@@ -1,5 +1,5 @@
 import React from "react";
-import { globalEvent } from "easy-mft";
+import { globalEvent } from "easy-mfs";
 import "./index.scss";
 export default class Home extends React.Component {
   constructor(props) {

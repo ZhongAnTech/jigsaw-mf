@@ -1,9 +1,9 @@
 {
-  "name": "easy-mft",
+  "name": "easy-mfs",
   "version": "1.0.7",
   "description": "a micro-frontend solution",
   "main": "./src/index.js",
-  "module": "./dist/easymft.esm.js",
+  "module": "./dist/easymfs.esm.js",
   "files": [
     "dist",
     "src",
