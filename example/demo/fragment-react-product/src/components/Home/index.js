@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import CtrlApps, { globalEvent } from "../../global";
+import { appPool } from "../../global";
 
 class Foo extends React.Component {
   constructor(props) {
@@ -16,21 +16,15 @@ class Foo extends React.Component {
         contain: this.refs.container,
         baseUrl: "/reactchild",
         canActive(path) {
-          return window.location.pathname.startsWith(this.baseUrl);
+          return window.location.pathname.startsWith(path);
         }
       }
     ];
-    CtrlApps.registerApps(appinfo);
+    appPool.registerApps(appinfo);
   }
   render() {
     return (
       <div>
-        <input
-          ref={el => {
-            this.eleInput = el;
-          }}
-        />
-        <button onClick={this.handle}>聚焦</button>
         <div ref="container"></div>
       </div>
     );

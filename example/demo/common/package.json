@@ -7,7 +7,8 @@
     "build": "webpack -p",
     "watch": "webpack -w",
     "app": "node fragment.js",
-    "run:app": "npm run build && node fragment.js"
+    "run:app": "npm run build && node fragment.js",
+    "link": "yarn link easy-mfs"
   },
   "author": "",
   "license": "ISC",

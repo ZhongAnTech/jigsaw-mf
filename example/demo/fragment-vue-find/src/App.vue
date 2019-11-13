@@ -1,31 +1,28 @@
 <template>
-  <div id="app" :class="name">
+  <div package="vue-find" id="app" :class="name">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-// {globalEvent} 
-import CtrlApps from './global'
+// {globalEvent}
+import { appPool } from "./global";
 
 export default {
-  name: 'app',
-  data () {
+  name: "app",
+  data() {
     return {
-      name: CtrlApps.classNamespace
-    }
+      name: appPool.classNamespace
+    };
   },
-  methods: {
-    
-  },
-  components: {
-  }
-}
+  methods: {},
+  components: {}
+};
 </script>
 
 <style>
 :namespace#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

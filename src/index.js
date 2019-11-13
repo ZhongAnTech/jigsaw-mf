@@ -20,12 +20,12 @@ export default class CtrlApps extends EventEmitter {
     super();
     this.sonApplication = [];
     this.info = appinfo;
-    this.__baseUrl = appinfo.baseUrl || ""; // 主引用的基本url
+    this.__baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
     this.name = appinfo.name || "";
+    this.routerMode = appinfo.routerMode || "history";
     this.classNamespace = appinfo.classNamespace || "";
     this.parent = "";
-    this.listenPopstate();
-    this.listenHashChange();
+    this.listenEvents();
   }
   get fullUrl() {
     return (this.parent.fullUrl || "") + this.__baseUrl;
@@ -59,7 +59,9 @@ export default class CtrlApps extends EventEmitter {
     } else if (typeof applist === "object") {
       this.registerApp(applist);
     } else {
-      console.error("object or array is wanted but get " + typeof applist);
+      console.error(
+        "registerApps: object or array is wanted but get " + typeof applist
+      );
     }
   }
   async registerApp(app) {
@@ -149,10 +151,8 @@ export default class CtrlApps extends EventEmitter {
       }
     });
   }
-  listenPopstate() {
+  listenEvents() {
     window.addEventListener("popstate", this.handleLocationChange.bind(this));
-  }
-  listenHashChange() {
     window.addEventListener("hashchange", this.handleLocationChange.bind(this));
   }
 }

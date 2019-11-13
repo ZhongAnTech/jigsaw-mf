@@ -1,6 +1,6 @@
 {
   "name": "easy-mfs",
-  "version": "1.0.7",
+  "version": "1.0.0",
   "description": "a micro-frontend solution",
   "main": "./src/index.js",
   "module": "./dist/easymfs.esm.js",
@@ -13,7 +13,8 @@
   "scripts": {
     "build": "rollup -c",
     "init": "lerna bootstrap",
-    "run:fragment": "lerna run --parallel run:app"
+    "run:fragment": "lerna run --parallel run:app",
+    "link": "yarn unlink && yarn link && lerna run --parallel link"
   },
   "author": "",
   "license": "MIT",

@@ -1,4 +1,5 @@
 import EasyMfs from "easy-mfs";
-import application_info from "../config/application.json";
+import appConfig from "../config/application.json";
 
-export default new EasyMfs(application_info);
+export const appPool = new EasyMfs(appConfig);
+export const your_other_global_var = "your data";

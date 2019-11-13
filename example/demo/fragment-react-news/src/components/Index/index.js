@@ -44,7 +44,6 @@ export default class Home extends React.Component {
       ]
     };
   }
-  goto1() {}
   componentDidMount() {
     globalEvent.on("father-type-click", data => {
       console.log("data from father-type-click", data);

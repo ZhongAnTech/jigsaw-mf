@@ -8,7 +8,8 @@
     "rebuild": "vue-cli-service build --mode prd",
     "lint": "vue-cli-service lint",
     "app": "nodemon fragments.js",
-    "run:app": "yarn run rebuild && yarn run app"
+    "run:app": "yarn run rebuild && yarn run app",
+    "link": "yarn link easy-mfs"
   },
   "dependencies": {
     "core-js": "^2.6.9",

@@ -4,7 +4,6 @@ import { globalEvent } from "easy-mfs";
 import "./index.scss";
 
 export default class Home extends React.Component {
-  goto1() {}
   componentDidMount() {
     const _self = this;
     const appinfo = [

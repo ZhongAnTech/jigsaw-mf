@@ -1,5 +1,5 @@
 /*!
- * easymfs.js v1.0.7
+ * easymfs.js v1.0.0
  * (c) 2019-2019 ZA-FE
  * Released under the MIT License.
  */
@@ -757,6 +757,23 @@
   });
 
   var regenerator = runtime_1;
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  var defineProperty = _defineProperty;
 
   function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
@@ -2218,23 +2235,21 @@
     /*#__PURE__*/
     (function() {
       function Fragment(app, parent) {
+        var _this = this;
+
         classCallCheck(this, Fragment);
 
-        var cloneApp = Object.assign({}, app);
-        var name = cloneApp.name,
-          entry = cloneApp.entry,
-          contain = cloneApp.contain,
-          template = cloneApp.template,
-          styles = cloneApp.styles,
-          module = cloneApp.module,
-          baseUrl = cloneApp.baseUrl,
-          free = cloneApp.free,
-          sandbox = cloneApp.sandbox;
-
-        var _self = this;
-
+        var name = app.name,
+          entry = app.entry,
+          contain = app.contain,
+          template = app.template,
+          styles = app.styles,
+          module = app.module,
+          baseUrl = app.baseUrl,
+          free = app.free,
+          sandbox = app.sandbox;
         this.parent = parent;
-        this.app = cloneApp;
+        this.app = app;
         this.mounted = false;
         this.sandbox = sandbox;
         this.name = name;
@@ -2244,14 +2259,12 @@
         this.template = template;
         this.baseUrl = baseUrl;
         this.__module = module;
-        this.parent = parent || "";
         this.__free = free;
-
-        if (styles) {
+        this.parent = parent || "";
+        styles &&
           styles.map(function(ele) {
-            _self.addStyle(ele);
+            _this.addStyle(ele);
           });
-        }
       }
 
       createClass(Fragment, [
@@ -2259,20 +2272,11 @@
           key: "bootstrap",
           value: function bootstrap() {
             this.__module.default.bootstrap(this);
-          } // export async function bootstrap() {
-          //     console.log('react app bootstraped')
-          //   }
-          //   export async function mount(props) {
-          //     ReactDOM.render(<Router/>, document.getElementById('other'))
-          //   }
-          //   export async function unmount() {
-          //     ReactDOM.unmountComponentAtNode(document.getElementById('other'))
-          //   }
+          }
         },
         {
           key: "unmount",
           value: function unmount() {
-            // this.__module.unmount(this.contain)
             if (this.mounted) {
               this.__module.default.unmount(this.contain);
 
@@ -2341,23 +2345,6 @@
 
       return Fragment;
     })();
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  var defineProperty = _defineProperty;
 
   // 当pushstate的时候主动触发popstate， 因为其他应用依赖popstate触发显示
   function hijackHistory() {
@@ -2531,6 +2518,44 @@
     return proxyWindow;
   }
 
+  function ownKeys$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly)
+        symbols = symbols.filter(function(sym) {
+          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        });
+      keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+
+  function _objectSpread$1(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys$1(source, true).forEach(function(key) {
+          defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(
+          target,
+          Object.getOwnPropertyDescriptors(source)
+        );
+      } else {
+        ownKeys$1(source).forEach(function(key) {
+          Object.defineProperty(
+            target,
+            key,
+            Object.getOwnPropertyDescriptor(source, key)
+          );
+        });
+      }
+    }
+    return target;
+  }
+
   var globalEvent =
     window.__EASY_MFS_GLOBAL_EVENT ||
     (window.__EASY_MFS_GLOBAL_EVENT = new eventemitter2({
@@ -2557,13 +2582,13 @@
         );
         _this.sonApplication = [];
         _this.info = appinfo;
-        _this.__baseUrl = appinfo.baseUrl || ""; // 主引用的基本url
+        _this.__baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
 
         _this.name = appinfo.name || "";
         _this.classNamespace = appinfo.classNamespace || "";
         _this.parent = "";
 
-        _this.listenPopstate();
+        _this.listenEvents();
 
         return _this;
       }
@@ -2633,11 +2658,13 @@
                     while (1) {
                       switch ((_context.prev = _context.next)) {
                         case 0:
-                          // handle duplicate registration
+                          // in order to not modify the origin data by incident;
+                          app = _objectSpread$1({}, app); // handle duplicate registration
+
                           oldApp = this.findApp(app.name);
 
                           if (!oldApp) {
-                            _context.next = 7;
+                            _context.next = 8;
                             break;
                           }
 
@@ -2651,18 +2678,28 @@
 
                           return _context.abrupt("return");
 
-                        case 7:
+                        case 8:
                           if (typeof app.canActive !== "function") {
-                            app.canActive = function(path) {
-                              return window.location.pathname.startsWith(path);
-                            };
+                            if (app.routerMode === "hash") {
+                              app.canActive = function(path) {
+                                return window.location.hash
+                                  .replace(/^#/, "")
+                                  .startsWith(path);
+                              };
+                            } else {
+                              app.canActive = function(path) {
+                                return window.location.pathname.startsWith(
+                                  path
+                                );
+                              };
+                            }
                           }
 
                           dll = window.__easy_mfs_dlls =
                             window.__easy_mfs_dlls || {};
 
                           if (!dll[app.entry]) {
-                            _context.next = 17;
+                            _context.next = 18;
                             break;
                           }
 
@@ -2672,14 +2709,14 @@
                           getExternalScripts = result.getExternalScripts;
                           getExternalStyleSheets =
                             result.getExternalStyleSheets;
-                          _context.next = 25;
+                          _context.next = 26;
                           break;
 
-                        case 17:
-                          _context.next = 19;
+                        case 18:
+                          _context.next = 20;
                           return importEntry(app.entry);
 
-                        case 19:
+                        case 20:
                           _result = _context.sent;
                           template = _result.template;
                           execScripts = _result.execScripts;
@@ -2688,7 +2725,7 @@
                             _result.getExternalStyleSheets;
                           dll[app.entry] = _result;
 
-                        case 25:
+                        case 26:
                           sandbox = getSandbox();
                           Promise.all([
                             execScripts(sandbox),
@@ -2714,11 +2751,7 @@
                               sonApplication.bootstrap(); // delete window[app.name]
                               // window[app.name] = null
 
-                              if (
-                                sonApplication.app.canActive(
-                                  sonApplication.app.baseUrl
-                                )
-                              ) {
+                              if (app.canActive(app.baseUrl)) {
                                 sonApplication.mount();
                               }
 
@@ -2733,7 +2766,7 @@
                             }
                           });
 
-                        case 27:
+                        case 28:
                         case "end":
                           return _context.stop();
                       }
@@ -2762,19 +2795,28 @@
           }
         },
         {
-          key: "listenPopstate",
-          value: function listenPopstate() {
-            var _this3 = this;
-
-            window.addEventListener("popstate", function() {
-              _this3.sonApplication.forEach(function(item) {
-                if (item.app.canActive(item.app.baseUrl)) {
-                  item.mount();
-                } else {
-                  item.unmount();
-                }
-              });
+          key: "handleLocationChange",
+          value: function handleLocationChange() {
+            this.sonApplication.forEach(function(item) {
+              if (item.app.canActive(item.app.baseUrl)) {
+                item.mount();
+              } else {
+                item.unmount();
+              }
             });
+          }
+        },
+        {
+          key: "listenEvents",
+          value: function listenEvents() {
+            window.addEventListener(
+              "popstate",
+              this.handleLocationChange.bind(this)
+            );
+            window.addEventListener(
+              "hashchange",
+              this.handleLocationChange.bind(this)
+            );
           }
         },
         {

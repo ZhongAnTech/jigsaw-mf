@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import CtrlApps, { globalEvent } from "../../global";
+import { appPool } from "../../global";
 
 class Buy extends React.Component {
   constructor(props) {
@@ -16,12 +16,12 @@ class Buy extends React.Component {
         baseUrl: "/buy",
         canActive(path) {
           console.log("98098908090987098709");
-          // return window.location.pathname.startsWith(this.baseUrl);
+          // return window.location.pathname.startsWith(path);
           return true;
         }
       }
     ];
-    CtrlApps.registerApps(appinfo);
+    appPool.registerApps(appinfo);
   }
   render() {
     return <div ref="container" id="asdf"></div>;

@@ -51,7 +51,7 @@ app.use(async function(ctx, next) {
         time: "终身"
       },
       {
-        img: config.publicPath + "/images/pic.jpg",
+        img: config.publicPath + "/images/1849890864.jpg",
         title: "安邦北极星",
         title2: "长期重疾险",
         info1: "108种重疾+25种中症+40种轻症",

@@ -71,7 +71,8 @@
     "build": "cross-env REACT_APP_TYPE=application node scripts/build.js",
     "app": "node fragments.js",
     "test": "node scripts/test.js",
-    "run:app": "yarn run build && yarn run app"
+    "run:app": "yarn run build && yarn run app",
+    "link": "yarn link easy-mfs"
   },
   "eslintConfig": {
     "extends": "react-app"

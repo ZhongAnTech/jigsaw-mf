@@ -1,16 +1,16 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.scss";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Index from "./components/Index";
 import Home from "./components/Home";
 
 import { appPool } from "./global";
+import { globalEvent } from "easy-mfs";
 
 function App({ baseUrl }) {
   return (
     <Router basename={baseUrl}>
-      <div className={`App ${appPool.classNamespace}`}>
+      <div package="react-father" className={`App ${appPool.classNamespace}`}>
         <div className={"index"}>
           <div className={"header"}>示例</div>
           <div className={"body"}>
@@ -27,7 +27,7 @@ function App({ baseUrl }) {
 
 function BodyTop() {
   function handleTypeClick(e) {
-    appPool.emit("father-type-click", e.currentTarget.dataset.type);
+    globalEvent.emit("father-type-click", e.currentTarget.dataset.type);
   }
   return (
     <React.Fragment>
@@ -55,7 +55,7 @@ function BodyTop() {
             </div>
           </div>
           <div className="za-list-item">
-            <div onClick={() => this.goto1()}>
+            <div>
               <h3 className="za-title f28 b">马上金</h3>
               <p className="za-desc f20"> 5万承保额</p>
               {/* <img className="img-itm" src="http://img.1ppt.com/uploads/allimg/1305/1-130502101143311-lp.jpg" alt="" /> */}
