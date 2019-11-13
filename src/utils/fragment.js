@@ -4,7 +4,6 @@
  */
 class Fragment {
   constructor(app, parent) {
-    const cloneApp = Object.assign({}, app);
     const {
       name,
       entry,
@@ -15,10 +14,9 @@ class Fragment {
       baseUrl,
       free,
       sandbox
-    } = cloneApp;
-    const _self = this;
+    } = app;
     this.parent = parent;
-    this.app = cloneApp;
+    this.app = app;
     this.mounted = false;
     this.sandbox = sandbox;
     this.name = name;
@@ -28,31 +26,18 @@ class Fragment {
     this.template = template;
     this.baseUrl = baseUrl;
     this.__module = module;
-    this.parent = parent || "";
     this.__free = free;
-    if (styles) {
+    this.parent = parent || "";
+    styles &&
       styles.map(ele => {
-        _self.addStyle(ele);
+        this.addStyle(ele);
       });
-    }
   }
 
   bootstrap() {
     this.__module.default.bootstrap(this);
   }
-  // export async function bootstrap() {
-  //     console.log('react app bootstraped')
-  //   }
-
-  //   export async function mount(props) {
-  //     ReactDOM.render(<Router/>, document.getElementById('other'))
-  //   }
-
-  //   export async function unmount() {
-  //     ReactDOM.unmountComponentAtNode(document.getElementById('other'))
-  //   }
   unmount() {
-    // this.__module.unmount(this.contain)
     if (this.mounted) {
       this.__module.default.unmount(this.contain);
       this.mounted = false;

@@ -25,6 +25,7 @@ export default class CtrlApps extends EventEmitter {
     this.classNamespace = appinfo.classNamespace || "";
     this.parent = "";
     this.listenPopstate();
+    this.listenHashChange();
   }
   get fullUrl() {
     return (this.parent.fullUrl || "") + this.__baseUrl;
@@ -62,6 +63,8 @@ export default class CtrlApps extends EventEmitter {
     }
   }
   async registerApp(app) {
+    // in order to not modify the origin data by incident;
+    app = { ...app };
     // handle duplicate registration
     const oldApp = this.findApp(app.name);
     if (oldApp) {
@@ -75,7 +78,12 @@ export default class CtrlApps extends EventEmitter {
     }
 
     if (typeof app.canActive !== "function") {
-      app.canActive = path => window.location.pathname.startsWith(path);
+      if (app.routerMode === "hash") {
+        app.canActive = path =>
+          window.location.hash.replace(/^#/, "").startsWith(path);
+      } else {
+        app.canActive = path => window.location.pathname.startsWith(path);
+      }
     }
 
     let dll = (window.__easy_mfs_dlls = window.__easy_mfs_dlls || {});
@@ -117,7 +125,7 @@ export default class CtrlApps extends EventEmitter {
         sonApplication.bootstrap();
         // delete window[app.name]
         // window[app.name] = null
-        if (sonApplication.app.canActive(sonApplication.app.baseUrl)) {
+        if (app.canActive(app.baseUrl)) {
           sonApplication.mount();
         }
         this.sonApplication.push(sonApplication);
@@ -132,15 +140,19 @@ export default class CtrlApps extends EventEmitter {
     });
     this.sonApplication = [];
   }
-  listenPopstate() {
-    window.addEventListener("popstate", () => {
-      this.sonApplication.forEach(item => {
-        if (item.app.canActive(item.app.baseUrl)) {
-          item.mount();
-        } else {
-          item.unmount();
-        }
-      });
+  handleLocationChange() {
+    this.sonApplication.forEach(item => {
+      if (item.app.canActive(item.app.baseUrl)) {
+        item.mount();
+      } else {
+        item.unmount();
+      }
     });
+  }
+  listenPopstate() {
+    window.addEventListener("popstate", this.handleLocationChange.bind(this));
+  }
+  listenHashChange() {
+    window.addEventListener("hashchange", this.handleLocationChange.bind(this));
   }
 }
