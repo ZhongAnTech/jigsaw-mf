@@ -1,3 +1,4 @@
+/* eslint-disable */
 import hijackers from "../hijackers/index";
 export default function getSandbox() {
   let proxyWindow = new Proxy(

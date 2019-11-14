@@ -1,3 +1,4 @@
+/* eslint-disable */
 // 当pushstate的时候主动触发popstate， 因为其他应用依赖popstate触发显示
 export default function hijackHistory() {
   if (!window.history.__EASY_MFS_DECORATED) {

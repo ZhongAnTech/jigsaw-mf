@@ -1,3 +1,4 @@
+/* eslint-disable */
 import hijackHistory from "./history";
 
 export default function hijackers() {

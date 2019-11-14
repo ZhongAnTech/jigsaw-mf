@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * 一个应用既一个Fragment， 包含了应用所有的生命周期
  * @class Fragment

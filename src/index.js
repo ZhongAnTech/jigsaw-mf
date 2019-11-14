@@ -1,8 +1,10 @@
+/* eslint-disable */
 import { importEntry } from "html-entry";
 import EventEmitter from "eventemitter2";
 import Logger from "./utils/logger";
 import Fragment from "./utils/fragment";
 import getSandbox from "./utils/sandbox";
+import { joinPath } from "./utils/tool";
 
 // 全局事件，供各应用之间通信使用
 export let globalEvent =
@@ -63,10 +65,10 @@ export default class EasyMfs extends EventEmitter {
   }
   async registerApp(app) {
     // in order to not modify the origin data by incident;
-    app = { ...app, originBaseUrl: app.baseUrl };
+    app = { ...app, pathnameBase: this.baseUrl };
     app.routerMode = app.routerMode || "history";
 
-    if (!this._checkAppBaseUrl(app) || !this._validateParams(app)) {
+    if (!this._checkRouterMode(app) || !this._validateParams(app)) {
       return;
     }
 
@@ -76,19 +78,31 @@ export default class EasyMfs extends EventEmitter {
       oldApp.mounted = false;
       oldApp.contain = app.contain;
       oldApp.baseUrl = this._getAppBaseUrl(app);
-      if (oldApp.app.canActive(oldApp.baseUrl)) {
+      if (oldApp.app.canActive(oldApp.baseUrl, oldApp.pathnameBase)) {
         oldApp.mount();
       }
       return;
     }
 
+    if (app.routerMode === "hash") {
+      const parts = app.baseUrl.split("#");
+      // e.g. /pathname/#/hash/part
+      if (parts.length > 1) {
+        app.pathnameBase = joinPath(this.baseUrl, parts[0]);
+        app.baseUrl = parts[1];
+      }
+    }
+
     if (typeof app.canActive !== "function") {
       if (app.routerMode === "hash") {
-        app.canActive = path => {
-          window.location.hash.replace(/^#/, "").startsWith(path);
+        app.canActive = (baseUrl, pathnameBase) => {
+          return (
+            window.location.pathname.startsWith(pathnameBase) &&
+            window.location.hash.replace(/^#/, "").startsWith(baseUrl)
+          );
         };
       } else {
-        app.canActive = path => window.location.pathname.startsWith(path);
+        app.canActive = baseUrl => window.location.pathname.startsWith(baseUrl);
       }
     }
 
@@ -125,13 +139,12 @@ export default class EasyMfs extends EventEmitter {
         app.module = sandbox[app.applicationName];
         app.sandbox = sandbox;
         app.free = sandbox.__easy_mfs_free;
-        let baseurl = this._getAppBaseUrl(app);
-        app.baseUrl = baseurl.replace(/\/+/, "/");
+        app.baseUrl = this._getAppBaseUrl(app);
         const sonApplication = new Fragment(app, this);
         sonApplication.bootstrap();
         // delete window[app.name]
         // window[app.name] = null
-        if (app.canActive(app.baseUrl, app.originBaseUrl, this.baseUrl)) {
+        if (app.canActive(app.baseUrl, this.baseUrl)) {
           sonApplication.mount();
         }
         this.sonApplication.push(sonApplication);
@@ -164,7 +177,7 @@ export default class EasyMfs extends EventEmitter {
     }
     return emptyFields.length == 0;
   }
-  _checkAppBaseUrl(app) {
+  _checkRouterMode(app) {
     if (this.routerMode === "hash") {
       if (app.routerMode === "history") {
         Logger.error(
@@ -178,10 +191,9 @@ export default class EasyMfs extends EventEmitter {
   _getAppBaseUrl(app) {
     const baseUrl = app.baseUrl || "";
     if (this.routerMode === "history" && app.routerMode === "hash") {
-      // restart the url chain
       return baseUrl;
     }
-    return this.baseUrl + baseUrl;
+    return joinPath(this.baseUrl, baseUrl);
   }
   _handleLocationChange() {
     this.sonApplication.forEach(item => {
