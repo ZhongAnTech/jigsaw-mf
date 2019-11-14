@@ -18,7 +18,7 @@ easy-mfs is a micro-frontend solution for assembling mutiple micro applications 
 ## Installations
 
 ```shell
-npm i easy-mfs -S
+npm install easy-mfs --save
 ```
 
 ## How to use

@@ -4,64 +4,51 @@
  */
 class Fragment {
   constructor(app, parent) {
-    const {
-      name,
-      entry,
-      contain,
-      template,
-      styles,
-      module,
-      baseUrl,
-      free,
-      sandbox
-    } = app;
-    this.parent = parent;
     this.app = app;
+    this.parent = parent;
     this.mounted = false;
-    this.sandbox = sandbox;
-    this.name = name;
-    this.entry = entry;
     this.style = [];
-    this.contain = contain;
-    this.template = template;
-    this.baseUrl = baseUrl;
-    this.__module = module;
-    this.__free = free;
-    this.parent = parent || "";
-    styles &&
-      styles.map(ele => {
-        this.addStyle(ele);
+    if (app.styles) {
+      app.styles.map(ele => {
+        this._addStyle(ele);
       });
+    }
   }
 
   bootstrap() {
-    this.__module.default.bootstrap(this);
+    this.app.module.default.bootstrap(this);
   }
+
   unmount() {
     if (this.mounted) {
-      this.__module.default.unmount(this.contain);
+      this.app.module.default.unmount(this.app.contain);
       this.mounted = false;
     }
   }
-  mount(props) {
+
+  mount() {
     if (!this.mounted) {
-      if (!this.contain) {
-        console.error(`Application name ${this.name} contain is null`);
-      }
-      this.__module.default.mount(this.contain, this.baseUrl, this.app, this);
+      this.app.module.default.mount(
+        this.app.contain,
+        this.app.baseUrl,
+        this.app,
+        this
+      );
       this.mounted = true;
     }
   }
+
   destroy() {
     // unmount的时候不能释放资源，因为还有可能mount
     // 所以增加 destroy 方法，彻底释放不会再次mount的应用
     this.unmount();
-    this.__free();
+    this.app.free();
     this.style.map(e => {
       e.parentNode && e.parentNode.removeChild(e);
     });
   }
-  addStyle(txt) {
+
+  _addStyle(txt) {
     let link = document.createElement("style");
     link.innerHTML = txt;
     let result = this.style.find(e => {

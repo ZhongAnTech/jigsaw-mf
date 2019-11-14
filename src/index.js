@@ -1,5 +1,6 @@
 import { importEntry } from "html-entry";
 import EventEmitter from "eventemitter2";
+import Logger from "./utils/logger";
 import Fragment from "./utils/fragment";
 import getSandbox from "./utils/sandbox";
 
@@ -15,26 +16,25 @@ export let globalEvent =
   }));
 
 // 注册并管理各应用
-export default class CtrlApps extends EventEmitter {
+export default class EasyMfs extends EventEmitter {
   constructor(appinfo) {
     super();
+    this._baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
+    this._listenEvents();
     this.sonApplication = [];
-    this.info = appinfo;
-    this.__baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
+    this.config = appinfo;
     this.name = appinfo.name || "";
     this.routerMode = appinfo.routerMode || "history";
-    this.classNamespace = appinfo.classNamespace || "";
     this.parent = "";
-    this.listenEvents();
   }
   get fullUrl() {
-    return (this.parent.fullUrl || "") + this.__baseUrl;
+    return (this.parent.fullUrl || "") + this._baseUrl;
   }
   get baseUrl() {
-    return this.__baseUrl;
+    return this._baseUrl;
   }
   set baseUrl(val) {
-    this.__baseUrl = val;
+    this._baseUrl = val;
   }
   findApp(name) {
     return this.sonApplication.find(function(app) {
@@ -50,23 +50,26 @@ export default class CtrlApps extends EventEmitter {
       this.sonApplication.splice(index, 1);
     }
   }
-  _getAppBaseUrl(app) {
-    return this.baseUrl + (app.baseUrl || "");
-  }
   registerApps(applist) {
     if (applist instanceof Array) {
       applist.forEach(this.registerApp.bind(this));
     } else if (typeof applist === "object") {
       this.registerApp(applist);
     } else {
-      console.error(
+      Logger.error(
         "registerApps: object or array is wanted but get " + typeof applist
       );
     }
   }
   async registerApp(app) {
     // in order to not modify the origin data by incident;
-    app = { ...app };
+    app = { ...app, originBaseUrl: app.baseUrl };
+    app.routerMode = app.routerMode || "history";
+
+    if (!this._checkAppBaseUrl(app) || !this._validateParams(app)) {
+      return;
+    }
+
     // handle duplicate registration
     const oldApp = this.findApp(app.name);
     if (oldApp) {
@@ -81,8 +84,9 @@ export default class CtrlApps extends EventEmitter {
 
     if (typeof app.canActive !== "function") {
       if (app.routerMode === "hash") {
-        app.canActive = path =>
+        app.canActive = path => {
           window.location.hash.replace(/^#/, "").startsWith(path);
+        };
       } else {
         app.canActive = path => window.location.pathname.startsWith(path);
       }
@@ -127,12 +131,12 @@ export default class CtrlApps extends EventEmitter {
         sonApplication.bootstrap();
         // delete window[app.name]
         // window[app.name] = null
-        if (app.canActive(app.baseUrl)) {
+        if (app.canActive(app.baseUrl, app.originBaseUrl, this.baseUrl)) {
           sonApplication.mount();
         }
         this.sonApplication.push(sonApplication);
       } else {
-        console.error(`child application ${app.applicationName} not found`);
+        Logger.error(`child application ${app.applicationName} not found`);
       }
     });
   }
@@ -142,7 +146,44 @@ export default class CtrlApps extends EventEmitter {
     });
     this.sonApplication = [];
   }
-  handleLocationChange() {
+  _validateParams(app) {
+    const emptyFields = [];
+    ["name", "applicationName", "entry", "contain", "baseUrl"].forEach(
+      field => {
+        if (!app[field]) {
+          emptyFields.push(field);
+        }
+      }
+    );
+    if (emptyFields.length) {
+      Logger.error(
+        `'${emptyFields.join(",")}' is required for '${app.name ||
+          app.applicationName ||
+          app.entry}'.`
+      );
+    }
+    return emptyFields.length == 0;
+  }
+  _checkAppBaseUrl(app) {
+    if (this.routerMode === "hash") {
+      if (app.routerMode === "history") {
+        Logger.error(
+          `${app.name} can NOT be 'history' mode when the master application is in 'hash' mode. ignored！`
+        );
+        return false;
+      }
+    }
+    return true;
+  }
+  _getAppBaseUrl(app) {
+    const baseUrl = app.baseUrl || "";
+    if (this.routerMode === "history" && app.routerMode === "hash") {
+      // restart the url chain
+      return baseUrl;
+    }
+    return this.baseUrl + baseUrl;
+  }
+  _handleLocationChange() {
     this.sonApplication.forEach(item => {
       if (item.app.canActive(item.app.baseUrl)) {
         item.mount();
@@ -151,8 +192,11 @@ export default class CtrlApps extends EventEmitter {
       }
     });
   }
-  listenEvents() {
-    window.addEventListener("popstate", this.handleLocationChange.bind(this));
-    window.addEventListener("hashchange", this.handleLocationChange.bind(this));
+  _listenEvents() {
+    window.addEventListener("popstate", this._handleLocationChange.bind(this));
+    window.addEventListener(
+      "hashchange",
+      this._handleLocationChange.bind(this)
+    );
   }
 }

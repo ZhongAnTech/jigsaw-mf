@@ -2227,6 +2227,29 @@
     })();
   });
 
+  var PREFIX = "[easy-mfs]:";
+  var logger = {};
+  ["log", "info", "error"].forEach(function(item) {
+    logger[item] = function() {
+      console[item].apply(console, getArgs(arguments));
+      return this;
+    };
+  });
+
+  function getArgs(args) {
+    var ret = Array.prototype.slice.call(args);
+    var date = new Date();
+    ret.unshift(
+      ""
+        .concat(date.getHours(), ":")
+        .concat(date.getMinutes(), ":")
+        .concat(date.getSeconds(), ".")
+        .concat(date.getMilliseconds())
+    );
+    ret.unshift(PREFIX);
+    return ret;
+  }
+
   /**
    * 一个应用既一个Fragment， 包含了应用所有的生命周期
    * @class Fragment
@@ -2239,68 +2262,44 @@
 
         classCallCheck(this, Fragment);
 
-        var name = app.name,
-          entry = app.entry,
-          contain = app.contain,
-          template = app.template,
-          styles = app.styles,
-          module = app.module,
-          baseUrl = app.baseUrl,
-          free = app.free,
-          sandbox = app.sandbox;
-        this.parent = parent;
         this.app = app;
+        this.parent = parent;
         this.mounted = false;
-        this.sandbox = sandbox;
-        this.name = name;
-        this.entry = entry;
         this.style = [];
-        this.contain = contain;
-        this.template = template;
-        this.baseUrl = baseUrl;
-        this.__module = module;
-        this.__free = free;
-        this.parent = parent || "";
-        styles &&
-          styles.map(function(ele) {
-            _this.addStyle(ele);
+
+        if (app.styles) {
+          app.styles.map(function(ele) {
+            _this._addStyle(ele);
           });
+        }
       }
 
       createClass(Fragment, [
         {
           key: "bootstrap",
           value: function bootstrap() {
-            this.__module.default.bootstrap(this);
+            this.app.module.default.bootstrap(this);
           }
         },
         {
           key: "unmount",
           value: function unmount() {
             if (this.mounted) {
-              this.__module.default.unmount(this.contain);
-
+              this.app.module.default.unmount(this.app.contain);
               this.mounted = false;
             }
           }
         },
         {
           key: "mount",
-          value: function mount(props) {
+          value: function mount() {
             if (!this.mounted) {
-              if (!this.contain) {
-                console.error(
-                  "Application name ".concat(this.name, " contain is null")
-                );
-              }
-
-              this.__module.default.mount(
-                this.contain,
-                this.baseUrl,
+              this.app.module.default.mount(
+                this.app.contain,
+                this.app.baseUrl,
                 this.app,
                 this
               );
-
               this.mounted = true;
             }
           }
@@ -2311,17 +2310,15 @@
             // unmount的时候不能释放资源，因为还有可能mount
             // 所以增加 destroy 方法，彻底释放不会再次mount的应用
             this.unmount();
-
-            this.__free();
-
+            this.app.free();
             this.style.map(function(e) {
               e.parentNode && e.parentNode.removeChild(e);
             });
           }
         },
         {
-          key: "addStyle",
-          value: function addStyle(txt) {
+          key: "_addStyle",
+          value: function _addStyle(txt) {
             var link = document.createElement("style");
             link.innerHTML = txt;
             var result = this.style.find(function(e) {
@@ -2566,34 +2563,33 @@
       verboseMemoryLeak: false
     })); // 注册并管理各应用
 
-  var CtrlApps =
+  var EasyMfs =
     /*#__PURE__*/
     (function(_EventEmitter) {
-      inherits(CtrlApps, _EventEmitter);
+      inherits(EasyMfs, _EventEmitter);
 
-      function CtrlApps(appinfo) {
+      function EasyMfs(appinfo) {
         var _this;
 
-        classCallCheck(this, CtrlApps);
+        classCallCheck(this, EasyMfs);
 
         _this = possibleConstructorReturn(
           this,
-          getPrototypeOf(CtrlApps).call(this)
+          getPrototypeOf(EasyMfs).call(this)
         );
+        _this._baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
+
+        _this._listenEvents();
+
         _this.sonApplication = [];
-        _this.info = appinfo;
-        _this.__baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
-
+        _this.config = appinfo;
         _this.name = appinfo.name || "";
-        _this.classNamespace = appinfo.classNamespace || "";
+        _this.routerMode = appinfo.routerMode || "history";
         _this.parent = "";
-
-        _this.listenEvents();
-
         return _this;
       }
 
-      createClass(CtrlApps, [
+      createClass(EasyMfs, [
         {
           key: "findApp",
           value: function findApp(name) {
@@ -2616,12 +2612,6 @@
           }
         },
         {
-          key: "_getAppBaseUrl",
-          value: function _getAppBaseUrl(app) {
-            return this.baseUrl + (app.baseUrl || "");
-          }
-        },
-        {
           key: "registerApps",
           value: function registerApps(applist) {
             if (applist instanceof Array) {
@@ -2629,8 +2619,9 @@
             } else if (_typeof_1(applist) === "object") {
               this.registerApp(applist);
             } else {
-              console.error(
-                "object or array is wanted but get " + _typeof_1(applist)
+              logger.error(
+                "registerApps: object or array is wanted but get " +
+                  _typeof_1(applist)
               );
             }
           }
@@ -2659,12 +2650,29 @@
                       switch ((_context.prev = _context.next)) {
                         case 0:
                           // in order to not modify the origin data by incident;
-                          app = _objectSpread$1({}, app); // handle duplicate registration
+                          app = _objectSpread$1({}, app, {
+                            originBaseUrl: app.baseUrl
+                          });
+                          app.routerMode = app.routerMode || "history";
 
+                          if (
+                            !(
+                              !this._checkAppBaseUrl(app) ||
+                              !this._validateParams(app)
+                            )
+                          ) {
+                            _context.next = 4;
+                            break;
+                          }
+
+                          return _context.abrupt("return");
+
+                        case 4:
+                          // handle duplicate registration
                           oldApp = this.findApp(app.name);
 
                           if (!oldApp) {
-                            _context.next = 8;
+                            _context.next = 11;
                             break;
                           }
 
@@ -2678,11 +2686,11 @@
 
                           return _context.abrupt("return");
 
-                        case 8:
+                        case 11:
                           if (typeof app.canActive !== "function") {
                             if (app.routerMode === "hash") {
                               app.canActive = function(path) {
-                                return window.location.hash
+                                window.location.hash
                                   .replace(/^#/, "")
                                   .startsWith(path);
                               };
@@ -2699,7 +2707,7 @@
                             window.__easy_mfs_dlls || {};
 
                           if (!dll[app.entry]) {
-                            _context.next = 18;
+                            _context.next = 21;
                             break;
                           }
 
@@ -2709,14 +2717,14 @@
                           getExternalScripts = result.getExternalScripts;
                           getExternalStyleSheets =
                             result.getExternalStyleSheets;
-                          _context.next = 26;
+                          _context.next = 29;
                           break;
 
-                        case 18:
-                          _context.next = 20;
+                        case 21:
+                          _context.next = 23;
                           return importEntry(app.entry);
 
-                        case 20:
+                        case 23:
                           _result = _context.sent;
                           template = _result.template;
                           execScripts = _result.execScripts;
@@ -2725,7 +2733,7 @@
                             _result.getExternalStyleSheets;
                           dll[app.entry] = _result;
 
-                        case 26:
+                        case 29:
                           sandbox = getSandbox();
                           Promise.all([
                             execScripts(sandbox),
@@ -2751,13 +2759,19 @@
                               sonApplication.bootstrap(); // delete window[app.name]
                               // window[app.name] = null
 
-                              if (app.canActive(app.baseUrl)) {
+                              if (
+                                app.canActive(
+                                  app.baseUrl,
+                                  app.originBaseUrl,
+                                  _this2.baseUrl
+                                )
+                              ) {
                                 sonApplication.mount();
                               }
 
                               _this2.sonApplication.push(sonApplication);
                             } else {
-                              console.error(
+                              logger.error(
                                 "child application ".concat(
                                   app.applicationName,
                                   " not found"
@@ -2766,7 +2780,7 @@
                             }
                           });
 
-                        case 28:
+                        case 31:
                         case "end":
                           return _context.stop();
                       }
@@ -2795,8 +2809,62 @@
           }
         },
         {
-          key: "handleLocationChange",
-          value: function handleLocationChange() {
+          key: "_validateParams",
+          value: function _validateParams(app) {
+            var emptyFields = [];
+            ["name", "applicationName", "entry", "contain", "baseUrl"].forEach(
+              function(field) {
+                if (!app[field]) {
+                  emptyFields.push(field);
+                }
+              }
+            );
+
+            if (emptyFields.length) {
+              logger.error(
+                "'"
+                  .concat(emptyFields.join(","), "' is required for '")
+                  .concat(app.name || app.applicationName || app.entry, "'.")
+              );
+            }
+
+            return emptyFields.length == 0;
+          }
+        },
+        {
+          key: "_checkAppBaseUrl",
+          value: function _checkAppBaseUrl(app) {
+            if (this.routerMode === "hash") {
+              if (app.routerMode === "history") {
+                logger.error(
+                  "".concat(
+                    app.name,
+                    " can NOT be 'history' mode when the master application is in 'hash' mode. ignored\uFF01"
+                  )
+                );
+                return false;
+              }
+            }
+
+            return true;
+          }
+        },
+        {
+          key: "_getAppBaseUrl",
+          value: function _getAppBaseUrl(app) {
+            var baseUrl = app.baseUrl || "";
+
+            if (this.routerMode === "history" && app.routerMode === "hash") {
+              // restart the url chain
+              return baseUrl;
+            }
+
+            return this.baseUrl + baseUrl;
+          }
+        },
+        {
+          key: "_handleLocationChange",
+          value: function _handleLocationChange() {
             this.sonApplication.forEach(function(item) {
               if (item.app.canActive(item.app.baseUrl)) {
                 item.mount();
@@ -2807,39 +2875,39 @@
           }
         },
         {
-          key: "listenEvents",
-          value: function listenEvents() {
+          key: "_listenEvents",
+          value: function _listenEvents() {
             window.addEventListener(
               "popstate",
-              this.handleLocationChange.bind(this)
+              this._handleLocationChange.bind(this)
             );
             window.addEventListener(
               "hashchange",
-              this.handleLocationChange.bind(this)
+              this._handleLocationChange.bind(this)
             );
           }
         },
         {
           key: "fullUrl",
           get: function get() {
-            return (this.parent.fullUrl || "") + this.__baseUrl;
+            return (this.parent.fullUrl || "") + this._baseUrl;
           }
         },
         {
           key: "baseUrl",
           get: function get() {
-            return this.__baseUrl;
+            return this._baseUrl;
           },
           set: function set(val) {
-            this.__baseUrl = val;
+            this._baseUrl = val;
           }
         }
       ]);
 
-      return CtrlApps;
+      return EasyMfs;
     })(eventemitter2);
 
-  exports.default = CtrlApps;
+  exports.default = EasyMfs;
   exports.globalEvent = globalEvent;
 
   Object.defineProperty(exports, "__esModule", { value: true });

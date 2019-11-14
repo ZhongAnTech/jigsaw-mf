@@ -17,7 +17,10 @@ function App({ baseUrl }) {
   // }
   return (
     <Router basename={baseUrl}>
-      <div package="react-news" className={`App ${appPool.classNamespace}`}>
+      <div
+        package="react-news"
+        className={`App ${appPool.config.classNamespace}`}
+      >
         {/* <h2>Tasdfasdf {baseUrl}</h2>
         <nav>
           <ul>

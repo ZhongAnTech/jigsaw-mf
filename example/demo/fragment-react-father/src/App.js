@@ -10,7 +10,10 @@ import { globalEvent } from "easy-mfs";
 function App({ baseUrl }) {
   return (
     <Router basename={baseUrl}>
-      <div package="react-father" className={`App ${appPool.classNamespace}`}>
+      <div
+        package="react-father"
+        className={`App ${appPool.config.classNamespace}`}
+      >
         <div className={"index"}>
           <div className={"header"}>示例</div>
           <div className={"body"}>

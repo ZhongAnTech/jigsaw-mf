@@ -12,7 +12,7 @@ export default {
   name: "app",
   data() {
     return {
-      name: appPool.classNamespace
+      name: appPool.config.classNamespace
     };
   },
   methods: {},

@@ -35,7 +35,7 @@ export default {
   name: "Index",
   data() {
     return {
-      name: appPool.classNamespace
+      name: appPool.config.classNamespace
     };
   },
   methods: {
