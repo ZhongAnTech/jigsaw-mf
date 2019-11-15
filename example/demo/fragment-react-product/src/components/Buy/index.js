@@ -7,17 +7,32 @@ class Buy extends React.Component {
     super(props);
   }
   componentDidMount() {
+    console.log("react-products", "1111");
+    debugger;
     const appinfo = [
       {
         name: "a90",
         applicationName: "vuemaster",
+        routerMode: "hash",
         entry: "http://localhost:9099/app",
         contain: this.refs.container,
-        baseUrl: "/buy",
-        canActive(path) {
-          console.log("98098908090987098709");
-          // return window.location.pathname.startsWith(path);
-          return true;
+        baseUrl: "/buy#/",
+        canActive(baseUrl, basePath) {
+          debugger;
+          console.log(
+            "react-products",
+            "basePath:",
+            basePath,
+            "baseUrl:",
+            baseUrl,
+            window.location.pathname.startsWith(basePath),
+            window.location.hash.startsWith("#" + baseUrl),
+            appPool
+          );
+          return (
+            window.location.pathname.startsWith(basePath) &&
+            window.location.hash.startsWith("#" + baseUrl)
+          );
         }
       }
     ];

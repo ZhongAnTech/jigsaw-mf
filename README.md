@@ -58,7 +58,7 @@ export default {
     ReactDOM.render(<App baseUrl={baseUrl} />, contain);
   },
   unmount(contain) {
-    appPool.unregisterApps(); // line 3
+    appPool.unregisterAllApps(); // line 3
     ReactDOM.unmountComponentAtNode(contain);
   }
 };

@@ -71,11 +71,8 @@ export default {
         entry: "http://localhost:5020/app",
         contain: this.$refs.other3,
         baseUrl: "/reactfather",
-        canActive() {
-          // path
-          // baseUrl 会被chapxi重写成包含父路径
-          // 所以这里可以直接使用
-          return location.pathname.startsWith(this.baseUrl);
+        canActive(baseUrl) {
+          return location.pathname.startsWith(baseUrl);
         }
       }
       // {

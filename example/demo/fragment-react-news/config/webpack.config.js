@@ -748,7 +748,7 @@ module.exports = function(webpackEnv) {
     // our own hints via the FileSizeReporter
     performance: false,
     externals: {
-      ...(isEnvProductionProfile && {
+      ...(isEnvProduction && {
         react: "react",
         "react-dom": "ReactDOM",
         "easy-mfs": "easyMfs",

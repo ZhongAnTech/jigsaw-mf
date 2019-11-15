@@ -320,7 +320,9 @@ module.exports = function(webpackEnv) {
               // https://github.com/facebook/create-react-app/issues/5250
               // Pending further investigation:
               // https://github.com/terser-js/terser/issues/120
-              inline: 2
+              inline: 2,
+              drop_debugger: false,
+              drop_console: false
             },
             mangle: {
               safari10: true
@@ -328,8 +330,7 @@ module.exports = function(webpackEnv) {
             // Added for profiling in devtools
             keep_classnames: isEnvProductionProfile,
             keep_fnames: isEnvProductionProfile,
-            drop_debugger: false,
-            drop_console: false,
+
             output: {
               ecma: 5,
               comments: false,
@@ -748,7 +749,7 @@ module.exports = function(webpackEnv) {
     // our own hints via the FileSizeReporter
     performance: false,
     externals: {
-      ...(isEnvProductionProfile && {
+      ...(isEnvProduction && {
         react: "react",
         "react-dom": "ReactDOM",
         "easy-mfs": "easyMfs",

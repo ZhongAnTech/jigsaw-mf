@@ -25,7 +25,6 @@ export default class EasyMfs extends EventEmitter {
     this._listenEvents();
     this.sonApplication = [];
     this.config = appinfo;
-    this.name = appinfo.name || "";
     this.routerMode = appinfo.routerMode || "history";
     this.parent = "";
   }
@@ -43,15 +42,6 @@ export default class EasyMfs extends EventEmitter {
       return name === app.name;
     });
   }
-  unregisterApps(name) {
-    let index = this.sonApplication.findIndex(function(app) {
-      return name === app.name;
-    });
-    if (index !== -1) {
-      this.sonApplication[index].destroy();
-      this.sonApplication.splice(index, 1);
-    }
-  }
   registerApps(applist) {
     if (applist instanceof Array) {
       applist.forEach(this.registerApp.bind(this));
@@ -65,22 +55,10 @@ export default class EasyMfs extends EventEmitter {
   }
   async registerApp(app) {
     // in order to not modify the origin data by incident;
-    app = { ...app, pathnameBase: this.baseUrl };
+    app = { ...app, basePath: this.baseUrl };
     app.routerMode = app.routerMode || "history";
 
     if (!this._checkRouterMode(app) || !this._validateParams(app)) {
-      return;
-    }
-
-    // handle duplicate registration
-    const oldApp = this.findApp(app.name);
-    if (oldApp) {
-      oldApp.mounted = false;
-      oldApp.contain = app.contain;
-      oldApp.baseUrl = this._getAppBaseUrl(app);
-      if (oldApp.app.canActive(oldApp.baseUrl, oldApp.pathnameBase)) {
-        oldApp.mount();
-      }
       return;
     }
 
@@ -88,22 +66,30 @@ export default class EasyMfs extends EventEmitter {
       const parts = app.baseUrl.split("#");
       // e.g. /pathname/#/hash/part
       if (parts.length > 1) {
-        app.pathnameBase = joinPath(this.baseUrl, parts[0]);
+        app.basePath = joinPath(this.baseUrl, parts[0]);
         app.baseUrl = parts[1];
       }
+    } else {
+      app.basePath = joinPath(this.baseUrl, app.baseUrl);
     }
 
+    app.baseUrl = this._getAppBaseUrl(app);
+
     if (typeof app.canActive !== "function") {
-      if (app.routerMode === "hash") {
-        app.canActive = (baseUrl, pathnameBase) => {
-          return (
-            window.location.pathname.startsWith(pathnameBase) &&
-            window.location.hash.replace(/^#/, "").startsWith(baseUrl)
-          );
-        };
-      } else {
-        app.canActive = baseUrl => window.location.pathname.startsWith(baseUrl);
+      app.canActive = this._getDefaultCanActiveFn(app.routerMode);
+    }
+
+    // handle duplicate registration
+    const oldApp = this.findApp(app.name);
+
+    if (oldApp) {
+      oldApp.mounted = false;
+      // 主要是更新contain
+      Object.assign(oldApp.app, app);
+      if (oldApp.app.canActive(app.baseUrl, app.basePath)) {
+        oldApp.mount();
       }
+      return;
     }
 
     let dll = (window.__easy_mfs_dlls = window.__easy_mfs_dlls || {});
@@ -139,12 +125,11 @@ export default class EasyMfs extends EventEmitter {
         app.module = sandbox[app.applicationName];
         app.sandbox = sandbox;
         app.free = sandbox.__easy_mfs_free;
-        app.baseUrl = this._getAppBaseUrl(app);
         const sonApplication = new Fragment(app, this);
         sonApplication.bootstrap();
         // delete window[app.name]
         // window[app.name] = null
-        if (app.canActive(app.baseUrl, this.baseUrl)) {
+        if (app.canActive(app.baseUrl, app.basePath)) {
           sonApplication.mount();
         }
         this.sonApplication.push(sonApplication);
@@ -153,11 +138,30 @@ export default class EasyMfs extends EventEmitter {
       }
     });
   }
-  unregisterAllApps() {
-    this.sonApplication.forEach(item => {
-      item.destroy();
+  unregisterApp(name) {
+    let index = this.sonApplication.findIndex(function(app) {
+      return name === app.name;
     });
+    if (index !== -1) {
+      this.sonApplication[index].destroy();
+      this.sonApplication.splice(index, 1);
+    }
+  }
+  unregisterAllApps() {
+    this.sonApplication.forEach(item => item.destroy());
     this.sonApplication = [];
+  }
+  _getDefaultCanActiveFn(routerMode) {
+    if (routerMode === "hash") {
+      return (baseUrl, basePath) => {
+        return (
+          window.location.pathname.startsWith(basePath) &&
+          window.location.hash.startsWith("#" + baseUrl)
+        );
+      };
+    } else {
+      app.canActive = baseUrl => window.location.pathname.startsWith(baseUrl);
+    }
   }
   _validateParams(app) {
     const emptyFields = [];
@@ -195,9 +199,9 @@ export default class EasyMfs extends EventEmitter {
     }
     return joinPath(this.baseUrl, baseUrl);
   }
-  _handleLocationChange() {
+  _handleLocationChange(e) {
     this.sonApplication.forEach(item => {
-      if (item.app.canActive(item.app.baseUrl)) {
+      if (item.app.canActive(item.app.baseUrl, item.app.basePath)) {
         item.mount();
       } else {
         item.unmount();

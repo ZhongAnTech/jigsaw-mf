@@ -5,6 +5,8 @@
  */
 class Fragment {
   constructor(app, parent) {
+    const { name } = app;
+    this.name = name;
     this.app = app;
     this.parent = parent;
     this.mounted = false;

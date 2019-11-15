@@ -5,7 +5,6 @@
  */
 import _regeneratorRuntime from "@babel/runtime/regenerator";
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
-import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
 import _typeof from "@babel/runtime/helpers/typeof";
 import _classCallCheck from "@babel/runtime/helpers/classCallCheck";
 import _createClass from "@babel/runtime/helpers/createClass";
@@ -15,6 +14,7 @@ import _inherits from "@babel/runtime/helpers/inherits";
 import { importEntry } from "html-entry";
 import EventEmitter from "eventemitter2";
 
+/* eslint-disable */
 var PREFIX = "[easy-mfs]:";
 var logger = {};
 ["log", "info", "error"].forEach(function(item) {
@@ -38,6 +38,8 @@ function getArgs(args) {
   return ret;
 }
 
+/* eslint-disable */
+
 /**
  * 一个应用既一个Fragment， 包含了应用所有的生命周期
  * @class Fragment
@@ -50,6 +52,8 @@ var Fragment =
 
       _classCallCheck(this, Fragment);
 
+      var name = app.name;
+      this.name = name;
       this.app = app;
       this.parent = parent;
       this.mounted = false;
@@ -131,6 +135,7 @@ var Fragment =
     return Fragment;
   })();
 
+/* eslint-disable */
 // 当pushstate的时候主动触发popstate， 因为其他应用依赖popstate触发显示
 function hijackHistory() {
   if (!window.history.__EASY_MFS_DECORATED) {
@@ -168,6 +173,7 @@ function hijackHistory() {
   }
 }
 
+/* eslint-disable */
 function hijackers() {
   hijackHistory();
   var listeners = [],
@@ -300,6 +306,12 @@ function getSandbox() {
   return proxyWindow;
 }
 
+/* eslint-disable */
+function joinPath() {
+  var args = Array.prototype.slice.call(arguments);
+  return args.join("/").replace(/\/{2,}/g, "/");
+}
+
 function ownKeys$1(object, enumerableOnly) {
   var keys = Object.keys(object);
   if (Object.getOwnPropertySymbols) {
@@ -365,7 +377,6 @@ var EasyMfs =
 
       _this.sonApplication = [];
       _this.config = appinfo;
-      _this.name = appinfo.name || "";
       _this.routerMode = appinfo.routerMode || "history";
       _this.parent = "";
       return _this;
@@ -378,19 +389,6 @@ var EasyMfs =
           return this.sonApplication.find(function(app) {
             return name === app.name;
           });
-        }
-      },
-      {
-        key: "unregisterApps",
-        value: function unregisterApps(name) {
-          var index = this.sonApplication.findIndex(function(app) {
-            return name === app.name;
-          });
-
-          if (index !== -1) {
-            this.sonApplication[index].destroy();
-            this.sonApplication.splice(index, 1);
-          }
         }
       },
       {
@@ -410,180 +408,193 @@ var EasyMfs =
       },
       {
         key: "registerApp",
-        value: (function() {
-          var _registerApp = _asyncToGenerator(
-            /*#__PURE__*/
-            _regeneratorRuntime.mark(function _callee(app) {
-              var _this2 = this;
+        value: function registerApp(app) {
+          var _this2 = this;
 
-              var oldApp,
-                dll,
-                template,
-                execScripts,
-                getExternalScripts,
-                getExternalStyleSheets,
-                result,
-                _result,
-                sandbox;
+          var parts,
+            oldApp,
+            dll,
+            template,
+            execScripts,
+            getExternalScripts,
+            getExternalStyleSheets,
+            result,
+            _result,
+            sandbox;
 
-              return _regeneratorRuntime.wrap(
-                function _callee$(_context) {
-                  while (1) {
-                    switch ((_context.prev = _context.next)) {
-                      case 0:
-                        // in order to not modify the origin data by incident;
-                        app = _objectSpread$1({}, app, {
-                          originBaseUrl: app.baseUrl
-                        });
-                        app.routerMode = app.routerMode || "history";
+          return _regeneratorRuntime.async(
+            function registerApp$(_context) {
+              while (1) {
+                switch ((_context.prev = _context.next)) {
+                  case 0:
+                    // in order to not modify the origin data by incident;
+                    app = _objectSpread$1({}, app, {
+                      basePath: this.baseUrl
+                    });
+                    app.routerMode = app.routerMode || "history";
 
-                        if (
-                          !(
-                            !this._checkAppBaseUrl(app) ||
-                            !this._validateParams(app)
-                          )
-                        ) {
-                          _context.next = 4;
-                          break;
-                        }
-
-                        return _context.abrupt("return");
-
-                      case 4:
-                        // handle duplicate registration
-                        oldApp = this.findApp(app.name);
-
-                        if (!oldApp) {
-                          _context.next = 11;
-                          break;
-                        }
-
-                        oldApp.mounted = false;
-                        oldApp.contain = app.contain;
-                        oldApp.baseUrl = this._getAppBaseUrl(app);
-
-                        if (oldApp.app.canActive(oldApp.baseUrl)) {
-                          oldApp.mount();
-                        }
-
-                        return _context.abrupt("return");
-
-                      case 11:
-                        if (typeof app.canActive !== "function") {
-                          if (app.routerMode === "hash") {
-                            app.canActive = function(path) {
-                              window.location.hash
-                                .replace(/^#/, "")
-                                .startsWith(path);
-                            };
-                          } else {
-                            app.canActive = function(path) {
-                              return window.location.pathname.startsWith(path);
-                            };
-                          }
-                        }
-
-                        dll = window.__easy_mfs_dlls =
-                          window.__easy_mfs_dlls || {};
-
-                        if (!dll[app.entry]) {
-                          _context.next = 21;
-                          break;
-                        }
-
-                        result = dll[app.entry];
-                        template = result.template;
-                        execScripts = result.execScripts;
-                        getExternalScripts = result.getExternalScripts;
-                        getExternalStyleSheets = result.getExternalStyleSheets;
-                        _context.next = 29;
-                        break;
-
-                      case 21:
-                        _context.next = 23;
-                        return importEntry(app.entry);
-
-                      case 23:
-                        _result = _context.sent;
-                        template = _result.template;
-                        execScripts = _result.execScripts;
-                        getExternalScripts = _result.getExternalScripts;
-                        getExternalStyleSheets = _result.getExternalStyleSheets;
-                        dll[app.entry] = _result;
-
-                      case 29:
-                        sandbox = getSandbox();
-                        Promise.all([
-                          execScripts(sandbox),
-                          getExternalScripts(sandbox),
-                          getExternalStyleSheets()
-                        ]).then(function(values) {
-                          var script = values[0];
-                          var extScript = values[1];
-                          var styles = values[2];
-                          app.template = template;
-                          app.styles = styles;
-                          var _module = sandbox[app.applicationName];
-
-                          if (_module && _module.__esModule) {
-                            app.module = sandbox[app.applicationName];
-                            app.sandbox = sandbox;
-                            app.free = sandbox.__easy_mfs_free;
-
-                            var baseurl = _this2._getAppBaseUrl(app);
-
-                            app.baseUrl = baseurl.replace(/\/+/, "/");
-                            var sonApplication = new Fragment(app, _this2);
-                            sonApplication.bootstrap(); // delete window[app.name]
-                            // window[app.name] = null
-
-                            if (
-                              app.canActive(
-                                app.baseUrl,
-                                app.originBaseUrl,
-                                _this2.baseUrl
-                              )
-                            ) {
-                              sonApplication.mount();
-                            }
-
-                            _this2.sonApplication.push(sonApplication);
-                          } else {
-                            logger.error(
-                              "child application ".concat(
-                                app.applicationName,
-                                " not found"
-                              )
-                            );
-                          }
-                        });
-
-                      case 31:
-                      case "end":
-                        return _context.stop();
+                    if (
+                      !(
+                        !this._checkRouterMode(app) ||
+                        !this._validateParams(app)
+                      )
+                    ) {
+                      _context.next = 4;
+                      break;
                     }
-                  }
-                },
-                _callee,
-                this
-              );
-            })
+
+                    return _context.abrupt("return");
+
+                  case 4:
+                    if (app.routerMode === "hash") {
+                      parts = app.baseUrl.split("#"); // e.g. /pathname/#/hash/part
+
+                      if (parts.length > 1) {
+                        app.basePath = joinPath(this.baseUrl, parts[0]);
+                        app.baseUrl = parts[1];
+                      }
+                    } else {
+                      app.basePath = joinPath(this.baseUrl, app.baseUrl);
+                    }
+
+                    app.baseUrl = this._getAppBaseUrl(app);
+
+                    if (typeof app.canActive !== "function") {
+                      app.canActive = this._getDefaultCanActiveFn(
+                        app.routerMode
+                      );
+                    } // handle duplicate registration
+
+                    oldApp = this.findApp(app.name);
+
+                    if (!oldApp) {
+                      _context.next = 13;
+                      break;
+                    }
+
+                    oldApp.mounted = false; // 主要是更新contain
+
+                    Object.assign(oldApp.app, app);
+
+                    if (oldApp.app.canActive(app.baseUrl, app.basePath)) {
+                      oldApp.mount();
+                    }
+
+                    return _context.abrupt("return");
+
+                  case 13:
+                    dll = window.__easy_mfs_dlls = window.__easy_mfs_dlls || {};
+
+                    if (!dll[app.entry]) {
+                      _context.next = 22;
+                      break;
+                    }
+
+                    result = dll[app.entry];
+                    template = result.template;
+                    execScripts = result.execScripts;
+                    getExternalScripts = result.getExternalScripts;
+                    getExternalStyleSheets = result.getExternalStyleSheets;
+                    _context.next = 30;
+                    break;
+
+                  case 22:
+                    _context.next = 24;
+                    return _regeneratorRuntime.awrap(importEntry(app.entry));
+
+                  case 24:
+                    _result = _context.sent;
+                    template = _result.template;
+                    execScripts = _result.execScripts;
+                    getExternalScripts = _result.getExternalScripts;
+                    getExternalStyleSheets = _result.getExternalStyleSheets;
+                    dll[app.entry] = _result;
+
+                  case 30:
+                    sandbox = getSandbox();
+                    Promise.all([
+                      execScripts(sandbox),
+                      getExternalScripts(sandbox),
+                      getExternalStyleSheets()
+                    ]).then(function(values) {
+                      var script = values[0];
+                      var extScript = values[1];
+                      var styles = values[2];
+                      app.template = template;
+                      app.styles = styles;
+                      var _module = sandbox[app.applicationName];
+
+                      if (_module && _module.__esModule) {
+                        app.module = sandbox[app.applicationName];
+                        app.sandbox = sandbox;
+                        app.free = sandbox.__easy_mfs_free;
+                        var sonApplication = new Fragment(app, _this2);
+                        sonApplication.bootstrap(); // delete window[app.name]
+                        // window[app.name] = null
+
+                        if (app.canActive(app.baseUrl, app.basePath)) {
+                          sonApplication.mount();
+                        }
+
+                        _this2.sonApplication.push(sonApplication);
+                      } else {
+                        logger.error(
+                          "child application ".concat(
+                            app.applicationName,
+                            " not found"
+                          )
+                        );
+                      }
+                    });
+
+                  case 32:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            },
+            null,
+            this
           );
+        }
+      },
+      {
+        key: "unregisterApp",
+        value: function unregisterApp(name) {
+          var index = this.sonApplication.findIndex(function(app) {
+            return name === app.name;
+          });
 
-          function registerApp(_x) {
-            return _registerApp.apply(this, arguments);
+          if (index !== -1) {
+            this.sonApplication[index].destroy();
+            this.sonApplication.splice(index, 1);
           }
-
-          return registerApp;
-        })()
+        }
       },
       {
         key: "unregisterAllApps",
         value: function unregisterAllApps() {
           this.sonApplication.forEach(function(item) {
-            item.destroy();
+            return item.destroy();
           });
           this.sonApplication = [];
+        }
+      },
+      {
+        key: "_getDefaultCanActiveFn",
+        value: function _getDefaultCanActiveFn(routerMode) {
+          if (routerMode === "hash") {
+            return function(baseUrl, basePath) {
+              return (
+                window.location.pathname.startsWith(basePath) &&
+                window.location.hash.startsWith("#" + baseUrl)
+              );
+            };
+          } else {
+            app.canActive = function(baseUrl) {
+              return window.location.pathname.startsWith(baseUrl);
+            };
+          }
         }
       },
       {
@@ -610,8 +621,8 @@ var EasyMfs =
         }
       },
       {
-        key: "_checkAppBaseUrl",
-        value: function _checkAppBaseUrl(app) {
+        key: "_checkRouterMode",
+        value: function _checkRouterMode(app) {
           if (this.routerMode === "hash") {
             if (app.routerMode === "history") {
               logger.error(
@@ -633,18 +644,18 @@ var EasyMfs =
           var baseUrl = app.baseUrl || "";
 
           if (this.routerMode === "history" && app.routerMode === "hash") {
-            // restart the url chain
             return baseUrl;
           }
 
-          return this.baseUrl + baseUrl;
+          return joinPath(this.baseUrl, baseUrl);
         }
       },
       {
         key: "_handleLocationChange",
-        value: function _handleLocationChange() {
+        value: function _handleLocationChange(e) {
+          logger.info("receive location change event: ".concat(e.type));
           this.sonApplication.forEach(function(item) {
-            if (item.app.canActive(item.app.baseUrl)) {
+            if (item.app.canActive(item.app.baseUrl, item.app.basePath)) {
               item.mount();
             } else {
               item.unmount();

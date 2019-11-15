@@ -2,9 +2,7 @@
 import hijackers from "../hijackers/index";
 export default function getSandbox() {
   let proxyWindow = new Proxy(
-    {
-      ...hijackers()
-    },
+    { ...hijackers() },
     {
       get: function(target, name) {
         if (name === "undefined") return window.undefined;

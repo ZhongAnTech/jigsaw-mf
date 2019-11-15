@@ -13,8 +13,8 @@ export default class Home extends React.Component {
         entry: "http://localhost:9200/app",
         contain: this.refs.container1,
         baseUrl: "/",
-        canActive(path) {
-          return window.location.pathname.startsWith(this.baseUrl);
+        canActive(baseUrl) {
+          return window.location.pathname.startsWith(baseUrl);
         }
       },
       {
@@ -23,8 +23,8 @@ export default class Home extends React.Component {
         entry: "http://localhost:9300/app",
         contain: this.refs.container2,
         baseUrl: "/",
-        canActive(path) {
-          return window.location.pathname.startsWith(this.baseUrl);
+        canActive(baseUrl) {
+          return window.location.pathname.startsWith(baseUrl);
         }
       }
       // {
