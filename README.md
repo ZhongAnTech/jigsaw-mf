@@ -135,8 +135,10 @@ const appinfo = [
     // the base path allocated to this micro-application, relative to `appPool.baseUrl`. [required]
     baseUrl: "/reactchild",
     // to determine if to mount this micro-application. [optional]
-    canActive = path => window.location.hash.replace(/^#/, "").startsWith(path); // default for `hash` mode
-    canActive = path => window.location.pathname.startsWith(path); // default for `history` mode
+    canActive = (baseUrl, basePath) => {
+      return window.location.pathname.startsWith(basePath) && window.location.hash.startsWith("#" + baseUrl)
+    }; // default for `hash` mode
+    canActive = (baseUrl, basePath) => window.location.pathname.startsWith(baseUrl); // default for `history` mode
   }
 ];
 
@@ -210,7 +212,7 @@ An application can be adapted to serve both as master-application and micro-appl
 ## Known Issues
 
 1. Registering micro-application that under development mode with hot reload enabled will cause white screen.
-2. When the master application is using `hash` router mode, the micro-applications beneath can NOT be `history` mode.
+2. When the master application is using `hash` router mode, the micro-application beneath can NOT be `history` mode.
 
 ## License
 
