@@ -1,5 +1,5 @@
 /*!
- * easymfs.js v1.0.0
+ * jigsaw.js v1.0.0
  * (c) 2019-2019 ZA-FE
  * Released under the MIT License.
  */
@@ -15,7 +15,7 @@ import { importEntry } from "html-entry";
 import EventEmitter from "eventemitter2";
 
 /* eslint-disable */
-var PREFIX = "[easy-mfs]:";
+var PREFIX = "[jigsaw]:";
 var logger = {};
 ["log", "info", "error"].forEach(function(item) {
   logger[item] = function() {
@@ -357,19 +357,19 @@ var globalEvent =
     verboseMemoryLeak: false
   })); // 注册并管理各应用
 
-var EasyMfs =
+var Jigsaw =
   /*#__PURE__*/
   (function(_EventEmitter) {
-    _inherits(EasyMfs, _EventEmitter);
+    _inherits(Jigsaw, _EventEmitter);
 
-    function EasyMfs(appinfo) {
+    function Jigsaw(appinfo) {
       var _this;
 
-      _classCallCheck(this, EasyMfs);
+      _classCallCheck(this, Jigsaw);
 
       _this = _possibleConstructorReturn(
         this,
-        _getPrototypeOf(EasyMfs).call(this)
+        _getPrototypeOf(Jigsaw).call(this)
       );
       _this._baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
 
@@ -382,7 +382,7 @@ var EasyMfs =
       return _this;
     }
 
-    _createClass(EasyMfs, [
+    _createClass(Jigsaw, [
       {
         key: "findApp",
         value: function findApp(name) {
@@ -653,7 +653,6 @@ var EasyMfs =
       {
         key: "_handleLocationChange",
         value: function _handleLocationChange(e) {
-          logger.info("receive location change event: ".concat(e.type));
           this.sonApplication.forEach(function(item) {
             if (item.app.canActive(item.app.baseUrl, item.app.basePath)) {
               item.mount();
@@ -693,8 +692,8 @@ var EasyMfs =
       }
     ]);
 
-    return EasyMfs;
+    return Jigsaw;
   })(EventEmitter);
 
-export default EasyMfs;
+export default Jigsaw;
 export { globalEvent };

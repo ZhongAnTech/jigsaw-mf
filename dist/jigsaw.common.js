@@ -1,5 +1,5 @@
 /*!
- * easymfs.js v1.0.0
+ * jigsaw.js v1.0.0
  * (c) 2019-2019 ZA-FE
  * Released under the MIT License.
  */
@@ -8,7 +8,7 @@
     ? factory(exports)
     : typeof define === "function" && define.amd
     ? define(["exports"], factory)
-    : ((global = global || self), factory((global.easymfs = {})));
+    : ((global = global || self), factory((global.jigsaw = {})));
 })(this, function(exports) {
   "use strict";
 
@@ -2182,7 +2182,7 @@
   });
 
   /* eslint-disable */
-  var PREFIX = "[easy-mfs]:";
+  var PREFIX = "[jigsaw]:";
   var logger = {};
   ["log", "info", "error"].forEach(function(item) {
     logger[item] = function() {
@@ -2530,19 +2530,19 @@
       verboseMemoryLeak: false
     })); // 注册并管理各应用
 
-  var EasyMfs =
+  var Jigsaw =
     /*#__PURE__*/
     (function(_EventEmitter) {
-      inherits(EasyMfs, _EventEmitter);
+      inherits(Jigsaw, _EventEmitter);
 
-      function EasyMfs(appinfo) {
+      function Jigsaw(appinfo) {
         var _this;
 
-        classCallCheck(this, EasyMfs);
+        classCallCheck(this, Jigsaw);
 
         _this = possibleConstructorReturn(
           this,
-          getPrototypeOf(EasyMfs).call(this)
+          getPrototypeOf(Jigsaw).call(this)
         );
         _this._baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
 
@@ -2555,7 +2555,7 @@
         return _this;
       }
 
-      createClass(EasyMfs, [
+      createClass(Jigsaw, [
         {
           key: "findApp",
           value: function findApp(name) {
@@ -2827,7 +2827,6 @@
         {
           key: "_handleLocationChange",
           value: function _handleLocationChange(e) {
-            logger.info("receive location change event: ".concat(e.type));
             this.sonApplication.forEach(function(item) {
               if (item.app.canActive(item.app.baseUrl, item.app.basePath)) {
                 item.mount();
@@ -2867,10 +2866,10 @@
         }
       ]);
 
-      return EasyMfs;
+      return Jigsaw;
     })(eventemitter2);
 
-  exports.default = EasyMfs;
+  exports.default = Jigsaw;
   exports.globalEvent = globalEvent;
 
   Object.defineProperty(exports, "__esModule", { value: true });

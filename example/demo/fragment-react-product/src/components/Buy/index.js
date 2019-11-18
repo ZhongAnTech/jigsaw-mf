@@ -8,7 +8,6 @@ class Buy extends React.Component {
   }
   componentDidMount() {
     console.log("react-products", "1111");
-    debugger;
     const appinfo = [
       {
         name: "a90",
@@ -18,7 +17,6 @@ class Buy extends React.Component {
         contain: this.refs.container,
         baseUrl: "/buy#/",
         canActive(baseUrl, basePath) {
-          debugger;
           console.log(
             "react-products",
             "basePath:",

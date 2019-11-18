@@ -3,7 +3,7 @@ import App from "./App.vue";
 import Router from "./router";
 import Config from "../config/application.json";
 import { appPool } from "./global";
-import { globalEvent } from "easy-mfs";
+import { globalEvent } from "jigsaw";
 
 globalEvent.on("global-test-event", function(e) {
   alert("global-test-event:" + e);

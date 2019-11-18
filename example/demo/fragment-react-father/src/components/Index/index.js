@@ -1,6 +1,6 @@
 import React from "react";
 import { appPool } from "../../global";
-import { globalEvent } from "easy-mfs";
+import { globalEvent } from "jigsaw";
 import "./index.scss";
 
 export default class Home extends React.Component {

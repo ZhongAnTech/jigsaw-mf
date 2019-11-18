@@ -1,9 +1,9 @@
 {
-  "name": "easy-mfs",
+  "name": "jigsaw",
   "version": "1.0.0",
   "description": "a micro-frontend solution",
   "main": "./src/index.js",
-  "module": "./dist/easymfs.esm.js",
+  "module": "./dist/jigsaw.esm.js",
   "files": [
     "dist",
     "src",

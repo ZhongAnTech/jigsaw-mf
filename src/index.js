@@ -18,7 +18,7 @@ export let globalEvent =
   }));
 
 // 注册并管理各应用
-export default class EasyMfs extends EventEmitter {
+export default class Jigsaw extends EventEmitter {
   constructor(appinfo) {
     super();
     this._baseUrl = appinfo.baseUrl || ""; // 主应用的基本url

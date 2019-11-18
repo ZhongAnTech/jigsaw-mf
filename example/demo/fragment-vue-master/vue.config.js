@@ -58,7 +58,7 @@ const application = {
       new CompressionPlugin()
     ],
     externals: {
-      "easy-mfs": "easyMfs",
+      jigsaw: "jigsaw",
       vue: "vue",
       "vue-router": "vueRouter"
     }

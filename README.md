@@ -1,10 +1,10 @@
 # A micro-frontend solution.
 
-[![npm version](https://img.shields.io/npm/v/easy-mfs.svg?style=flat-square)](https://www.npmjs.com/package/easy-mfs)[![npm downloads](https://img.shields.io/npm/dt/easy-mfs.svg?style=flat-square)](https://www.npmjs.com/package/easy-mfs)
+[![npm version](https://img.shields.io/npm/v/jigsaw.svg?style=flat-square)](https://www.npmjs.com/package/jigsaw)[![npm downloads](https://img.shields.io/npm/dt/jigsaw.svg?style=flat-square)](https://www.npmjs.com/package/jigsaw)
 
 ## Introduction
 
-easy-mfs is a micro-frontend solution for assembling mutiple micro applications into the master application to make the site perform like a Single-Page application! Or by leveraging easy-mfs, you can split your huge application into small parts to improve maintablity!
+`jigsaw` is a micro-frontend solution for assembling mutiple micro applications into the master application to make the site perform like a Single-Page application! Or by leveraging `jigsaw`, you can split your huge application into small parts to improve maintablity!
 
 - support any JavaScript user interface librarys. such as React, vue etc... as long as you can control when to mount/unmout your application!
 - support comunications between micro-applications.
@@ -18,7 +18,7 @@ easy-mfs is a micro-frontend solution for assembling mutiple micro applications 
 ## Installations
 
 ```shell
-npm install easy-mfs --save
+npm install jigsaw --save
 ```
 
 ## How to use
@@ -104,14 +104,14 @@ export default {
 }
 ```
 
-2. create easy-mfs instance. It's a good convention to put your global variables into one single module instead of assigning it to `window`
+2. create jigsaw instance. It's a good convention to put your global variables into one single module instead of assigning it to `window`
 
 ```javascript
 // src/global.js
-import EasyMfs from "easy-mfs";
+import Jigsaw from "jigsaw";
 import appConfig from "../config/application.json"; // created by step 1
 
-export const appPool = new EasyMfs(appConfig);
+export const appPool = new Jigsaw(appConfig);
 export const other_global_var = "your data";
 ```
 
@@ -179,7 +179,7 @@ try [postcss-selector-namespace](https://github.com/topaxi/postcss-selector-name
 
 ```
 git clone this repertory
-cd easy-mfs
+cd jigsaw
 npm install
 npm run init
 npm run run:fragment
@@ -188,13 +188,13 @@ npm run run:fragment
 
 ## Html Entry
 
-By default, easy-mfs will use the last js file as the execution entry. but you can change this behavior by adding attribute `entry`.
+By default, jigsaw will use the last js file as the execution entry. but you can change this behavior by adding attribute `entry`.
 
 ```
 <script src='http://localhost:3000/a.js' entry>
 ```
 
-And by adding attribute `ignore`, you can tell easy-mfs to ignore this file.
+And by adding attribute `ignore`, you can tell jigsaw to ignore this file.
 
 ```
 <script src='http://localhost:3000/a.js' ignore>

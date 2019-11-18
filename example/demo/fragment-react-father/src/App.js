@@ -5,7 +5,7 @@ import Index from "./components/Index";
 import Home from "./components/Home";
 
 import { appPool } from "./global";
-import { globalEvent } from "easy-mfs";
+import { globalEvent } from "jigsaw";
 
 function App({ baseUrl }) {
   return (
