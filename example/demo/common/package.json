@@ -7,7 +7,8 @@
     "build": "webpack -p",
     "watch": "webpack -w",
     "app": "node fragment.js",
-    "run:app": "npm run build && node fragment.js"
+    "run:app": "npm run build && node fragment.js",
+    "link": "yarn link jigsaw"
   },
   "author": "",
   "license": "ISC",
@@ -44,7 +45,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "easy-mft": "^1.0.0",
+    "jigsaw": "^1.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.1.2",

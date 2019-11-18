@@ -1,3 +1,4 @@
+/* eslint-disable */
 const clearTemplate = function clearTemplate() {
   let template = document.getElementById("tailor_template");
   if (!template) return;

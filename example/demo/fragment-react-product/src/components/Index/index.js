@@ -9,12 +9,10 @@ export default class Home extends React.Component {
       data: []
     };
   }
-  goto1() {}
   buy() {
     this.props.history.push("/buy");
   }
   componentDidMount() {
-    debugger;
     axios.get(process.env.PUBLIC_URL + "/getData").then(res => {
       console.log(res);
       this.setState({

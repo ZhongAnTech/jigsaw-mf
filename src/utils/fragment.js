@@ -1,82 +1,57 @@
+/* eslint-disable */
 /**
  * 一个应用既一个Fragment， 包含了应用所有的生命周期
  * @class Fragment
  */
 class Fragment {
   constructor(app, parent) {
-    const cloneApp = Object.assign({}, app);
-    const {
-      name,
-      entry,
-      contain,
-      template,
-      styles,
-      module,
-      baseUrl,
-      free,
-      sandbox
-    } = cloneApp;
-    const _self = this;
-    this.parent = parent;
-    this.app = cloneApp;
-    this.mounted = false;
-    this.sandbox = sandbox;
+    const { name } = app;
     this.name = name;
-    this.entry = entry;
+    this.app = app;
+    this.parent = parent;
+    this.mounted = false;
     this.style = [];
-    this.contain = contain;
-    this.template = template;
-    this.baseUrl = baseUrl;
-    this.__module = module;
-    this.parent = parent || "";
-    this.__free = free;
-    if (styles) {
-      styles.map(ele => {
-        _self.addStyle(ele);
+    if (app.styles) {
+      app.styles.map(ele => {
+        this._addStyle(ele);
       });
     }
   }
 
   bootstrap() {
-    this.__module.default.bootstrap(this);
+    this.app.module.default.bootstrap(this);
   }
-  // export async function bootstrap() {
-  //     console.log('react app bootstraped')
-  //   }
 
-  //   export async function mount(props) {
-  //     ReactDOM.render(<Router/>, document.getElementById('other'))
-  //   }
-
-  //   export async function unmount() {
-  //     ReactDOM.unmountComponentAtNode(document.getElementById('other'))
-  //   }
   unmount() {
-    // this.__module.unmount(this.contain)
     if (this.mounted) {
-      this.__module.default.unmount(this.contain);
+      this.app.module.default.unmount(this.app.contain);
       this.mounted = false;
     }
   }
-  mount(props) {
+
+  mount() {
     if (!this.mounted) {
-      if (!this.contain) {
-        console.error(`Application name ${this.name} contain is null`);
-      }
-      this.__module.default.mount(this.contain, this.baseUrl, this.app, this);
+      this.app.module.default.mount(
+        this.app.contain,
+        this.app.baseUrl,
+        this.app,
+        this
+      );
       this.mounted = true;
     }
   }
+
   destroy() {
     // unmount的时候不能释放资源，因为还有可能mount
     // 所以增加 destroy 方法，彻底释放不会再次mount的应用
     this.unmount();
-    this.__free();
+    this.app.free();
     this.style.map(e => {
       e.parentNode && e.parentNode.removeChild(e);
     });
   }
-  addStyle(txt) {
+
+  _addStyle(txt) {
     let link = document.createElement("style");
     link.innerHTML = txt;
     let result = this.style.find(e => {

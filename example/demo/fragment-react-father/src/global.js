@@ -1,5 +1,5 @@
-import EasyMft from "easy-mft";
+import Jigsaw from "jigsaw";
 import config from "../config/application.json";
 
-export const other_global_var = "your data";
-export const appPool = new EasyMft(config);
+export const appPool = new Jigsaw(config);
+export const your_other_global_var = "your data";

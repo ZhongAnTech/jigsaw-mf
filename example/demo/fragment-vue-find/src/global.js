@@ -1,7 +1,5 @@
-import ctrlApps, { globalEvent } from 'easy-mft'
-import application_info from '../config/application.json';
+import Jigsaw from "jigsaw";
+import appConfig from "../config/application.json";
 
-export default new ctrlApps(application_info)
-export {
-    globalEvent
-}
+export const appPool = new Jigsaw(appConfig);
+export const your_other_global_var = "your data";

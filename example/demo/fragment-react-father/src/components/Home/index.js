@@ -5,7 +5,6 @@ import { appPool } from "../../global";
 class Foo extends React.Component {
   constructor(props) {
     super(props);
-    this.handle = this.handle.bind(this);
   }
   componentDidMount() {
     const appinfo = [
@@ -23,21 +22,7 @@ class Foo extends React.Component {
     appPool.registerApps(appinfo);
   }
   render() {
-    return (
-      <div>
-        <input
-          ref={el => {
-            this.eleInput = el;
-          }}
-        />
-        <button onClick={this.handle}>聚焦</button>
-        <div id="container"></div>
-      </div>
-    );
-  }
-
-  handle() {
-    this.eleInput.focus();
+    return <div id="container"></div>;
   }
 }
 export default withRouter(Foo);

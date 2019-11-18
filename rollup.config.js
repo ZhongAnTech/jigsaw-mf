@@ -6,7 +6,7 @@ const version = require("./package.json").version;
 
 const banner =
   "/*!\n" +
-  ` * easymft.js v${version}\n` +
+  ` * jigsaw.js v${version}\n` +
   ` * (c) 2019-${new Date().getFullYear()} ZA-FE\n` +
   " * Released under the MIT License.\n" +
   " */";
@@ -15,8 +15,8 @@ export default [
   {
     input: "./src/index.js",
     output: {
-      file: "dist/easymft.common.js",
-      name: "easymft",
+      file: "dist/jigsaw.common.js",
+      name: "jigsaw",
       format: "umd",
       banner
     },
@@ -34,7 +34,7 @@ export default [
   {
     input: "./src/index.js",
     output: {
-      file: "dist/easymft.esm.js",
+      file: "dist/jigsaw.esm.js",
       format: "esm",
       banner
     },

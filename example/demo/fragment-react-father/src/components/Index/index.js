@@ -1,10 +1,9 @@
 import React from "react";
 import { appPool } from "../../global";
-import { globalEvent } from "easy-mft";
+import { globalEvent } from "jigsaw";
 import "./index.scss";
 
 export default class Home extends React.Component {
-  goto1() {}
   componentDidMount() {
     const _self = this;
     const appinfo = [
@@ -14,8 +13,8 @@ export default class Home extends React.Component {
         entry: "http://localhost:9200/app",
         contain: this.refs.container1,
         baseUrl: "/",
-        canActive(path) {
-          return window.location.pathname.startsWith(this.baseUrl);
+        canActive(baseUrl) {
+          return window.location.pathname.startsWith(baseUrl);
         }
       },
       {
@@ -24,8 +23,8 @@ export default class Home extends React.Component {
         entry: "http://localhost:9300/app",
         contain: this.refs.container2,
         baseUrl: "/",
-        canActive(path) {
-          return window.location.pathname.startsWith(this.baseUrl);
+        canActive(baseUrl) {
+          return window.location.pathname.startsWith(baseUrl);
         }
       }
       // {

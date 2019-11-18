@@ -1,5 +1,5 @@
 /*!
- * easymft.js v1.0.3
+ * jigsaw.js v1.0.0
  * (c) 2019-2019 ZA-FE
  * Released under the MIT License.
  */
@@ -8,7 +8,7 @@
     ? factory(exports)
     : typeof define === "function" && define.amd
     ? define(["exports"], factory)
-    : ((global = global || self), factory((global.easymft = {})));
+    : ((global = global || self), factory((global.jigsaw = {})));
 })(this, function(exports) {
   "use strict";
 
@@ -758,51 +758,22 @@
 
   var regenerator = runtime_1;
 
-  function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-    try {
-      var info = gen[key](arg);
-      var value = info.value;
-    } catch (error) {
-      reject(error);
-      return;
-    }
-
-    if (info.done) {
-      resolve(value);
-    } else {
-      Promise.resolve(value).then(_next, _throw);
-    }
-  }
-
-  function _asyncToGenerator(fn) {
-    return function() {
-      var self = this,
-        args = arguments;
-      return new Promise(function(resolve, reject) {
-        var gen = fn.apply(self, args);
-
-        function _next(value) {
-          asyncGeneratorStep(
-            gen,
-            resolve,
-            reject,
-            _next,
-            _throw,
-            "next",
-            value
-          );
-        }
-
-        function _throw(err) {
-          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-        }
-
-        _next(undefined);
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
       });
-    };
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
   }
 
-  var asyncToGenerator = _asyncToGenerator;
+  var defineProperty = _defineProperty;
 
   var _typeof_1 = createCommonjsModule(function(module) {
     function _typeof2(obj) {
@@ -2210,42 +2181,54 @@
     })();
   });
 
+  /* eslint-disable */
+  var PREFIX = "[jigsaw]:";
+  var logger = {};
+  ["log", "info", "error"].forEach(function(item) {
+    logger[item] = function() {
+      console[item].apply(console, getArgs(arguments));
+      return this;
+    };
+  });
+
+  function getArgs(args) {
+    var ret = Array.prototype.slice.call(args);
+    var date = new Date();
+    ret.unshift(
+      ""
+        .concat(date.getHours(), ":")
+        .concat(date.getMinutes(), ":")
+        .concat(date.getSeconds(), ".")
+        .concat(date.getMilliseconds())
+    );
+    ret.unshift(PREFIX);
+    return ret;
+  }
+
+  /* eslint-disable */
+
+  /**
+   * 一个应用既一个Fragment， 包含了应用所有的生命周期
+   * @class Fragment
+   */
   var Fragment =
     /*#__PURE__*/
     (function() {
       function Fragment(app, parent) {
+        var _this = this;
+
         classCallCheck(this, Fragment);
 
-        var cloneApp = Object.assign({}, app);
-        var name = cloneApp.name,
-          entry = cloneApp.entry,
-          contain = cloneApp.contain,
-          template = cloneApp.template,
-          styles = cloneApp.styles,
-          module = cloneApp.module,
-          baseUrl = cloneApp.baseUrl,
-          free = cloneApp.free,
-          sandbox = cloneApp.sandbox;
-
-        var _self = this;
-
-        this.parent = parent;
-        this.app = cloneApp;
-        this.mounted = false;
-        this.sandbox = sandbox;
+        var name = app.name;
         this.name = name;
-        this.entry = entry;
+        this.app = app;
+        this.parent = parent;
+        this.mounted = false;
         this.style = [];
-        this.contain = contain;
-        this.template = template;
-        this.baseUrl = baseUrl;
-        this.__module = module;
-        this.parent = parent || "";
-        this.__free = free;
 
-        if (styles) {
-          styles.map(function(ele) {
-            _self.addStyle(ele);
+        if (app.styles) {
+          app.styles.map(function(ele) {
+            _this._addStyle(ele);
           });
         }
       }
@@ -2254,45 +2237,28 @@
         {
           key: "bootstrap",
           value: function bootstrap() {
-            this.__module.default.bootstrap(this);
-          } // export async function bootstrap() {
-          //     console.log('react app bootstraped')
-          //   }
-          //   export async function mount(props) {
-          //     ReactDOM.render(<Router/>, document.getElementById('other'))
-          //   }
-          //   export async function unmount() {
-          //     ReactDOM.unmountComponentAtNode(document.getElementById('other'))
-          //   }
+            this.app.module.default.bootstrap(this);
+          }
         },
         {
           key: "unmount",
           value: function unmount() {
-            // this.__module.unmount(this.contain)
             if (this.mounted) {
-              this.__module.default.unmount(this.contain);
-
+              this.app.module.default.unmount(this.app.contain);
               this.mounted = false;
             }
           }
         },
         {
           key: "mount",
-          value: function mount(props) {
+          value: function mount() {
             if (!this.mounted) {
-              if (!this.contain) {
-                console.error(
-                  "Application name ".concat(this.name, " contain is null")
-                );
-              }
-
-              this.__module.default.mount(
-                this.contain,
-                this.baseUrl,
+              this.app.module.default.mount(
+                this.app.contain,
+                this.app.baseUrl,
                 this.app,
                 this
               );
-
               this.mounted = true;
             }
           }
@@ -2303,17 +2269,15 @@
             // unmount的时候不能释放资源，因为还有可能mount
             // 所以增加 destroy 方法，彻底释放不会再次mount的应用
             this.unmount();
-
-            this.__free();
-
+            this.app.free();
             this.style.map(function(e) {
               e.parentNode && e.parentNode.removeChild(e);
             });
           }
         },
         {
-          key: "addStyle",
-          value: function addStyle(txt) {
+          key: "_addStyle",
+          value: function _addStyle(txt) {
             var link = document.createElement("style");
             link.innerHTML = txt;
             var result = this.style.find(function(e) {
@@ -2338,25 +2302,10 @@
       return Fragment;
     })();
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  var defineProperty = _defineProperty;
-
+  /* eslint-disable */
+  // 当pushstate的时候主动触发popstate， 因为其他应用依赖popstate触发显示
   function hijackHistory() {
-    if (!window.history.__EASY_MFT_DECORATED) {
+    if (!window.history.__EASY_MFS_DECORATED) {
       var dispatchPopStateEvent = function dispatchPopStateEvent(state) {
         var evt = null;
 
@@ -2372,7 +2321,7 @@
         window.dispatchEvent(evt);
       };
 
-      window.history.__EASY_MFT_DECORATED = true;
+      window.history.__EASY_MFS_DECORATED = true;
       var originalPushState = window.history.pushState;
 
       window.history.pushState = function(state) {
@@ -2391,6 +2340,7 @@
     }
   }
 
+  /* eslint-disable */
   function hijackers() {
     hijackHistory();
     var listeners = [],
@@ -2428,7 +2378,7 @@
       })(function() {
         intervals.push(setInterval.apply(null, arguments));
       }),
-      __easy_mft_free: function __easy_mft_free() {
+      __easy_mfs_free: function __easy_mfs_free() {
         timeouts.forEach(clearTimeout);
         intervals.forEach(clearInterval);
         listeners.forEach(function(args) {
@@ -2526,44 +2476,86 @@
     return proxyWindow;
   }
 
+  /* eslint-disable */
+  function joinPath() {
+    var args = Array.prototype.slice.call(arguments);
+    return args.join("/").replace(/\/{2,}/g, "/");
+  }
+
+  function ownKeys$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly)
+        symbols = symbols.filter(function(sym) {
+          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        });
+      keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+
+  function _objectSpread$1(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys$1(source, true).forEach(function(key) {
+          defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(
+          target,
+          Object.getOwnPropertyDescriptors(source)
+        );
+      } else {
+        ownKeys$1(source).forEach(function(key) {
+          Object.defineProperty(
+            target,
+            key,
+            Object.getOwnPropertyDescriptor(source, key)
+          );
+        });
+      }
+    }
+    return target;
+  }
+
   var globalEvent =
-    window.__EASY_MFT_GLOBAL_EVENT ||
-    (window.__EASY_MFT_GLOBAL_EVENT = new eventemitter2({
+    window.__EASY_MFS_GLOBAL_EVENT ||
+    (window.__EASY_MFS_GLOBAL_EVENT = new eventemitter2({
       wildcard: true,
       delimiter: ".",
       newListener: false,
       maxListeners: Number.MAX_VALUE,
       verboseMemoryLeak: false
-    }));
+    })); // 注册并管理各应用
 
-  var CtrlApps =
+  var Jigsaw =
     /*#__PURE__*/
     (function(_EventEmitter) {
-      inherits(CtrlApps, _EventEmitter);
+      inherits(Jigsaw, _EventEmitter);
 
-      function CtrlApps(appinfo) {
+      function Jigsaw(appinfo) {
         var _this;
 
-        classCallCheck(this, CtrlApps);
+        classCallCheck(this, Jigsaw);
 
         _this = possibleConstructorReturn(
           this,
-          getPrototypeOf(CtrlApps).call(this)
+          getPrototypeOf(Jigsaw).call(this)
         );
+        _this._baseUrl = appinfo.baseUrl || ""; // 主应用的基本url
+
+        _this._listenEvents();
+
         _this.sonApplication = [];
-        _this.info = appinfo;
-        _this.__baseUrl = appinfo.baseUrl || ""; // 主引用的基本url
-
-        _this.name = appinfo.name || "";
-        _this.classNamespace = appinfo.classNamespace || "";
+        _this.config = appinfo;
+        _this.routerMode = appinfo.routerMode || "history";
         _this.parent = "";
-
-        _this.listenPopstate();
-
         return _this;
       }
 
-      createClass(CtrlApps, [
+      createClass(Jigsaw, [
         {
           key: "findApp",
           value: function findApp(name) {
@@ -2573,8 +2565,176 @@
           }
         },
         {
-          key: "unregisterApps",
-          value: function unregisterApps(name) {
+          key: "registerApps",
+          value: function registerApps(applist) {
+            if (applist instanceof Array) {
+              applist.forEach(this.registerApp.bind(this));
+            } else if (_typeof_1(applist) === "object") {
+              this.registerApp(applist);
+            } else {
+              logger.error(
+                "registerApps: object or array is wanted but get " +
+                  _typeof_1(applist)
+              );
+            }
+          }
+        },
+        {
+          key: "registerApp",
+          value: function registerApp(app) {
+            var _this2 = this;
+
+            var parts,
+              oldApp,
+              dll,
+              template,
+              execScripts,
+              getExternalScripts,
+              getExternalStyleSheets,
+              result,
+              _result,
+              sandbox;
+
+            return regenerator.async(
+              function registerApp$(_context) {
+                while (1) {
+                  switch ((_context.prev = _context.next)) {
+                    case 0:
+                      // in order to not modify the origin data by incident;
+                      app = _objectSpread$1({}, app, {
+                        basePath: this.baseUrl
+                      });
+                      app.routerMode = app.routerMode || "history";
+
+                      if (
+                        !(
+                          !this._checkRouterMode(app) ||
+                          !this._validateParams(app)
+                        )
+                      ) {
+                        _context.next = 4;
+                        break;
+                      }
+
+                      return _context.abrupt("return");
+
+                    case 4:
+                      if (app.routerMode === "hash") {
+                        parts = app.baseUrl.split("#"); // e.g. /pathname/#/hash/part
+
+                        if (parts.length > 1) {
+                          app.basePath = joinPath(this.baseUrl, parts[0]);
+                          app.baseUrl = parts[1];
+                        }
+                      } else {
+                        app.basePath = joinPath(this.baseUrl, app.baseUrl);
+                      }
+
+                      app.baseUrl = this._getAppBaseUrl(app);
+
+                      if (typeof app.canActive !== "function") {
+                        app.canActive = this._getDefaultCanActiveFn(
+                          app.routerMode
+                        );
+                      } // handle duplicate registration
+
+                      oldApp = this.findApp(app.name);
+
+                      if (!oldApp) {
+                        _context.next = 13;
+                        break;
+                      }
+
+                      oldApp.mounted = false; // 主要是更新contain
+
+                      Object.assign(oldApp.app, app);
+
+                      if (oldApp.app.canActive(app.baseUrl, app.basePath)) {
+                        oldApp.mount();
+                      }
+
+                      return _context.abrupt("return");
+
+                    case 13:
+                      dll = window.__easy_mfs_dlls =
+                        window.__easy_mfs_dlls || {};
+
+                      if (!dll[app.entry]) {
+                        _context.next = 22;
+                        break;
+                      }
+
+                      result = dll[app.entry];
+                      template = result.template;
+                      execScripts = result.execScripts;
+                      getExternalScripts = result.getExternalScripts;
+                      getExternalStyleSheets = result.getExternalStyleSheets;
+                      _context.next = 30;
+                      break;
+
+                    case 22:
+                      _context.next = 24;
+                      return regenerator.awrap(importEntry(app.entry));
+
+                    case 24:
+                      _result = _context.sent;
+                      template = _result.template;
+                      execScripts = _result.execScripts;
+                      getExternalScripts = _result.getExternalScripts;
+                      getExternalStyleSheets = _result.getExternalStyleSheets;
+                      dll[app.entry] = _result;
+
+                    case 30:
+                      sandbox = getSandbox();
+                      Promise.all([
+                        execScripts(sandbox),
+                        getExternalScripts(sandbox),
+                        getExternalStyleSheets()
+                      ]).then(function(values) {
+                        var script = values[0];
+                        var extScript = values[1];
+                        var styles = values[2];
+                        app.template = template;
+                        app.styles = styles;
+                        var _module = sandbox[app.applicationName];
+
+                        if (_module && _module.__esModule) {
+                          app.module = sandbox[app.applicationName];
+                          app.sandbox = sandbox;
+                          app.free = sandbox.__easy_mfs_free;
+                          var sonApplication = new Fragment(app, _this2);
+                          sonApplication.bootstrap(); // delete window[app.name]
+                          // window[app.name] = null
+
+                          if (app.canActive(app.baseUrl, app.basePath)) {
+                            sonApplication.mount();
+                          }
+
+                          _this2.sonApplication.push(sonApplication);
+                        } else {
+                          logger.error(
+                            "child application ".concat(
+                              app.applicationName,
+                              " not found"
+                            )
+                          );
+                        }
+                      });
+
+                    case 32:
+                    case "end":
+                      return _context.stop();
+                  }
+                }
+              },
+              null,
+              this
+            );
+          }
+        },
+        {
+          key: "unregisterApp",
+          value: function unregisterApp(name) {
             var index = this.sonApplication.findIndex(function(app) {
               return name === app.name;
             });
@@ -2586,213 +2746,130 @@
           }
         },
         {
-          key: "_getAppBaseUrl",
-          value: function _getAppBaseUrl(app) {
-            return this.baseUrl + (app.baseUrl || "");
-          }
-        },
-        {
-          key: "registerApps",
-          value: function registerApps(applist) {
-            if (applist instanceof Array) {
-              applist.forEach(this.registerApp.bind(this));
-            } else if (_typeof_1(applist) === "object") {
-              this.registerApp(applist);
-            } else {
-              console.error(
-                "object or array is wanted but get " + _typeof_1(applist)
-              );
-            }
-          }
-        },
-        {
-          key: "registerApp",
-          value: (function() {
-            var _registerApp = asyncToGenerator(
-              /*#__PURE__*/
-              regenerator.mark(function _callee(app) {
-                var _this2 = this;
-
-                var oldApp,
-                  dll,
-                  template,
-                  execScripts,
-                  getExternalScripts,
-                  getExternalStyleSheets,
-                  result,
-                  _result,
-                  sandbox;
-
-                return regenerator.wrap(
-                  function _callee$(_context) {
-                    while (1) {
-                      switch ((_context.prev = _context.next)) {
-                        case 0:
-                          // handle duplicate registration
-                          oldApp = this.findApp(app.name);
-
-                          if (!oldApp) {
-                            _context.next = 7;
-                            break;
-                          }
-
-                          oldApp.mounted = false;
-                          oldApp.contain = app.contain;
-                          oldApp.baseUrl = this._getAppBaseUrl(app);
-
-                          if (oldApp.app.canActive(oldApp.baseUrl)) {
-                            oldApp.mount();
-                          }
-
-                          return _context.abrupt("return");
-
-                        case 7:
-                          if (typeof app.canActive !== "function") {
-                            app.canActive = function(path) {
-                              return window.location.pathname.startsWith(path);
-                            };
-                          }
-
-                          dll = window.__easy_mft_dlls =
-                            window.__easy_mft_dlls || {};
-
-                          if (!dll[app.entry]) {
-                            _context.next = 17;
-                            break;
-                          }
-
-                          result = dll[app.entry];
-                          template = result.template;
-                          execScripts = result.execScripts;
-                          getExternalScripts = result.getExternalScripts;
-                          getExternalStyleSheets =
-                            result.getExternalStyleSheets;
-                          _context.next = 25;
-                          break;
-
-                        case 17:
-                          _context.next = 19;
-                          return importEntry(app.entry);
-
-                        case 19:
-                          _result = _context.sent;
-                          template = _result.template;
-                          execScripts = _result.execScripts;
-                          getExternalScripts = _result.getExternalScripts;
-                          getExternalStyleSheets =
-                            _result.getExternalStyleSheets;
-                          dll[app.entry] = _result;
-
-                        case 25:
-                          sandbox = getSandbox();
-                          Promise.all([
-                            execScripts(sandbox),
-                            getExternalScripts(sandbox),
-                            getExternalStyleSheets()
-                          ]).then(function(values) {
-                            var script = values[0];
-                            var extScript = values[1];
-                            var styles = values[2];
-                            app.template = template;
-                            app.styles = styles;
-                            var _module = sandbox[app.applicationName];
-
-                            if (_module && _module.__esModule) {
-                              app.module = sandbox[app.applicationName];
-                              app.sandbox = sandbox;
-                              app.free = sandbox.__easy_mft_free;
-
-                              var baseurl = _this2._getAppBaseUrl(app);
-
-                              app.baseUrl = baseurl.replace(/\/+/, "/");
-                              var sonApplication = new Fragment(app, _this2);
-                              sonApplication.bootstrap(); // delete window[app.name]
-                              // window[app.name] = null
-
-                              if (
-                                sonApplication.app.canActive(
-                                  sonApplication.app.baseUrl
-                                )
-                              ) {
-                                sonApplication.mount();
-                              }
-
-                              _this2.sonApplication.push(sonApplication);
-                            } else {
-                              console.error(
-                                "child application ".concat(
-                                  app.applicationName,
-                                  " not found"
-                                )
-                              );
-                            }
-                          });
-
-                        case 27:
-                        case "end":
-                          return _context.stop();
-                      }
-                    }
-                  },
-                  _callee,
-                  this
-                );
-              })
-            );
-
-            function registerApp(_x) {
-              return _registerApp.apply(this, arguments);
-            }
-
-            return registerApp;
-          })()
-        },
-        {
           key: "unregisterAllApps",
           value: function unregisterAllApps() {
             this.sonApplication.forEach(function(item) {
-              item.destroy();
+              return item.destroy();
             });
             this.sonApplication = [];
           }
         },
         {
-          key: "listenPopstate",
-          value: function listenPopstate() {
-            var _this3 = this;
-
-            window.addEventListener("popstate", function() {
-              _this3.sonApplication.forEach(function(item) {
-                if (item.app.canActive(item.app.baseUrl)) {
-                  item.mount();
-                } else {
-                  item.unmount();
+          key: "_getDefaultCanActiveFn",
+          value: function _getDefaultCanActiveFn(routerMode) {
+            if (routerMode === "hash") {
+              return function(baseUrl, basePath) {
+                return (
+                  window.location.pathname.startsWith(basePath) &&
+                  window.location.hash.startsWith("#" + baseUrl)
+                );
+              };
+            } else {
+              app.canActive = function(baseUrl) {
+                return window.location.pathname.startsWith(baseUrl);
+              };
+            }
+          }
+        },
+        {
+          key: "_validateParams",
+          value: function _validateParams(app) {
+            var emptyFields = [];
+            ["name", "applicationName", "entry", "contain", "baseUrl"].forEach(
+              function(field) {
+                if (!app[field]) {
+                  emptyFields.push(field);
                 }
-              });
+              }
+            );
+
+            if (emptyFields.length) {
+              logger.error(
+                "'"
+                  .concat(emptyFields.join(","), "' is required for '")
+                  .concat(app.name || app.applicationName || app.entry, "'.")
+              );
+            }
+
+            return emptyFields.length == 0;
+          }
+        },
+        {
+          key: "_checkRouterMode",
+          value: function _checkRouterMode(app) {
+            if (this.routerMode === "hash") {
+              if (app.routerMode === "history") {
+                logger.error(
+                  "".concat(
+                    app.name,
+                    " can NOT be 'history' mode when the master application is in 'hash' mode. ignored\uFF01"
+                  )
+                );
+                return false;
+              }
+            }
+
+            return true;
+          }
+        },
+        {
+          key: "_getAppBaseUrl",
+          value: function _getAppBaseUrl(app) {
+            var baseUrl = app.baseUrl || "";
+
+            if (this.routerMode === "history" && app.routerMode === "hash") {
+              return baseUrl;
+            }
+
+            return joinPath(this.baseUrl, baseUrl);
+          }
+        },
+        {
+          key: "_handleLocationChange",
+          value: function _handleLocationChange(e) {
+            this.sonApplication.forEach(function(item) {
+              if (item.app.canActive(item.app.baseUrl, item.app.basePath)) {
+                item.mount();
+              } else {
+                item.unmount();
+              }
             });
+          }
+        },
+        {
+          key: "_listenEvents",
+          value: function _listenEvents() {
+            window.addEventListener(
+              "popstate",
+              this._handleLocationChange.bind(this)
+            );
+            window.addEventListener(
+              "hashchange",
+              this._handleLocationChange.bind(this)
+            );
           }
         },
         {
           key: "fullUrl",
           get: function get() {
-            return (this.parent.fullUrl || "") + this.__baseUrl;
+            return (this.parent.fullUrl || "") + this._baseUrl;
           }
         },
         {
           key: "baseUrl",
           get: function get() {
-            return this.__baseUrl;
+            return this._baseUrl;
           },
           set: function set(val) {
-            this.__baseUrl = val;
+            this._baseUrl = val;
           }
         }
       ]);
 
-      return CtrlApps;
+      return Jigsaw;
     })(eventemitter2);
 
-  exports.default = CtrlApps;
+  exports.default = Jigsaw;
   exports.globalEvent = globalEvent;
 
   Object.defineProperty(exports, "__esModule", { value: true });

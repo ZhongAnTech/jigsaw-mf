@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.scss';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import Index from './components/Index'
-import Home from './components/Home'
-import Buy from './components/Buy'
-import CtrlApps, {globalEvent} from './global'
+import React from "react";
+import logo from "./logo.svg";
+import "./App.scss";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Index from "./components/Index";
+import Home from "./components/Home";
+import Buy from "./components/Buy";
+import { appPool } from "./global";
 
-function App({baseUrl}) {
-        // var evtSource = new EventSource("http://localhost:5020/event");
-        // evtSource.onmessage = function(e) {
-        //     console.log('onmsg: ' + e.data);
-        // }
-        // evtSource.onerror = function(e) {
-        //     console.log('error', e);
-        //     evtSource.close();
-        // }
+function App({ baseUrl }) {
+  // var evtSource = new EventSource("http://localhost:5020/event");
+  // evtSource.onmessage = function(e) {
+  //     console.log('onmsg: ' + e.data);
+  // }
+  // evtSource.onerror = function(e) {
+  //     console.log('error', e);
+  //     evtSource.close();
+  // }
   return (
     <Router basename={baseUrl}>
-      <div className={`App ${CtrlApps.classNamespace}`}>
+      <div
+        package="react-products"
+        className={`App ${appPool.config.classNamespace}`}
+      >
         {/* <h2>Tasdfasdf {baseUrl}</h2>
         <nav>
           <ul>
@@ -30,7 +33,7 @@ function App({baseUrl}) {
             </li>
           </ul>
         </nav> */}
-        
+
         <Route path="/" exact component={Index} />
         <Route path="/buy" component={Buy} />
         <Route path="/reactchild" component={Home} />

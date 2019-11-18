@@ -29,13 +29,13 @@
 </template>
 
 <script>
-import CtrlApps from "../../global";
+import { appPool } from "../../global";
 
 export default {
   name: "Index",
   data() {
     return {
-      name: CtrlApps.classNamespace
+      name: appPool.config.classNamespace
     };
   },
   methods: {
@@ -89,7 +89,7 @@ export default {
       //   }
       // }
     ];
-    CtrlApps.registerApps(appinfo);
+    appPool.registerApps(appinfo);
   }
 };
 </script>
