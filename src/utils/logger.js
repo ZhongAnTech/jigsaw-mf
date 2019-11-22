@@ -1,5 +1,5 @@
 /* eslint-disable */
-const PREFIX = "[jigsaw]:";
+const PREFIX = "[jigsaw-mf]:";
 const logger = {};
 
 ["log", "info", "error"].forEach(item => {

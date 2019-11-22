@@ -1,5 +1,5 @@
 import React from "react";
-import { globalEvent } from "jigsaw";
+import { globalEvent } from "jigsaw-mf";
 import "./index.scss";
 export default class Home extends React.Component {
   constructor(props) {

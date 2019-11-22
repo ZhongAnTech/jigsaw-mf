@@ -9,12 +9,12 @@
     "lint": "vue-cli-service lint",
     "app": "nodemon fragments.js",
     "run:app": "yarn run rebuild && yarn run app",
-    "link": "yarn link jigsaw"
+    "link": "yarn link jigsaw-mf"
   },
   "dependencies": {
     "core-js": "^2.6.9",
     "cross-env": "^6.0.0",
-    "jigsaw": "^1.0.0",
+    "jigsaw-mf": "^1.0.0",
     "html-entry": "^1.0.3",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3"

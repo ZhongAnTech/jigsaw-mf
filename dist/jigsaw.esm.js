@@ -15,7 +15,7 @@ import { importEntry } from "html-entry";
 import EventEmitter from "eventemitter2";
 
 /* eslint-disable */
-var PREFIX = "[jigsaw]:";
+var PREFIX = "[jigsaw-mf]:";
 var logger = {};
 ["log", "info", "error"].forEach(function(item) {
   logger[item] = function() {

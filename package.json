@@ -1,5 +1,5 @@
 {
-  "name": "jigsaw",
+  "name": "jigsaw-mf",
   "version": "1.0.0",
   "description": "a micro-frontend solution",
   "main": "./src/index.js",

@@ -752,7 +752,7 @@ module.exports = function(webpackEnv) {
       ...(isEnvProduction && {
         react: "react",
         "react-dom": "ReactDOM",
-        jigsaw: "jigsaw",
+        "jigsaw-mf": "jigsaw",
         "react-router-dom": "reactRouterDom"
       })
     }
