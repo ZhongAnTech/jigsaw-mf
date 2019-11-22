@@ -2182,7 +2182,7 @@
   });
 
   /* eslint-disable */
-  var PREFIX = "[jigsaw]:";
+  var PREFIX = "[jigsaw-mf]:";
   var logger = {};
   ["log", "info", "error"].forEach(function(item) {
     logger[item] = function() {

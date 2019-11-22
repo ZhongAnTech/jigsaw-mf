@@ -5,7 +5,7 @@ import Index from "./components/Index";
 import Home from "./components/Home";
 
 import { appPool } from "./global";
-import { globalEvent } from "jigsaw";
+import { globalEvent } from "jigsaw-mf";
 
 function App({ baseUrl }) {
   return (

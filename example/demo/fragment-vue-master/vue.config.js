@@ -58,7 +58,7 @@ const application = {
       new CompressionPlugin()
     ],
     externals: {
-      jigsaw: "jigsaw",
+      "jigsaw-mf": "jigsaw",
       vue: "vue",
       "vue-router": "vueRouter"
     }
