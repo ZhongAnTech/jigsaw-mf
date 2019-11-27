@@ -4,4 +4,4 @@ node_js:
 install: npm install
 
 script: npm i -g lerna cross-env && npm run init &&
-  cd example/demo/fragment-react-father && npm run build
+  cd example/demo/fragment-react-father
