@@ -13,7 +13,6 @@
   "scripts": {
     "build": "rollup -c",
     "init": "lerna bootstrap",
-    "run:app": "lerna run --parallel app",
     "run:build": "lerna run --parallel build",
     "run:fragment": "lerna run --parallel run:app",
     "link": "yarn unlink && yarn link && lerna run --parallel link",
