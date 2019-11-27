@@ -1,6 +1,6 @@
 import React from "react";
 import { appPool } from "../../global";
-import { globalEvent } from "jigsaw-mf";
+// import { globalEvent } from "jigsaw-mf";
 import "./index.scss";
 
 export default class Home extends React.Component {
@@ -27,29 +27,6 @@ export default class Home extends React.Component {
           return window.location.pathname.startsWith(baseUrl);
         }
       }
-      // {
-      //     name: "a44",
-      //     applicationName: "finder",
-      //     entry: "http://localhost:9091/app",
-      //     contain: this.refs.container3,
-      //     baseUrl: "/",
-      //     canActive(path) {
-      //         return window.location.pathname.startsWith(this.baseUrl);
-      //     }
-      // },
-      //   {
-      //       name: "a45",
-      //       applicationName: "reactfather",
-      //       entry: "http://localhost:5020/app",
-      //       contain: this.refs.container4,
-      //       baseUrl: "/reactfather",
-      //       canActive(path) {
-      //
-      //         // baseUrl 会被chapxi重写成包含父路径
-      //         // 所以这里可以直接使用
-      //         return window.location.pathname.startsWith(this.baseUrl);
-      //       }
-      //   }
     ];
     appPool.registerApps(appinfo);
 
