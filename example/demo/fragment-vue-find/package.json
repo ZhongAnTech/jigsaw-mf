@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --host localhost --port 9091",
-    "build": "vue-cli-service build",
-    "rebuild": "vue-cli-service build --mode prd",
+    "build": "vue-cli-service build --mode prd",
     "lint": "vue-cli-service lint",
     "app": "nodemon fragments.js",
-    "run:app": "yarn run rebuild && yarn run app",
+    "run:app": "yarn run build && yarn run app",
     "link": "yarn link jigsaw-mf"
   },
   "dependencies": {
