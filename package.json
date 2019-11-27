@@ -13,6 +13,7 @@
   "scripts": {
     "build": "rollup -c",
     "init": "lerna bootstrap",
+    "run:build": "lerna run --parallel build",
     "run:fragment": "lerna run --parallel run:app",
     "link": "yarn unlink && yarn link && lerna run --parallel link",
     "lint:report": "eslint --ext .jsx,.js src -f checkstyle -o report_zacc_eslint_js.xml"
