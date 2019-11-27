@@ -3,4 +3,4 @@ node_js:
   - 12.11.1
 install: npm install
 
-script: npm i -g lerna && npm run init && npm run run:build
+script: npm i -g lerna && npm run init
