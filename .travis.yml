@@ -3,5 +3,5 @@ node_js:
   - 12.11.1
 install: npm install
 
-script: npm i -g lerna && npm run init
+script: npm i -g lerna && npm run init &&
   cd example/demo/fragment-react-father && npm run build
