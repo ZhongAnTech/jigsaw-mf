@@ -24,7 +24,9 @@ export default class Home extends React.Component {
         contain: this.refs.container2,
         baseUrl: "/",
         canActive(baseUrl) {
-          return window.location.pathname.startsWith(baseUrl);
+          let result = window.location.pathname === "/";
+          return result;
+          // return window.location.pathname.startsWith(baseUrl);
         }
       }
     ];
@@ -38,19 +40,19 @@ export default class Home extends React.Component {
       console.log("error", e);
       evtSource.close();
 
-      const app = [
-        {
-          name: "a44",
-          applicationName: "finder",
-          entry: "http://localhost:9091/app",
-          contain: _self.refs.container3,
-          baseUrl: "/",
-          canActive(path) {
-            return window.location.pathname.startsWith(this.baseUrl);
-          }
-        }
-      ];
-      appPool.registerApps(app);
+      // const app = [
+      //   {
+      //     name: "a44",
+      //     applicationName: "finder",
+      //     entry: "http://localhost:9091/app",
+      //     contain: _self.refs.container3,
+      //     baseUrl: "/",
+      //     canActive(path) {
+      //       return window.location.pathname.startsWith(this.baseUrl);
+      //     }
+      //   }
+      // ];
+      // appPool.registerApps(app);
     };
   }
 

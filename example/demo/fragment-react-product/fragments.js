@@ -39,7 +39,7 @@ app.use(async function(ctx, next) {
   } else if (ctx.req.url === "/getData") {
     ctx.body = [
       {
-        img: config.publicPath + "/images/pic.jpg",
+        img: config.publicPath + "/images/pic1.png",
         title: "复星康乐一生2019",
         title2: "长期重疾险",
         info1: "108种重疾+25种中症+40种轻症",
@@ -51,7 +51,7 @@ app.use(async function(ctx, next) {
         time: "终身"
       },
       {
-        img: config.publicPath + "/images/1849890864.jpg",
+        img: config.publicPath + "/images/c1.png",
         title: "安邦北极星",
         title2: "长期重疾险",
         info1: "108种重疾+25种中症+40种轻症",
@@ -63,7 +63,7 @@ app.use(async function(ctx, next) {
         time: "终身"
       },
       {
-        img: config.publicPath + "/images/pic.jpg",
+        img: config.publicPath + "/images/c1.png",
         title: "复星保德信星悦",
         title2: "长期重疾险",
         info1: "108种重疾+25种中症+40种轻症",

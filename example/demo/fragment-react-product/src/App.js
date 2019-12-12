@@ -22,18 +22,6 @@ function App({ baseUrl }) {
         package="react-products"
         className={`App ${appPool.config.classNamespace}`}
       >
-        {/* <h2>Tasdfasdf {baseUrl}</h2>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/reactchild">child</Link>
-            </li>
-            <li>
-              <Link to="/index">index</Link>
-            </li>
-          </ul>
-        </nav> */}
-
         <Route path="/" exact component={Index} />
         <Route path="/buy" component={Buy} />
         <Route path="/reactchild" component={Home} />
